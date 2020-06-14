@@ -1,12 +1,57 @@
-﻿<Window x:Class="RadeonSoftwareSlimmer.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RadeonSoftwareSlimmer"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+﻿<mah:MetroWindow
+    x:Class="RadeonSoftwareSlimmer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
+    xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
+    Title="Radeon Software Slimmer"
+    Width="800"
+    Height="600"
+    BorderThickness="2"
+    Icon="/icon.ico"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
 
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button x:Name="btnLight" Click="btnLight_Click" Content="Light" />
+            <Button x:Name="btnDark" Click="btnDark_Click" Content="Dark" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <mah:MetroTabControl Grid.Row="0" mah:HeaderedControlHelper.HeaderFontWeight="DemiBold" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
+
+            <mah:MetroTabItem Padding="32,4" Header="About">
+                <uc:AboutView />
+            </mah:MetroTabItem>
+
+            <mah:MetroTabItem Padding="32,4" Header="Pre Install">
+                <ScrollViewer>
+                    <uc:PreInstallView />
+                </ScrollViewer>
+            </mah:MetroTabItem>
+
+            <mah:MetroTabItem Padding="32,4" Header="Post Install">
+                <ScrollViewer>
+                    <uc:PostInstallView />
+                </ScrollViewer>
+            </mah:MetroTabItem>
+
+            <mah:MetroTabItem x:Name="tabLogging" Padding="32,4" Header="Logging">
+                <uc:LoggingView />
+            </mah:MetroTabItem>
+
+        </mah:MetroTabControl>
+
+        <uc:MessageView Grid.Row="1" />
     </Grid>
-</Window>
+</mah:MetroWindow>

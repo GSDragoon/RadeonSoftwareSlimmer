@@ -1,0 +1,87 @@
+﻿<UserControl
+    x:Class="RadeonSoftwareSlimmer.Views.PreInstallView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
+    d:DataContext="{d:DesignInstance vm:PreInstallViewModel}"
+    mc:Ignorable="d">
+
+    <StackPanel x:Name="pnlEverything" IsEnabled="{Binding Path=(vm:StaticViewModel.IsUiEnabled)}">
+
+        <mah:MetroHeader Header="1) Installer Source">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" Text="Installer File" />
+                <TextBox x:Name="txtInstallerFile" Grid.Column="1" Text="{Binding InstallerFiles.InstallerFile}" />
+                <Button
+                    x:Name="btnInstallerFileBrowse"
+                    Grid.Column="2"
+                    Click="btnInstallerFileBrowse_Click"
+                    Content="Browse"
+                    Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+            </Grid>
+        </mah:MetroHeader>
+
+        <mah:MetroHeader Margin="0,0,0,16" Header="2) Extracted Installer">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" Text="Extract Location" />
+                    <TextBox x:Name="txtExtractLocation" Grid.Column="1" Text="{Binding InstallerFiles.ExtractedInstallerDirectory}" />
+                    <Button
+                        x:Name="btnExtractLocatonBrowse"
+                        Grid.Column="2"
+                        Click="btnExtractLocatonBrowse_Click"
+                        Content="Browse"
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                </Grid>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        x:Name="btnExtractInstallerFiles"
+                        Margin="0,0,4,0"
+                        Click="btnExtractInstallerFiles_Click"
+                        Content="Extract Installer Files"
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    <Button x:Name="btnReadInstallerFiles" Click="btnReadInstallerFiles_Click" Content="Read Extracted Installer Files" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                </StackPanel>
+            </StackPanel>
+        </mah:MetroHeader>
+
+        <mah:MetroHeader Margin="0,0,0,16" Header="3) Modify Installer" IsEnabled="{Binding LoadedPanelEnabled}">
+            <StackPanel>
+                <TextBlock Text="Packages: (Uncheck 'Keep' for packages you want to remove.)" />
+                <DataGrid
+                    mah:DataGridHelper.EnableCellEditAssist="True"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    GridLinesVisibility="Horizontal"
+                    ItemsSource="{Binding PackageList.InstallerPackages}"
+                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+
+                <TextBlock Margin="0,8,0,0" Text="Scheduled Tasks: (Uncheck 'Enabled' for Scheduled Tasks you want Unhidden and Disabled.)" />
+                <DataGrid
+                    mah:DataGridHelper.EnableCellEditAssist="True"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    GridLinesVisibility="Horizontal"
+                    ItemsSource="{Binding ScheduledTaskList.ScheduledTasks}"
+                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+
+                <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Content="4) Modify Installer Files" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" Content="5) Start Modified Installer And Close This Application" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+            </StackPanel>
+        </mah:MetroHeader>
+
+    </StackPanel>
+</UserControl>

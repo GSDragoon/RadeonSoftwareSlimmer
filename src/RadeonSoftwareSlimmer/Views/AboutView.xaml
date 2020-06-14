@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="RadeonSoftwareSlimmer.Views.AboutView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontSize="16"
+    mc:Ignorable="d">
+
+    <StackPanel Margin="8">
+        <Label Margin="0,16" HorizontalAlignment="Center" Content="Radeon Software Slimmer" FontSize="36" />
+        <TextBlock x:Name="lblVersion" Margin="0,16" FontSize="16" />
+
+        <TextBlock Text="Website (Documentation, downloads and source)" />
+        <TextBlock>
+            <Hyperlink x:Name="hplWebsite" NavigateUri="https://github.com/GSDragoon/RadeonSoftwareSlimmer" RequestNavigate="Hyperlink_RequestNavigate">
+                https://github.com/GSDragoon/RadeonSoftwareSlimmer
+            </Hyperlink>
+        </TextBlock>
+
+        <TextBlock Margin="0,32" FontStyle="Oblique" Text="This software is NOT owned, supported or endorsed by Advanced Micro Devices, Inc. (AMD). Use at your own risk!" TextWrapping="Wrap" />
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadeonSoftwareSlimmer", "src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj", "{A57F631F-11BB-4D48-A795-B90039733F4C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7785ED3B-B4D4-41C1-AEBF-002B25AB3E38}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "src\Shared\Shared.shproj", "{9B80E4B0-8113-4FD6-A3B2-F67E98604F6C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{188730D1-5A3C-4727-934C-5A6D6F6F14CD}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Dissecting_Radeon_Software.md = docs\Dissecting_Radeon_Software.md
+		docs\User_Guide.md = docs\User_Guide.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Shared\Shared.projitems*{a57f631f-11bb-4d48-a795-b90039733f4c}*SharedItemsImports = 5
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A57F631F-11BB-4D48-A795-B90039733F4C}.Debug|x64.ActiveCfg = Debug|x64
+		{A57F631F-11BB-4D48-A795-B90039733F4C}.Debug|x64.Build.0 = Debug|x64
+		{A57F631F-11BB-4D48-A795-B90039733F4C}.Release|x64.ActiveCfg = Release|x64
+		{A57F631F-11BB-4D48-A795-B90039733F4C}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{188730D1-5A3C-4727-934C-5A6D6F6F14CD} = {7785ED3B-B4D4-41C1-AEBF-002B25AB3E38}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BACD17E6-3BDC-4AA0-AC9E-54786CEB483D}
+	EndGlobalSection
+EndGlobal

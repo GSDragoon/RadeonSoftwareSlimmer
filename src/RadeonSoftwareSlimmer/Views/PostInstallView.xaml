@@ -1,0 +1,72 @@
+﻿<UserControl
+    x:Class="RadeonSoftwareSlimmer.Views.PostInstallView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
+    d:DataContext="{d:DesignInstance vm:PostInstallViewModel}"
+    mc:Ignorable="d">
+
+    <StackPanel x:Name="pnlEverything" IsEnabled="{Binding Path=(vm:StaticViewModel.IsUiEnabled)}">
+        <Button
+            x:Name="btnLoadOrRefresh"
+            Margin="0,0,0,16"
+            Click="btnLoadOrRefresh_Click"
+            Content="Load/Refresh Radeon Software Installed Components"
+            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+
+        <StackPanel IsEnabled="{Binding LoadedPanelEnabled}">
+
+            <mah:MetroHeader Margin="0,0,0,16" Header="Radeon Software: Host Services (AMDRSServ.exe)">
+                <StackPanel>
+                    <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
+                    <TextBlock Text="Processes that handles Radeon ReLive (Overylays, Hotkeys, Instant Replay, In-Game Replay, Recording Desktop and more). Disabling this will rename RSServCmd.exe so it and it's child processes doesn't load." TextWrapping="Wrap" />
+                </StackPanel>
+            </mah:MetroHeader>
+
+            <mah:MetroHeader Margin="0,0,0,16" Header="Scheduled Tasks (Uncheck or check 'Enabled' to disable or enable a Scheduled Task.)">
+                <DataGrid
+                    mah:DataGridHelper.EnableCellEditAssist="True"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    GridLinesVisibility="Horizontal"
+                    ItemsSource="{Binding RadeonScheduledTaskList.RadeonScheduledTasks}"
+                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+            </mah:MetroHeader>
+
+            <mah:MetroHeader Margin="0,0,0,16" Header="System Services (Change the 'StartMode' of a System Service. Be VERY careful. Setting an improper start mode can cause OS boot failures.)">
+                <DataGrid
+                    mah:DataGridHelper.EnableCellEditAssist="True"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    GridLinesVisibility="Horizontal"
+                    ItemsSource="{Binding ServiceList.Services}"
+                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+            </mah:MetroHeader>
+
+            <mah:MetroHeader Margin="0,0,0,16" Header="Installed Items (Check Uninstall to uninstall item)">
+                <StackPanel>
+                    <mah:ToggleSwitch Header="FINISH ME" OffContent="Show Uninstall UI" OnContent="Quiet Uninstall" />
+                    <DataGrid
+                        mah:DataGridHelper.EnableCellEditAssist="True"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        GridLinesVisibility="Horizontal"
+                        ItemsSource="{Binding InstalledList.InstalledItems}"
+                        Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                </StackPanel>
+
+            </mah:MetroHeader>
+
+            <Button
+                x:Name="btnApply"
+                Click="btnApply_Click"
+                Content="Apply Post Install Changes"
+                IsEnabled="{Binding LoadedPanelEnabled}"
+                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>
