@@ -35,6 +35,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private static IEnumerable<ServiceModel> GetAllRadeonServices()
         {
+            //If AMD was consistent with anything, this could be nicer
             string[] serviceNames =
             {
                 //System Devices
@@ -42,6 +43,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 "AMDXE",
 
                 //NT Services
+                "AMD Crash Defender Service",
                 "AMD External Events Utility",
                 "AMD Log Utility",
                 "AUEPLauncher",
