@@ -19,7 +19,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" Text="Installer File" />
-                <TextBox x:Name="txtInstallerFile" Grid.Column="1" Text="{Binding InstallerFiles.InstallerFile}" />
+                <TextBox x:Name="txtInstallerFile" Grid.Column="1" VerticalContentAlignment="Center" Text="{Binding InstallerFiles.InstallerFile}" />
                 <Button
                     x:Name="btnInstallerFileBrowse"
                     Grid.Column="2"
@@ -38,7 +38,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" Text="Extract Location" />
-                    <TextBox x:Name="txtExtractLocation" Grid.Column="1" Text="{Binding InstallerFiles.ExtractedInstallerDirectory}" />
+                    <TextBox x:Name="txtExtractLocation" Grid.Column="1" VerticalContentAlignment="Center" Text="{Binding InstallerFiles.ExtractedInstallerDirectory}" />
                     <Button
                         x:Name="btnExtractLocatonBrowse"
                         Grid.Column="2"
@@ -46,7 +46,7 @@
                         Content="Browse"
                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                 </Grid>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                     <Button
                         x:Name="btnExtractInstallerFiles"
                         Margin="0,0,4,0"
