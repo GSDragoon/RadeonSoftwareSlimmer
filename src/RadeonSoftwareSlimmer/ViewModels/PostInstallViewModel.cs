@@ -12,7 +12,6 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public PostInstallViewModel()
         {
             LoadedPanelEnabled = false;
-            UninstallQuietly = true;
 
             HostService = new HostServiceModel();
             RadeonScheduledTaskList = new ScheduledTaskListModel();
@@ -38,7 +37,6 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 OnPropertyChanged(nameof(LoadedPanelEnabled));
             }
         }
-        public bool UninstallQuietly { get; set; }
 
 
         public void LoadOrRefresh()
@@ -103,7 +101,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
                 foreach (InstalledModel install in InstalledList.InstalledItems)
                 {
-                    install.UninstallIfSelected(UninstallQuietly);
+                    install.UninstallIfSelected();
                 }
 
 

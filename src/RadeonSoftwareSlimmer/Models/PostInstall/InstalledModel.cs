@@ -56,20 +56,13 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         public string UninstallCommand { get; private set; }
 
 
-        public void UninstallIfSelected(bool quietUninstall)
+        public void UninstallIfSelected()
         {
             if (_uninstall && !string.IsNullOrWhiteSpace(UninstallCommand))
             {
                 if (_windowsInstaller)
                 {
-                    if (quietUninstall)
-                    {
-                        ProcessExecutor.RunProcess(_uninstallExe, $"{_uninstallArguments} /quiet /norestart REBOOT=ReallySuppress");
-                    }
-                    else
-                    {
-                        ProcessExecutor.RunProcess(_uninstallExe, _uninstallArguments);
-                    }
+                    ProcessExecutor.RunProcess(_uninstallExe, $"{_uninstallArguments} /quiet /norestart REBOOT=ReallySuppress");
                 }
                 else
                 {
