@@ -81,7 +81,6 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             FileInfo[] packageFiles =
             {
-                new FileInfo($@"{installDirectory.FullName}\Bin32\cccmanifest_32.json"), //Making assumptions here. What does the 32-bit version look like?
                 new FileInfo($@"{installDirectory.FullName}\Bin64\cccmanifest_64.json"),
                 new FileInfo($@"{installDirectory.FullName}\Config\InstallManifest.json"),
             };
