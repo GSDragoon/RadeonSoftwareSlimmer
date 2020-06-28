@@ -42,7 +42,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             get { return _startMode; }
             set
             {
-                //RadeonSoftwareSlimmer.ViewModels.StaticViewModel.AddLogMessage($"Changing {DisplayName} from {StartMode} to {value}");
                 _startMode = value;
                 OnPropertyChanged(nameof(StartMode));
             }
