@@ -2,7 +2,11 @@
 
 This is a basic guide on how to use Radeon Software Slimmer. The `About` tab shows the version you are running and links to the GitHub repository to access documentation, downloads and source code. At the right side of the title bar are options to switch to `Light` or `Dark` theme. It defaults to your system settings for applications.
 
-Radeon Software Slimmer can be broken down into two main categories. `Pre Install` and `Post Install`.
+## Troubleshooting
+
+If you run into any problems with the driver or Radeon Software after using Radeon Software Slimmer, you should consider that this utility can have unforeseen consequences. Perform a [Factory Reset](https://www.amd.com/en/support/kb/faq/rsx-install#faq-Installing-Radeon-Software) with an unmodified installer, use [AND Cleanup Utility](https://www.amd.com/en/support/kb/faq/gpu-601) and/or use [Display Driver Uninstaller](https://www.wagnardsoft.com/display-driver-uninstaller-ddu-) to make sure all settings and components are back to their orginal behavior.
+
+Logging is available on the `Logging` tab. If you are trying to troubleshoot an issue, learn more about what it's doing or reports an issue, then take a look here. It reports in real time. Logging can be manually cleared or saved to file.
 
 ## Pre Install
 
@@ -29,7 +33,3 @@ System Services are system drivers or NT Services that get installed with Radeon
 Installed Items shows Windows Installer entries, even those that are hidden from Programs and Features in the control panel. Check `Uninstall` to uninstall them.
 
 Click the `Apply Post Install Changes` button to apply the changes. Some changes need a system reboot to take affect, so a restart after this is recommended.
-
-## Troubleshooting
-
-Logging is available on the `Logging` tab. If you are trying to troubleshoot an issue, learn more about what it's doing or reports an issue, then take a look here. It reports in real time. Logging can be manually cleared or saved to file.
