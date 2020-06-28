@@ -14,8 +14,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             Clear = false;
             Folder = folder;
-            Files = Directory.GetFiles(folder).Length;
-            Size = CalculateSize();
+            CalculateSize();
         }
 
 
@@ -32,7 +31,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
         }
         public string Folder { get; }
-        public int Files { get; }
+        public int Files { get; private set; }
         public string Size { get; private set; }
 
 
@@ -43,17 +42,20 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         }
 
 
-        private string CalculateSize()
+        private void CalculateSize()
         {
             long bytes = 0;
+            int files = 0;
             DirectoryInfo directoryInfo = new DirectoryInfo(Folder);
 
             foreach (FileInfo fileInfo in directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories))
             {
                 bytes += fileInfo.Length;
+                files++;
             }
 
-            return GetFriendlySize(bytes);
+            Files = files;
+            Size = GetFriendlySize(bytes);
         }
 
         private static string GetFriendlySize(long bytes)
