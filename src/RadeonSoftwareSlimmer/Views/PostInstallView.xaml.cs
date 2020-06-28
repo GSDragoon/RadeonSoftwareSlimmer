@@ -28,5 +28,15 @@ namespace RadeonSoftwareSlimmer.Views
         {
             await _viewModel.ApplyyChangesAsync();
         }
+
+        private void btnTempFilesSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.TempFilesSetAll(true);
+        }
+
+        private void btnTempFilesSelectNone_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.TempFilesSetAll(false);
+        }
     }
 }

@@ -54,7 +54,22 @@
                     GridLinesVisibility="Horizontal"
                     ItemsSource="{Binding InstalledList.InstalledItems}"
                     Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+            </mah:MetroHeader>
 
+            <mah:MetroHeader Margin="0,0,0,16" Header="Logging and Temp Files (Clear files and sub directories)">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnTempFilesSelectAll" Click="btnTempFilesSelectAll_Click" Content="Select All" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnTempFilesSelectNone" Click="btnTempFilesSelectNone_Click" Content="Select None" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    </StackPanel>
+                    <DataGrid
+                        mah:DataGridHelper.EnableCellEditAssist="True"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        GridLinesVisibility="Horizontal"
+                        ItemsSource="{Binding TempFileList.TempFiles}"
+                        Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                </StackPanel>
             </mah:MetroHeader>
 
             <Button

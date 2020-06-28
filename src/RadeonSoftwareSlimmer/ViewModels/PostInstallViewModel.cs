@@ -17,6 +17,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
             RadeonScheduledTaskList = new ScheduledTaskListModel();
             ServiceList = new ServiceListModel();
             InstalledList = new InstalledListModel();
+            TempFileList = new TempFileListModel();
         }
 
 
@@ -28,6 +29,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public ScheduledTaskListModel RadeonScheduledTaskList { get; }
         public ServiceListModel ServiceList { get; }
         public InstalledListModel InstalledList { get; }
+        public TempFileListModel TempFileList { get; }
         public bool LoadedPanelEnabled
         {
             get { return _loadedPanelEnabled; }
@@ -51,6 +53,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 RadeonScheduledTaskList.LoadOrRefresh();
                 ServiceList.LoadOrRefresh();
                 InstalledList.LoadOrRefresh();
+                TempFileList.LoadOrRefresh();
 
                 StaticViewModel.AddLogMessage("Loading post install complete ");
                 LoadedPanelEnabled = true;
@@ -62,6 +65,14 @@ namespace RadeonSoftwareSlimmer.ViewModels
             finally
             {
                 StaticViewModel.IsLoading = false;
+            }
+        }
+
+        public void TempFilesSetAll(bool clear)
+        {
+            foreach (TempFileModel tempFile in TempFileList.TempFiles)
+            {
+                tempFile.Clear = clear;
             }
         }
 
@@ -104,6 +115,11 @@ namespace RadeonSoftwareSlimmer.ViewModels
                     install.UninstallIfSelected();
                 }
 
+                foreach (TempFileModel tempFile in TempFileList.TempFiles)
+                {
+                    if (tempFile.Clear)
+                        tempFile.ClearFolder();
+                }
 
                 if (HostService.Enabled)
                     HostService.RestartRadeonSoftware();
