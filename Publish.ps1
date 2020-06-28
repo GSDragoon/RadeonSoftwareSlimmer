@@ -3,7 +3,10 @@
 	Remove-Item -Path .\Publish -Recurse -Force
 }
 
-dotnet publish --configuration Release --framework netcoreapp3.1 --force --output .\Publish\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
+dotnet clean --configuration Release --framework netcoreapp3.1
+dotnet clean --configuration Release --framework net48
+
+dotnet publish --configuration Release --framework netcoreapp3.1 --self-contained false --force --output .\Publish\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
 dotnet publish --configuration Release  --framework net48 --force --output .\Publish\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
 
 $version = (Get-Item .\Publish\netcoreapp3.1\RadeonSoftwareSlimmer.exe).VersionInfo.ProductVersion
