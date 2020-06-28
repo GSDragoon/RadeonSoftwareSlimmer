@@ -39,6 +39,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             string[] serviceNames =
             {
                 //System Devices
+                "amdfendr",
                 "amdlog",
                 "AMDXE",
 
