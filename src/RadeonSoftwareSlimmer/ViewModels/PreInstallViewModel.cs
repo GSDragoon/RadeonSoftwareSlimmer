@@ -51,6 +51,8 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
                 await Task.Run(() => InstallerFiles.ExtractInstallerFiles());
 
+                ReadFromExtractedInstaller();
+
                 StaticViewModel.AddLogMessage("Installer files extraction complete");
                 LoadedPanelEnabled = true;
             }
