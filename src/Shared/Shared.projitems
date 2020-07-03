@@ -9,7 +9,10 @@
     <Import_RootNamespace>ThirdPartyApplications</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)7-Zip\7z.exe">
+    <None Include="$(MSBuildThisFileDirectory)7-Zip\7z.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+	<None Include="$(MSBuildThisFileDirectory)7-Zip\7z.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)7-Zip\License.txt">
