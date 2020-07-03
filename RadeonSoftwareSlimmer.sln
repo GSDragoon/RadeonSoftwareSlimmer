@@ -14,12 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "src\Shared\Shared.shproj", "{9B80E4B0-8113-4FD6-A3B2-F67E98604F6C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{188730D1-5A3C-4727-934C-5A6D6F6F14CD}"
-	ProjectSection(SolutionItems) = preProject
-		docs\Dissecting_Radeon_Software.md = docs\Dissecting_Radeon_Software.md
-		docs\User_Guide.md = docs\User_Guide.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Shared\Shared.projitems*{a57f631f-11bb-4d48-a795-b90039733f4c}*SharedItemsImports = 5
@@ -36,9 +30,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{188730D1-5A3C-4727-934C-5A6D6F6F14CD} = {7785ED3B-B4D4-41C1-AEBF-002B25AB3E38}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BACD17E6-3BDC-4AA0-AC9E-54786CEB483D}

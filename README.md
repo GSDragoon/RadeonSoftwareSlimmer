@@ -14,8 +14,10 @@ Improper use could cause system instability. **Use at your own risk!**
 
 ## Documentation
 
-* [User Guide](https://github.com/GSDragoon/RadeonSoftwareSlimmer/tree/master/docs/User_Guide.md) - Basic guide on how to use Radeon Software Slimmer
-* [Dissecting Radeon Software](https://github.com/GSDragoon/RadeonSoftwareSlimmer/tree/master/docs/Dissecting_Radeon_Software.md) - Digging into Radeon Software, how the installer works, what all gets installed and what all the components do.
+Documentation can be found on the [Wiki](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki).
+
+* [User Guide](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/User-Guide) - Basic guide on how to use Radeon Software Slimmer
+* [Dissecting Radeon Software](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Dissecting-Radeon-Software) - Digging into Radeon Software, how the installer works, what all gets installed and what all the components do.
 
 ## Getting Started
 
