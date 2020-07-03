@@ -21,8 +21,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             //Again... no consistency or all the information filled out with this from AMD...
             DisplayName = GetRegistryValueString(uninstallKey, "DisplayName");
             Publisher = GetRegistryValueString(uninstallKey, "Publisher");
-            DisplayVersion = Version.Parse(GetRegistryValueString(uninstallKey, "DisplayVersion"));
-
+            DisplayVersion = GetRegistryValueString(uninstallKey, "DisplayVersion");
             UninstallCommand = GetRegistryValueString(uninstallKey, "UninstallString");
             ProductCode = keyShortName;
 
@@ -52,7 +51,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         public string DisplayName { get; }
         internal string Publisher { get; }
         public string ProductCode { get; }
-        public Version DisplayVersion { get; }
+        public string DisplayVersion { get; }
         public string UninstallCommand { get; private set; }
 
 
