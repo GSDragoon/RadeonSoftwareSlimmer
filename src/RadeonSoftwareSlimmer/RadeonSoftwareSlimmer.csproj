@@ -47,7 +47,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
-    <PackageReference Include="TaskScheduler" Version="2.8.19" />
+    <PackageReference Include="TaskScheduler" Version="2.8.20" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net48'">
