@@ -109,6 +109,9 @@ namespace RadeonSoftwareSlimmer.ViewModels
                     ScheduledTaskXmlListModel.UnhideAndDisableScheduledTask(task);
                 }
 
+                ReadFromExtractedInstaller();
+
+                StaticViewModel.AddLogMessage("Finished modifying installer");
                 LoadedPanelEnabled = true;
             }
             catch (Exception ex)
