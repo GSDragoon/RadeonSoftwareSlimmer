@@ -132,7 +132,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public void BrowseForInstallerFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Radeon Software Installer (*Radeon-Software-Adrenalin-2020*.exe)|*Radeon-Software-Adrenalin-2020*.exe|Executables (*.exe)|*.exe|All Files (*.*)|*.*";
+            openFileDialog.Filter = "Radeon Software Installers (*Radeon*.exe)|*Radeon*.exe|Executables (*.exe)|*.exe|All Files (*.*)|*.*";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Multiselect = false;
 
