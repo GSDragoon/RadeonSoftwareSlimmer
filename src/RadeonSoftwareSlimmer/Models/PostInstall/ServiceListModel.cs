@@ -35,19 +35,40 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private static IEnumerable<ServiceModel> GetAllRadeonServices()
         {
-            //If AMD was consistent with anything, this could be nicer
             string[] serviceNames =
             {
-                //System Devices
+                //Values are the first string after AddService in inf files
+
+                //Main display driver
+                //Probably no point in showing this. Is there even a reason to remove it?
+                //"amdkmdag",
+
+                //AMD PCI Root Bus Lower Filter
+                //Probably shouldn't mess with this one either
+                //"amdkmpfd",
+
+                //System Devices/Kernel Drivers
                 "amdfendr",
                 "amdlog",
                 "AMDXE",
 
-                //NT Services
+                //Audio
+                "amdacpbus",
+                "AMDAfdAudioService",
+                "AMDHDAudBusService",
+                "amdi2stdmafd",
+                "AMDSoundWireAudioService",
+                "AtiHDAudioService",
+
+                //NT/Windows Services
                 "AMD Crash Defender Service",
                 "AMD External Events Utility",
                 "AMD Log Utility",
                 "AUEPLauncher",
+
+                //Radeon Pro Enterprise
+                "amducsi",
+                "SSGService",
             };
 
             foreach (string service in serviceNames)
