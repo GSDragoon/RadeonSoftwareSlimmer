@@ -50,7 +50,12 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
             foreach (FileInfo fileInfo in directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories))
             {
-                bytes += fileInfo.Length;
+                try
+                {
+                    bytes += fileInfo.Length;
+                }
+                catch { }
+
                 files++;
             }
 
