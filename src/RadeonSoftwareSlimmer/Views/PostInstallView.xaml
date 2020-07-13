@@ -9,55 +9,80 @@
     d:DataContext="{d:DesignInstance vm:PostInstallViewModel}"
     mc:Ignorable="d">
 
-    <StackPanel x:Name="pnlEverything" IsEnabled="{Binding Path=(vm:StaticViewModel.IsUiEnabled)}">
+    <Grid x:Name="pnlEverything" IsEnabled="{Binding Path=(vm:StaticViewModel.IsUiEnabled)}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Margin="0,16,0,32" Text="Modify and/or remove components on installed on the system after Radeon Software is installed. No changes are made until you click 'Apply Changes', which applies changes for all sections. A system restart is HIGHLY recommended for all changes to take effect." TextWrapping="Wrap" />
+
         <Button
             x:Name="btnLoadOrRefresh"
-            Margin="0,0,0,16"
+            Grid.Row="1"
+            Margin="0,0,0,32"
             Click="btnLoadOrRefresh_Click"
             Content="Load/Refresh Radeon Software Installed Components"
             Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
 
-        <StackPanel IsEnabled="{Binding LoadedPanelEnabled}">
+        <mah:MetroTabControl Grid.Row="2" mah:HeaderedControlHelper.HeaderFontWeight="Thin" IsEnabled="{Binding LoadedPanelEnabled}" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
-            <mah:MetroHeader Margin="0,0,0,16" Header="Radeon Software: Host Services (AMDRSServ.exe)">
+            <mah:MetroTabItem Padding="8,4" Header="Host Services">
                 <StackPanel>
-                    <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
+                    <Label Content="Radeon Software: Host Services (AMDRSServ.exe)" FontSize="16" FontWeight="Bold" />
                     <TextBlock Text="Processes that handles Radeon ReLive (Overylays, Hotkeys, Instant Replay, In-Game Replay, Recording Desktop and more). Disabling this will rename RSServCmd.exe so it and it's child processes doesn't load." TextWrapping="Wrap" />
+                    <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
                 </StackPanel>
-            </mah:MetroHeader>
+            </mah:MetroTabItem>
 
-            <mah:MetroHeader Margin="0,0,0,16" Header="Scheduled Tasks (Uncheck or check 'Enabled' to disable or enable a Scheduled Task.)">
-                <DataGrid
-                    mah:DataGridHelper.EnableCellEditAssist="True"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    GridLinesVisibility="Horizontal"
-                    ItemsSource="{Binding RadeonScheduledTaskList.RadeonScheduledTasks}"
-                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-            </mah:MetroHeader>
-
-            <mah:MetroHeader Margin="0,0,0,16" Header="System Services (Change the 'StartMode' of a System Service. Be VERY careful. Setting an improper start mode can cause OS boot failures.)">
-                <DataGrid
-                    mah:DataGridHelper.EnableCellEditAssist="True"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    GridLinesVisibility="Horizontal"
-                    ItemsSource="{Binding ServiceList.Services}"
-                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-            </mah:MetroHeader>
-
-            <mah:MetroHeader Margin="0,0,0,16" Header="Installed Items (Check Uninstall to uninstall item)">
-                <DataGrid
-                    mah:DataGridHelper.EnableCellEditAssist="True"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    GridLinesVisibility="Horizontal"
-                    ItemsSource="{Binding InstalledList.InstalledItems}"
-                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-            </mah:MetroHeader>
-
-            <mah:MetroHeader Margin="0,0,0,16" Header="Logging and Temp Files (Clear files and sub directories)">
+            <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
                 <StackPanel>
+                    <Label Content="Windows Scheduled Tasks" FontSize="16" FontWeight="Bold" />
+                    <TextBlock Text="Uncheck or check 'Enabled' to disable or enable a Scheduled Task." TextWrapping="Wrap" />
+                    <DataGrid
+                        mah:DataGridHelper.EnableCellEditAssist="True"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        GridLinesVisibility="Horizontal"
+                        ItemsSource="{Binding RadeonScheduledTaskList.RadeonScheduledTasks}"
+                        Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                </StackPanel>
+            </mah:MetroTabItem>
+
+            <mah:MetroTabItem Padding="8,4" Header="System Services">
+                <StackPanel>
+                    <Label Content="System Services and Drivers" FontSize="16" FontWeight="Bold" />
+                    <TextBlock Text="Change the 'StartMode' of a System Service. Be VERY careful. Setting an improper start mode can cause OS boot failures." TextWrapping="Wrap" />
+                    <DataGrid
+                        mah:DataGridHelper.EnableCellEditAssist="True"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        GridLinesVisibility="Horizontal"
+                        ItemsSource="{Binding ServiceList.Services}"
+                        Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                </StackPanel>
+            </mah:MetroTabItem>
+
+            <mah:MetroTabItem Padding="8,4" Header="Installations">
+                <StackPanel>
+                    <Label Content="Windows Installer Entries" FontSize="16" FontWeight="Bold" />
+                    <TextBlock Text="Check Uninstall to uninstall item" TextWrapping="Wrap" />
+                    <DataGrid
+                        mah:DataGridHelper.EnableCellEditAssist="True"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        GridLinesVisibility="Horizontal"
+                        ItemsSource="{Binding InstalledList.InstalledItems}"
+                        Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                </StackPanel>
+            </mah:MetroTabItem>
+
+            <mah:MetroTabItem Padding="8,4" Header="Temp Files">
+                <StackPanel>
+                    <Label Content="Logging and Temporary Files" FontSize="16" FontWeight="Bold" />
+                    <TextBlock Text="Check the folder to clear all files and sub directories in it. Does not delete the root folder itself." TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="btnTempFilesSelectAll" Click="btnTempFilesSelectAll_Click" Content="Select All" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                         <Button x:Name="btnTempFilesSelectNone" Click="btnTempFilesSelectNone_Click" Content="Select None" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
@@ -70,15 +95,18 @@
                         ItemsSource="{Binding TempFileList.TempFiles}"
                         Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
                 </StackPanel>
-            </mah:MetroHeader>
+            </mah:MetroTabItem>
 
-            <Button
-                x:Name="btnApply"
-                Click="btnApply_Click"
-                Content="Apply Post Install Changes"
-                IsEnabled="{Binding LoadedPanelEnabled}"
-                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+        </mah:MetroTabControl>
 
-        </StackPanel>
-    </StackPanel>
+        <Button
+            x:Name="btnApply"
+            Grid.Row="3"
+            Padding="64,0"
+            HorizontalAlignment="Center"
+            Click="btnApply_Click"
+            Content="Apply Changes"
+            IsEnabled="{Binding LoadedPanelEnabled}"
+            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+    </Grid>
 </UserControl>

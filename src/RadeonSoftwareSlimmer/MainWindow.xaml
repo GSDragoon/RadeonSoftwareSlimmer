@@ -6,13 +6,13 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
-    xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
     Title="Radeon Software Slimmer"
     Width="800"
     Height="600"
     BorderThickness="2"
     Icon="/icon.ico"
     WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
     mc:Ignorable="d">
 
     <mah:MetroWindow.RightWindowCommands>
@@ -35,13 +35,13 @@
             </mah:MetroTabItem>
 
             <mah:MetroTabItem Padding="32,4" Header="Pre Install">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <uc:PreInstallView />
                 </ScrollViewer>
             </mah:MetroTabItem>
 
             <mah:MetroTabItem Padding="32,4" Header="Post Install">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <uc:PostInstallView />
                 </ScrollViewer>
             </mah:MetroTabItem>

@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using MahApps.Metro.Controls;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
@@ -6,7 +8,7 @@ namespace RadeonSoftwareSlimmer.Views
     /// <summary>
     /// Interaction logic for PreInstallView.xaml
     /// </summary>
-    public partial class PreInstallView : System.Windows.Controls.UserControl
+    public partial class PreInstallView : UserControl
     {
         private readonly PreInstallViewModel _viewModel = new PreInstallViewModel();
 
@@ -17,10 +19,51 @@ namespace RadeonSoftwareSlimmer.Views
             DataContext = _viewModel;
         }
 
+        private void UpdateWizardIndex()
+        {
+            //Binding this doesn't work :(
+            flpWizard.SelectedIndex = (int)_viewModel.FlipViewIndex;
+        }
+
+        private async void flpWizard_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FlipView flipView = (FlipView)sender;
+
+            if (flipView.SelectedIndex == (int)PreInstallViewModel.WizardIndex.ExtractingInstaller)
+            {
+                await _viewModel.ExtractInstallerFilesAsync();
+                UpdateWizardIndex();
+            }
+
+            if (flipView.SelectedIndex == (int)PreInstallViewModel.WizardIndex.ModifyInstaller)
+            {
+                _viewModel.ReadFromExtractedInstaller();
+            }
+        }
+
+
+        private void btnSkip0_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SkipInstallFile();
+            UpdateWizardIndex();
+        }
 
         private void btnInstallerFileBrowse_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.BrowseForInstallerFile();
+        }
+
+        private void btnNext0_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ValidateInstallerFile();
+            UpdateWizardIndex();
+        }
+
+
+        private void btnBack1_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Back();
+            UpdateWizardIndex();
         }
 
         private void btnExtractLocatonBrowse_Click(object sender, RoutedEventArgs e)
@@ -28,15 +71,12 @@ namespace RadeonSoftwareSlimmer.Views
             _viewModel.BrowseForExtractLocation();
         }
 
-        private async void btnExtractInstallerFiles_Click(object sender, RoutedEventArgs e)
+        private void btnNext1_Click(object sender, RoutedEventArgs e)
         {
-            await _viewModel.ExtractInstallerFilesAsync();
+            _viewModel.ValidateExtractLocation();
+            UpdateWizardIndex();
         }
 
-        private void btnReadInstallerFiles_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.ReadFromExtractedInstaller();
-        }
 
         private void btnModifyInstallerFiles_Click(object sender, RoutedEventArgs e)
         {
@@ -48,6 +88,12 @@ namespace RadeonSoftwareSlimmer.Views
             _viewModel.RunRadeonSoftwareSetup();
 
             Window.GetWindow(this).Close();
+        }
+
+        private void btnNewInstaller_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectNewInstaller();
+            UpdateWizardIndex();
         }
     }
 }

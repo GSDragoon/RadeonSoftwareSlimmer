@@ -10,12 +10,10 @@ namespace RadeonSoftwareSlimmer.ViewModels
 {
     public class PreInstallViewModel : INotifyPropertyChanged
     {
-        private bool _loadedPanelEnabled;
-
-
         public PreInstallViewModel()
         {
-            LoadedPanelEnabled = false;
+            FlipViewIndex = WizardIndex.SelectInstaller;
+            InstallerAlreadyExtracted = false;
 
             InstallerFiles = new InstallerFilesModel();
             PackageList = new PackageListModel();
@@ -30,103 +28,33 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public InstallerFilesModel InstallerFiles { get; }
         public PackageListModel PackageList { get; }
         public ScheduledTaskXmlListModel ScheduledTaskList { get; }
-        public bool LoadedPanelEnabled
+        public bool InstallerAlreadyExtracted { get; set; }
+        public WizardIndex FlipViewIndex { get; set; }
+
+
+        public enum WizardIndex : int
         {
-            get { return _loadedPanelEnabled; }
-            private set
-            {
-                _loadedPanelEnabled = value;
-                OnPropertyChanged(nameof(LoadedPanelEnabled));
-            }
+            Empty = -1,
+            SelectInstaller = 0,
+            SelectExtractLocation = 1,
+            ExtractingInstaller = 2,
+            ModifyInstaller = 3,
+            InstallerDone = 4,
         }
 
 
-        public async Task ExtractInstallerFilesAsync()
+        public void SkipInstallFile()
         {
-            try
-            {
-                StaticViewModel.IsLoading = true;
-                LoadedPanelEnabled = false;
-                StaticViewModel.AddLogMessage("Extracting installer files");
-
-                await Task.Run(() => InstallerFiles.ExtractInstallerFiles());
-
-                ReadFromExtractedInstaller();
-
-                StaticViewModel.AddLogMessage("Installer files extraction complete");
-                LoadedPanelEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                StaticViewModel.AddLogMessage(ex, "Extracting installer files failed");
-            }
-            finally
-            {
-                StaticViewModel.IsLoading = false;
-            }
+            InstallerAlreadyExtracted = true;
+            FlipViewIndex = WizardIndex.SelectExtractLocation;
         }
 
-        public void ReadFromExtractedInstaller()
+        public void ValidateInstallerFile()
         {
-            try
+            if (InstallerFiles.ValidateInstallerFile())
             {
-                StaticViewModel.IsLoading = true;
-                LoadedPanelEnabled = false;
-                StaticViewModel.AddLogMessage("Loading installer information");
-
-                DirectoryInfo extractedDirectory = new DirectoryInfo(InstallerFiles.ExtractedInstallerDirectory);
-                PackageList.LoadOrRefresh(extractedDirectory);
-                ScheduledTaskList.LoadOrRefresh(extractedDirectory);
-
-                StaticViewModel.AddLogMessage("Finished loading installer information");
-                LoadedPanelEnabled = true;
+                FlipViewIndex = WizardIndex.SelectExtractLocation;
             }
-            catch (Exception ex)
-            {
-                StaticViewModel.AddLogMessage(ex, "Reading from extracted installer location failed");
-            }
-            finally
-            {
-                StaticViewModel.IsLoading = false;
-            }
-        }
-
-        public void ModifyInstaller()
-        {
-            try
-            {
-                StaticViewModel.IsLoading = true;
-                LoadedPanelEnabled = false;
-                StaticViewModel.AddLogMessage("Modifying installer");
-
-                foreach (PackageModel package in PackageList.InstallerPackages.Where(p => !p.Keep))
-                {
-                    PackageListModel.RemovePackage(package);
-                }
-
-                foreach (ScheduledTaskXmlModel task in ScheduledTaskList.ScheduledTasks.Where(t => !t.Enabled))
-                {
-                    ScheduledTaskXmlListModel.UnhideAndDisableScheduledTask(task);
-                }
-
-                ReadFromExtractedInstaller();
-
-                StaticViewModel.AddLogMessage("Finished modifying installer");
-                LoadedPanelEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                StaticViewModel.AddLogMessage(ex, "Modifying installer failed");
-            }
-            finally
-            {
-                StaticViewModel.IsLoading = false;
-            }
-        }
-
-        public void RunRadeonSoftwareSetup()
-        {
-            InstallerFiles.RunRadeonSoftwareSetup();
         }
 
         public void BrowseForInstallerFile()
@@ -146,6 +74,28 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
+
+        public void Back()
+        {
+            FlipViewIndex = WizardIndex.SelectInstaller;
+            InstallerAlreadyExtracted = false;
+        }
+
+        public void ValidateExtractLocation()
+        {
+            if (InstallerFiles.ValidateExtractLocation(InstallerAlreadyExtracted))
+            {
+                if (InstallerAlreadyExtracted)
+                {
+                    FlipViewIndex = WizardIndex.ModifyInstaller;
+                }
+                else
+                {
+                    FlipViewIndex = WizardIndex.ExtractingInstaller;
+                }
+            }
+        }
+
         public void BrowseForExtractLocation()
         {
             //https://github.com/dotnet/wpf/issues/438  Why we can't have nice things and have to reference winforms :(
@@ -161,6 +111,98 @@ namespace RadeonSoftwareSlimmer.ViewModels
                     InstallerFiles.ExtractedInstallerDirectory = folderBrowserDialog.SelectedPath;
                 }
             }
+        }
+
+
+        public async Task ExtractInstallerFilesAsync()
+        {
+            try
+            {
+                StaticViewModel.IsLoading = true;
+                StaticViewModel.AddLogMessage("Extracting installer files");
+
+                await Task.Run(() => InstallerFiles.ExtractInstallerFiles());
+                FlipViewIndex = WizardIndex.ModifyInstaller;
+
+                StaticViewModel.AddLogMessage("Installer files extraction complete");
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex, "Extracting installer files failed");
+            }
+            finally
+            {
+                StaticViewModel.IsLoading = false;
+            }
+        }
+
+
+        public void SelectNewInstaller()
+        {
+            InstallerFiles.InstallerFile = string.Empty;
+            InstallerFiles.ExtractedInstallerDirectory = string.Empty;
+            InstallerAlreadyExtracted = false;
+            FlipViewIndex = WizardIndex.SelectInstaller;
+        }
+
+        public void ReadFromExtractedInstaller()
+        {
+            try
+            {
+                StaticViewModel.IsLoading = true;
+                StaticViewModel.AddLogMessage("Loading installer information");
+
+                DirectoryInfo extractedDirectory = new DirectoryInfo(InstallerFiles.ExtractedInstallerDirectory);
+                PackageList.LoadOrRefresh(extractedDirectory);
+                ScheduledTaskList.LoadOrRefresh(extractedDirectory);
+
+                StaticViewModel.AddLogMessage("Finished loading installer information");
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex, "Reading from extracted installer location failed");
+            }
+            finally
+            {
+                StaticViewModel.IsLoading = false;
+            }
+        }
+
+        public void ModifyInstaller()
+        {
+            try
+            {
+                StaticViewModel.IsLoading = true;
+                StaticViewModel.AddLogMessage("Modifying installer");
+
+                foreach (PackageModel package in PackageList.InstallerPackages.Where(p => !p.Keep))
+                {
+                    PackageListModel.RemovePackage(package);
+                }
+
+                foreach (ScheduledTaskXmlModel task in ScheduledTaskList.ScheduledTasks.Where(t => !t.Enabled))
+                {
+                    ScheduledTaskXmlListModel.UnhideAndDisableScheduledTask(task);
+                }
+
+                ReadFromExtractedInstaller();
+
+                StaticViewModel.AddLogMessage("Finished modifying installer");
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex, "Modifying installer failed");
+            }
+            finally
+            {
+                StaticViewModel.IsLoading = false;
+            }
+        }
+
+
+        public void RunRadeonSoftwareSetup()
+        {
+            InstallerFiles.RunRadeonSoftwareSetup();
         }
     }
 }

@@ -8,80 +8,124 @@
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
     d:DataContext="{d:DesignInstance vm:PreInstallViewModel}"
     mc:Ignorable="d">
+    <Grid VerticalAlignment="Center">
+        <mah:FlipView
+            x:Name="flpWizard"
+            Margin="0,16"
+            IsBannerEnabled="False"
+            IsNavigationEnabled="False"
+            MouseHoverBorderEnabled="False"
+            SelectionChanged="flpWizard_SelectionChanged">
+            <mah:FlipView.Items>
 
-    <StackPanel x:Name="pnlEverything" IsEnabled="{Binding Path=(vm:StaticViewModel.IsUiEnabled)}">
-
-        <mah:MetroHeader Header="1) Installer Source">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" Text="Installer File" />
-                <TextBox x:Name="txtInstallerFile" Grid.Column="1" VerticalContentAlignment="Center" Text="{Binding InstallerFiles.InstallerFile}" />
-                <Button
-                    x:Name="btnInstallerFileBrowse"
-                    Grid.Column="2"
-                    Click="btnInstallerFileBrowse_Click"
-                    Content="Browse"
-                    Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-            </Grid>
-        </mah:MetroHeader>
-
-        <mah:MetroHeader Margin="0,0,0,16" Header="2) Extracted Installer">
-            <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" Text="Extract Location" />
-                    <TextBox x:Name="txtExtractLocation" Grid.Column="1" VerticalContentAlignment="Center" Text="{Binding InstallerFiles.ExtractedInstallerDirectory}" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Please select an installer file or skip if it is already extracted somewhere" TextWrapping="Wrap" />
+
+                    <TextBox
+                        x:Name="txtInstallerFile"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding InstallerFiles.InstallerFile}" />
+                    <Button
+                        x:Name="btnInstallerFileBrowse"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Click="btnInstallerFileBrowse_Click"
+                        Content="Browse"
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Button x:Name="btnSkip0" Click="btnSkip0_Click" Content="Skip" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnNext0" Click="btnNext0_Click" Content="Next" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    </StackPanel>
+
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Please select a location to extract the installer files or the location of the already extracted installer files" TextWrapping="Wrap" />
+
+                    <TextBox
+                        x:Name="txtExtractLocation"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding InstallerFiles.ExtractedInstallerDirectory}" />
                     <Button
                         x:Name="btnExtractLocatonBrowse"
-                        Grid.Column="2"
+                        Grid.Row="1"
+                        Grid.Column="1"
                         Click="btnExtractLocatonBrowse_Click"
                         Content="Browse"
                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Button x:Name="btnBack1" Click="btnBack1_Click" Content="Back" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnNext1" Click="btnNext1_Click" Content="Next" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    </StackPanel>
                 </Grid>
-                <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
-                    <Button
-                        x:Name="btnExtractInstallerFiles"
-                        Margin="0,0,4,0"
-                        Click="btnExtractInstallerFiles_Click"
-                        Content="Extract Installer Files"
-                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                    <Button x:Name="btnReadInstallerFiles" Click="btnReadInstallerFiles_Click" Content="Read Extracted Installer Files" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                </StackPanel>
-            </StackPanel>
-        </mah:MetroHeader>
 
-        <mah:MetroHeader Margin="0,0,0,16" Header="3) Modify Installer" IsEnabled="{Binding LoadedPanelEnabled}">
-            <StackPanel>
-                <TextBlock Text="Packages: (Uncheck 'Keep' for packages you want to remove.)" />
-                <DataGrid
-                    mah:DataGridHelper.EnableCellEditAssist="True"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    GridLinesVisibility="Horizontal"
-                    ItemsSource="{Binding PackageList.InstallerPackages}"
-                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                <TextBlock Margin="0,8,0,0" Text="Scheduled Tasks: (Uncheck 'Enabled' for Scheduled Tasks you want Unhidden and Disabled.)" />
-                <DataGrid
-                    mah:DataGridHelper.EnableCellEditAssist="True"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    GridLinesVisibility="Horizontal"
-                    ItemsSource="{Binding ScheduledTaskList.ScheduledTasks}"
-                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                    <TextBlock Grid.Row="0" Text="Extracting installer files, please wait..." />
+                    <mah:MetroProgressBar Grid.Row="1" IsIndeterminate="True" />
+                </Grid>
 
-                <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Content="4) Modify Installer Files" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" Content="5) Start Modified Installer And Close This Application" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-            </StackPanel>
-        </mah:MetroHeader>
+                <Grid>
+                    <StackPanel>
+                        <Label Content="Packages" FontSize="18" FontWeight="Bold" />
+                        <Label Content="Uncheck 'Keep' for packages you want to remove." />
+                        <DataGrid
+                            mah:DataGridHelper.EnableCellEditAssist="True"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            GridLinesVisibility="Horizontal"
+                            ItemsSource="{Binding PackageList.InstallerPackages}"
+                            Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
 
-    </StackPanel>
+                        <Label Content="Scheduled Tasks" FontSize="18" FontWeight="Bold" />
+                        <Label Content="Uncheck 'Enabled' for Scheduled Tasks you want Unhidden and Disabled." />
+                        <DataGrid
+                            mah:DataGridHelper.EnableCellEditAssist="True"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            GridLinesVisibility="Horizontal"
+                            ItemsSource="{Binding ScheduledTaskList.ScheduledTasks}"
+                            Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button x:Name="btnNewInstaller" Click="btnNewInstaller_Click" Content="Select New Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Content="Modify Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" Content="Run Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+            </mah:FlipView.Items>
+        </mah:FlipView>
+    </Grid>
 </UserControl>
