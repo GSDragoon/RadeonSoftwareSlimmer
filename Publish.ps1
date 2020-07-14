@@ -15,5 +15,3 @@ Compress-Archive -Path .\Publish\netcoreapp3.1\* -DestinationPath ".\Publish\Rad
 Compress-Archive -Path .\Publish\net48\* -DestinationPath ".\Publish\RadeonSoftwareSlimmer_${version}_net48.zip"
 
 Write-Host "Published: $version"
-Write-Host -NoNewLine 'Press any key to continue...';
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
