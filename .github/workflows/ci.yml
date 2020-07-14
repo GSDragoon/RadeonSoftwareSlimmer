@@ -6,7 +6,7 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ '*' ]
   pull_request:
     branches: [ master ]
 
@@ -22,13 +22,24 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    # Runs tests
+    - name: Test
+      run: .\build\Test.ps1
+
     # Runs the publish script that builds and creates release artifacts
     - name: Build and create release artifacts
-      run: .\Publish.ps1
+      run: .\build\Test.ps1
     
-    # Uploads release artifacts to the Action
-    - name: Upload release artifacts
+    # Uploads release artifact for net48
+    - name: Upload .NET Framework 4.8 release artifact
       uses: actions/upload-artifact@v2
       with:
-        name: release-artifacts
-        path: Publish\RadeonSoftwareSlimmer_*.zip
+        name: release-artifact-net48
+        path: publish\RadeonSoftwareSlimmer_*_net48.zip
+
+    # Uploads release artifact for netcoreapp31
+    - name: Upload .NET Core 3.1 release artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact-netcoreapp31
+        path: publish\RadeonSoftwareSlimmer_*_netcoreapp31.zip
