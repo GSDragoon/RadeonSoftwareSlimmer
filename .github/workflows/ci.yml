@@ -24,11 +24,11 @@ jobs:
 
     # Runs tests
     - name: Test
-      run: .\build\Test.ps1
+      run: .\build\test.ps1
 
     # Runs the publish script that builds and creates release artifacts
     - name: Build and create release artifacts
-      run: .\build\Test.ps1
+      run: .\build\publish.ps1
     
     # Uploads release artifact for net48
     - name: Upload .NET Framework 4.8 release artifact
