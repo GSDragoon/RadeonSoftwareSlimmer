@@ -6,4 +6,4 @@
 
 # Run the tests in the test project
 # This will automatically do both .net core and .net framework versions
-dotnet test ..\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
+dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
