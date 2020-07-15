@@ -68,26 +68,50 @@ jobs:
         echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}"
         echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
+
     # Runs tests
     - name: Test
-      run: dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
+      run: .\build\test.ps1
 
-    # Build and create release artifacts
+
+    # Runs the publish script that builds and creates release artifacts
     - name: Build and create release artifacts
-      run: |
-        dotnet publish --configuration Release --framework netcoreapp3.1 --self-contained false --force --output .\publish\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=${{ steps.gitversion.outputs.semVer }}
-        dotnet publish --configuration Release  --framework net48 --force --output .\publish\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=${{ steps.gitversion.outputs.semVer }}
-    
-    # Uploads release artifact for net48
-    - name: Upload .NET Framework 4.8 release artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: release-artifact-net48
-        path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net48.zip
+      run: .\build\publish.ps1 ${{ steps.gitversion.outputs.semVer }}
 
-    # Uploads release artifact for netcoreapp31
-    - name: Upload .NET Core 3.1 release artifact
-      uses: actions/upload-artifact@v2
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        name: release-artifact-netcoreapp31
-        path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_netcoreapp31.zip
+        tag_name: ${{ steps.gitversion.outputs.semVer }}
+        release_name: Radeon Software Slimmer ${{ steps.gitversion.outputs.semVer }}
+        body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+        draft: false
+        prerelease: true
+    
+    - name: Upload Release Asset netcoreapp31
+      id: upload-release-asset-netcoreapp31
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_netcoreapp31.zip
+        asset_name: RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_netcoreapp31.zip
+        asset_content_type: application/zip
+    
+    - name: Upload Release Asset net48
+      id: upload-release-asset-net48
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net48.zip
+        asset_name: RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net48.zip
+        asset_content_type: application/zip
