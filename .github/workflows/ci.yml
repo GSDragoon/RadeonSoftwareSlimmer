@@ -70,22 +70,24 @@ jobs:
 
     # Runs tests
     - name: Test
-      run: .\build\test.ps1
+      run: dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
 
-    # Runs the publish script that builds and creates release artifacts
+    # Build and create release artifacts
     - name: Build and create release artifacts
-      run: .\build\publish.ps1 ${{ steps.gitversion.outputs.semVer }}
+      run: |
+        dotnet publish --configuration Release --framework netcoreapp3.1 --self-contained false --force --output .\publish\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=${{ steps.gitversion.outputs.semVer }}
+        dotnet publish --configuration Release  --framework net48 --force --output .\publish\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=${{ steps.gitversion.outputs.semVer }}
     
     # Uploads release artifact for net48
     - name: Upload .NET Framework 4.8 release artifact
       uses: actions/upload-artifact@v2
       with:
         name: release-artifact-net48
-        path: publish\RadeonSoftwareSlimmer_*_net48.zip
+        path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net48.zip
 
     # Uploads release artifact for netcoreapp31
     - name: Upload .NET Core 3.1 release artifact
       uses: actions/upload-artifact@v2
       with:
         name: release-artifact-netcoreapp31
-        path: publish\RadeonSoftwareSlimmer_*_netcoreapp31.zip
+        path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_netcoreapp31.zip
