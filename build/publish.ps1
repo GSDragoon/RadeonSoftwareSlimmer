@@ -1,11 +1,15 @@
 ﻿# Builds the software and creates release artifacts
 
-# Build and create artifacts
-dotnet publish --configuration Release --framework netcoreapp3.1 --self-contained false --force --output .\publish\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
-dotnet publish --configuration Release  --framework net48 --force --output .\publish\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
+# Get the version from parameter passed in
+$version = $args[0]
 
-# Get the version from the published executable
-$version = (Get-Item .\publish\netcoreapp3.1\RadeonSoftwareSlimmer.exe).VersionInfo.ProductVersion
+# Build and create artifacts
+dotnet publish --configuration Release --framework netcoreapp3.1 --self-contained false --force --output .\publish\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=$version
+dotnet publish --configuration Release  --framework net48 --force --output .\publish\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=$version
+
+# Output ProductVersion
+$productVersion = (Get-Item .\publish\netcoreapp3.1\RadeonSoftwareSlimmer.exe).VersionInfo.ProductVersion
+Write-Host "ProductVersion: $productVersion"
 
 # Archive the artifacts
 Compress-Archive -Path .\publish\netcoreapp3.1\* -DestinationPath ".\Publish\RadeonSoftwareSlimmer_${version}_netcoreapp31.zip"

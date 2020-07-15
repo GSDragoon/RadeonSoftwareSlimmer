@@ -70,11 +70,11 @@ jobs:
 
     # Runs tests
     - name: Test
-      run: .\build\test.ps1 ${{ steps.gitversion.outputs.semVer }}
+      run: .\build\test.ps1
 
     # Runs the publish script that builds and creates release artifacts
     - name: Build and create release artifacts
-      run: .\build\publish.ps1
+      run: .\build\publish.ps1 ${{ steps.gitversion.outputs.semVer }}
     
     # Uploads release artifact for net48
     - name: Upload .NET Framework 4.8 release artifact
