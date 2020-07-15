@@ -67,11 +67,11 @@ jobs:
         echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}"
         echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}"
         echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
-
+        name: Output GitVersion
 
     # Runs tests
     - name: Test
-      run: .\build\test.ps1
+      run: .\build\test.ps1 ${{ steps.gitversion.outputs.semVer }}
 
     # Runs the publish script that builds and creates release artifacts
     - name: Build and create release artifacts
