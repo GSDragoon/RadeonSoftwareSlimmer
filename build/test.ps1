@@ -12,6 +12,6 @@ dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
 $param1=$args[0]
 Write-Host "Parameter: $param1"
 
-Write-Host "GitHub Value: ${{ steps.gitversion.outputs.semVer }}""
+Write-Host "GitHub Value: ${{ steps.gitversion.outputs.semVer }}"
 
 Write-Host "Environmental Variable: $Env:steps.gitversion.outputs.semVer"
