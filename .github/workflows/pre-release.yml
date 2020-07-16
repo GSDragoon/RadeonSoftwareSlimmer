@@ -1,38 +1,27 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Pre-Release
 
-# Controls when the action will run.
 on:
   push:
     branches:
       - master
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: windows-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    # Required for use-actions (https://github.com/marketplace/actions/use-actions)
     - name: Fetch all history for all tags and branches
       run: git fetch --prune --unshallow
 
-    # Install GitVersion
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.2
       with:
           versionSpec: '5.2.x'
 
-    # Use GitVersion
     - name: Use GitVersion
-      id: gitversion # step id used as reference for output values
+      id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.2
     - run: |
         echo "Major: ${{ steps.gitversion.outputs.major }}"
@@ -66,24 +55,17 @@ jobs:
         echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}"
         echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
-
-    # Runs tests
     - name: Test
       run: .\build\test.ps1
 
-
-    # Runs the publish script that builds and creates release artifacts
-    - name: Build and create release artifacts
+    - name: Publish
       run: .\build\publish.ps1 ${{ steps.gitversion.outputs.semVer }}
 
-
-    # Create Release
-    # https://github.com/marketplace/actions/create-a-release
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.gitversion.outputs.semVer }}
         release_name: Radeon Software Slimmer ${{ steps.gitversion.outputs.semVer }}

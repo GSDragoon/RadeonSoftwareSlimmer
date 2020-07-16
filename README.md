@@ -1,5 +1,7 @@
 # Radeon Software Slimmer
 
+![CI](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/CI/badge.svg?branch=master)
+
 Radeon Software Slimmer is a utility to trim down the "[bloat](https://en.wikipedia.org/wiki/Software_bloat)" with the [Radeon Software](https://www.amd.com/en/technologies/radeon-software) for AMD GPUs on Microsoft Windows.
 
 Radeon Software Adrenalin 2020 Edition introduced a ton of new features. You can read about it [here](https://community.amd.com/community/gaming/blog/2019/12/10/change-the-way-you-game-with-amd-radeon-software-adrenalin-2020-edition). While many enjoy these features, there are some that do not. And to those users, they feel the software contains a lot of unnecessary bloat without any way to not install or disable it. Radeon Software Slimmer is aimed at those users who want to keep their systems as slim as possible. This software is not meant to disrespect AMD or it's hard-working employees. It was inspired by the [NVIDIA driver slimming utility](https://www.guru3d.com/files-details/nvidia-driver-slimming-utility.html).
