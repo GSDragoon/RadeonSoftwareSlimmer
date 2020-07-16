@@ -1,6 +1,6 @@
 # Radeon Software Slimmer
 
-![Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Pre-Release/badge.svg) 
+![Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Release/badge.svg) 
 ![Pre-Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Pre-Release/badge.svg) 
 ![Continuous-Integration](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Continuous-Integration/badge.svg)
 
