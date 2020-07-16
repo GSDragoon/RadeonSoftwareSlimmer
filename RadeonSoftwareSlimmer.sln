@@ -19,12 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{B73937D2
 	ProjectSection(SolutionItems) = preProject
 		build\local-ci.ps1 = build\local-ci.ps1
 		build\publish.ps1 = build\publish.ps1
+		build\release-notes-template.md = build\release-notes-template.md
 		build\test.ps1 = build\test.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubWorkflow", "GitHubWorkflow", "{8326CBBC-94B3-4283-9B94-28783CE2D216}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
+		.github\workflows\pre-release.yml = .github\workflows\pre-release.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Global

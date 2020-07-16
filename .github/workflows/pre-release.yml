@@ -1,14 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Pre-Release
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# Controls when the action will run.
 on:
   push:
-    branches: [ '*' ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -79,6 +77,8 @@ jobs:
       run: .\build\publish.ps1 ${{ steps.gitversion.outputs.semVer }}
 
 
+    # Create Release
+    # https://github.com/marketplace/actions/create-a-release
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -87,11 +87,13 @@ jobs:
       with:
         tag_name: ${{ steps.gitversion.outputs.semVer }}
         release_name: Radeon Software Slimmer ${{ steps.gitversion.outputs.semVer }}
-        body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-        draft: false
+        #body: |
+        #    **Release for testing build process**
+        #    Changes in this Release
+        #    - First Change
+        #    - Second Change
+        body_path: build/release-notes-template.md
+        draft: true
         prerelease: true
     
     - name: Upload Release Asset netcoreapp31
