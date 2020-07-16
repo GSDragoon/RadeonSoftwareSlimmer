@@ -1,6 +1,8 @@
 # Radeon Software Slimmer
 
-![CI](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/CI/badge.svg?branch=master)
+![Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Pre-Release/badge.svg) 
+![Pre-Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Pre-Release/badge.svg) 
+![Continuous-Integration](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Continuous-Integration/badge.svg)
 
 Radeon Software Slimmer is a utility to trim down the "[bloat](https://en.wikipedia.org/wiki/Software_bloat)" with the [Radeon Software](https://www.amd.com/en/technologies/radeon-software) for AMD GPUs on Microsoft Windows.
 
