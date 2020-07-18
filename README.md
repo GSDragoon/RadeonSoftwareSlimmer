@@ -1,8 +1,12 @@
 # Radeon Software Slimmer
 
+**https://github.com/GSDragoon/RadeonSoftwareSlimmer**
+
 ![Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Release/badge.svg) 
 ![Pre-Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Pre-Release/badge.svg) 
 ![Continuous-Integration](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Continuous-Integration/badge.svg)
+
+***
 
 Radeon Software Slimmer is a utility to trim down the "[bloat](https://en.wikipedia.org/wiki/Software_bloat)" with the [Radeon Software](https://www.amd.com/en/technologies/radeon-software) for AMD GPUs on Microsoft Windows.
 
@@ -16,14 +20,9 @@ This software is **NOT** owned, supported or endorsed by [Advanced Micro Devices
 
 Improper use could cause system instability. **Use at your own risk!**
 
-## Documentation
+## Getting Started
 
 Documentation can be found on the [Wiki](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki).
-
-* [User Guide](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/User-Guide) - Basic guide on how to use Radeon Software Slimmer
-* [Dissecting Radeon Software](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Dissecting-Radeon-Software) - Digging into Radeon Software, how the installer works, what all gets installed and what all the components do.
-
-## Getting Started
 
 Requirements:
 * Windows 10 64-bit (Latest version recommended)
