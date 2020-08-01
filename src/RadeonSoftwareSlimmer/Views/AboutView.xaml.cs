@@ -4,9 +4,6 @@ using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
 {
-    /// <summary>
-    /// Interaction logic for AboutView.xaml
-    /// </summary>
     public partial class AboutView : System.Windows.Controls.UserControl
     {
         public AboutView()

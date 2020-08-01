@@ -5,9 +5,6 @@ using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
 {
-    /// <summary>
-    /// Interaction logic for PreInstallView.xaml
-    /// </summary>
     public partial class PreInstallView : UserControl
     {
         private readonly PreInstallViewModel _viewModel = new PreInstallViewModel();

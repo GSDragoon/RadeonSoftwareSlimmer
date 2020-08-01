@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
     d:DataContext="{d:DesignInstance vm:PreInstallViewModel}"
     mc:Ignorable="d">
@@ -97,7 +98,10 @@
 
                 <Grid>
                     <StackPanel>
-                        <Label Content="Packages" FontSize="18" FontWeight="Bold" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Packages" FontSize="18" FontWeight="Bold" />
+                            <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" />
+                        </StackPanel>
                         <Label Content="Uncheck 'Keep' for packages you want to remove." />
                         <DataGrid
                             mah:DataGridHelper.EnableCellEditAssist="True"
@@ -107,7 +111,10 @@
                             ItemsSource="{Binding PackageList.InstallerPackages}"
                             Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
 
-                        <Label Content="Scheduled Tasks" FontSize="18" FontWeight="Bold" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Scheduled Tasks" FontSize="18" FontWeight="Bold" />
+                            <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
+                        </StackPanel>
                         <Label Content="Uncheck 'Enabled' for Scheduled Tasks you want Unhidden and Disabled." />
                         <DataGrid
                             mah:DataGridHelper.EnableCellEditAssist="True"
