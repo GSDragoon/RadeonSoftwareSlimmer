@@ -4,9 +4,6 @@ using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
 {
-    /// <summary>
-    /// Interaction logic for PostInstallView.xaml
-    /// </summary>
     public partial class PostInstallView : UserControl
     {
         private readonly PostInstallViewModel _viewModel = new PostInstallViewModel();

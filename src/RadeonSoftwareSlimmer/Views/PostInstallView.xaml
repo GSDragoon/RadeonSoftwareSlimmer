@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
     d:DataContext="{d:DesignInstance vm:PostInstallViewModel}"
     mc:Ignorable="d">
@@ -31,7 +32,10 @@
 
             <mah:MetroTabItem Padding="8,4" Header="Host Services">
                 <StackPanel>
-                    <Label Content="Radeon Software: Host Services (AMDRSServ.exe)" FontSize="16" FontWeight="Bold" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Radeon Software: Host Services (AMDRSServ.exe)" FontSize="16" FontWeight="Bold" />
+                        <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Host-Services" />
+                    </StackPanel>
                     <TextBlock Text="Processes that handles Radeon ReLive (Overylays, Hotkeys, Instant Replay, In-Game Replay, Recording Desktop and more). Disabling this will rename RSServCmd.exe so it and it's child processes doesn't load." TextWrapping="Wrap" />
                     <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
                 </StackPanel>
@@ -39,7 +43,10 @@
 
             <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
                 <StackPanel>
-                    <Label Content="Windows Scheduled Tasks" FontSize="16" FontWeight="Bold" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Windows Scheduled Tasks" FontSize="16" FontWeight="Bold" />
+                        <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
+                    </StackPanel>
                     <TextBlock Text="Uncheck or check 'Enabled' to disable or enable a Scheduled Task." TextWrapping="Wrap" />
                     <DataGrid
                         mah:DataGridHelper.EnableCellEditAssist="True"
@@ -53,7 +60,10 @@
 
             <mah:MetroTabItem Padding="8,4" Header="System Services">
                 <StackPanel>
-                    <Label Content="System Services and Drivers" FontSize="16" FontWeight="Bold" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="System Services and Drivers" FontSize="16" FontWeight="Bold" />
+                        <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" />
+                    </StackPanel>
                     <TextBlock Text="Change the 'StartMode' of a System Service. Be VERY careful. Setting an improper start mode can cause OS boot failures." TextWrapping="Wrap" />
                     <DataGrid
                         mah:DataGridHelper.EnableCellEditAssist="True"
@@ -67,7 +77,10 @@
 
             <mah:MetroTabItem Padding="8,4" Header="Installations">
                 <StackPanel>
-                    <Label Content="Windows Installer Entries" FontSize="16" FontWeight="Bold" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Windows Installer Entries" FontSize="16" FontWeight="Bold" />
+                        <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Entries" />
+                    </StackPanel>
                     <TextBlock Text="Check Uninstall to uninstall item" TextWrapping="Wrap" />
                     <DataGrid
                         mah:DataGridHelper.EnableCellEditAssist="True"
@@ -81,7 +94,10 @@
 
             <mah:MetroTabItem Padding="8,4" Header="Temp Files">
                 <StackPanel>
-                    <Label Content="Logging and Temporary Files" FontSize="16" FontWeight="Bold" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Logging and Temporary Files" FontSize="16" FontWeight="Bold" />
+                        <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Logging-and-Temp-Files" />
+                    </StackPanel>
                     <TextBlock Text="Check the folder to clear all files and sub directories in it. Does not delete the root folder itself." TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="btnTempFilesSelectAll" Click="btnTempFilesSelectAll_Click" Content="Select All" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
