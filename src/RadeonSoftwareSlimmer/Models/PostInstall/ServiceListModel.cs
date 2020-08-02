@@ -66,6 +66,9 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 "AMD Log Utility",
                 "AUEPLauncher",
 
+                //Other
+                "AMDRadeonsettings",
+
                 //Radeon Pro Enterprise
                 "amducsi",
                 "SSGService",
