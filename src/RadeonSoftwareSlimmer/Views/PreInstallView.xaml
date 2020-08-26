@@ -109,6 +109,7 @@
                             CanUserDeleteRows="False"
                             GridLinesVisibility="Horizontal"
                             ItemsSource="{Binding PackageList.InstallerPackages}"
+                            SelectionChanged="DataGrid_SelectionChanged"
                             Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
 
                         <StackPanel Orientation="Horizontal">
@@ -122,6 +123,7 @@
                             CanUserDeleteRows="False"
                             GridLinesVisibility="Horizontal"
                             ItemsSource="{Binding ScheduledTaskList.ScheduledTasks}"
+                            SelectionChanged="DataGrid_SelectionChanged"
                             Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
 
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">

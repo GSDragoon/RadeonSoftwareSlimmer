@@ -11,7 +11,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 {
     public static class StaticViewModel
     {
-        private static LoggingModel _latestLogMessage = null;
+        private static LoggingModel _latestLogMessage;
         private static bool _isLoading;
         private static readonly object _logsLock = new object();
 

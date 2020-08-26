@@ -92,5 +92,11 @@ namespace RadeonSoftwareSlimmer.Views
             _viewModel.SelectNewInstaller();
             UpdateWizardIndex();
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //Stop these DataGrid SelectionChanged events from triggering the SelectionChanged even on the FlipView
+            e.Handled = true;
+        }
     }
 }

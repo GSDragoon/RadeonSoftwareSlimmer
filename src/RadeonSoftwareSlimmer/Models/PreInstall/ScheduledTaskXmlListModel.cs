@@ -75,7 +75,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
                     string command = xDoc.Root.Element(xNs + "Actions").Element(xNs + "Exec").Element(xNs + "Command").Value;
                     string arguments = xDoc.Root.Element(xNs + "Actions").Element(xNs + "Exec").Element(xNs + "Arguments").Value;
-                    scheduledTask.Command = command + arguments;
+                    scheduledTask.Command = $"{command} {arguments}";
 
                     scheduledTask.File = file;
 
