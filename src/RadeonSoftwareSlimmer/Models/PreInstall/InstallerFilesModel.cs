@@ -42,7 +42,8 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
         public void ExtractInstallerFiles()
         {
-            int exitCode = ProcessExecutor.RunProcess($@"{Environment.CurrentDirectory}\7-Zip\7z.exe", $"x \"{InstallerFile}\" -o\"{ExtractedInstallerDirectory}\"");
+            ProcessHandler processHandler = new ProcessHandler($@"{Environment.CurrentDirectory}\7-Zip\7z.exe");
+            int exitCode = processHandler.RunProcess($"x \"{InstallerFile}\" -o\"{ExtractedInstallerDirectory}\"");
 
             //https://sevenzip.osdn.jp/chm/cmdline/exit_codes.htm
             //Add messages for each possibility?

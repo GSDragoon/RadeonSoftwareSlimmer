@@ -61,7 +61,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             {
                 if (_windowsInstaller)
                 {
-                    ProcessExecutor.RunProcess(_uninstallExe, $"{_uninstallArguments} /quiet /norestart REBOOT=ReallySuppress");
+                    ProcessHandler processHandler = new ProcessHandler(_uninstallExe);
+                    processHandler.RunProcess($"{_uninstallArguments} /quiet /norestart REBOOT=ReallySuppress");
                 }
                 else
                 {

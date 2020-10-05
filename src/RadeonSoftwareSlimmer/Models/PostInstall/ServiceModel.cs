@@ -68,7 +68,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     if (StartMode != serviceController.StartType)
                     {
                         //It's this or WMI...
-                        ProcessExecutor.RunProcess("sc.exe", $"config \"{Name}\" start= {GetStartModeCommandString(StartMode)}");
+                        ProcessHandler processHandler = new ProcessHandler("sc.exe");
+                        processHandler.RunProcess($"config \"{Name}\" start= {GetStartModeCommandString(StartMode)}");
 
                         serviceController.Refresh();
                         StartMode = serviceController.StartType;

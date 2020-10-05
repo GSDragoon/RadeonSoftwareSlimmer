@@ -55,6 +55,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             StaticViewModel.AddDebugMessage("Stopping Radeon Software Host Service");
             RadeonSoftwareCli(CNCMD_EXIT);
+
+            //The host service does not end right away after the command to stop it
+            ProcessHandler hostProcess = new ProcessHandler(_cnDir.FullName + "AMDRSServ.exe");
+            hostProcess.WaitForProcessToEnd(15);
         }
 
         public void RestartRadeonSoftware()
@@ -142,7 +146,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void RadeonSoftwareCli(string arugument)
         {
-            ProcessExecutor.RunProcess(_cnDir.FullName + RADEON_SOFTWARE_CLI_FILE_NAME, arugument);
+            ProcessHandler processHandler = new ProcessHandler(_cnDir.FullName + RADEON_SOFTWARE_CLI_FILE_NAME);
+            processHandler.RunProcess(arugument);
         }
     }
 }
