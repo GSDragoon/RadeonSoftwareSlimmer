@@ -19,6 +19,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         {
             IsLoading = false;
             BindingOperations.EnableCollectionSynchronization(Logs, _logsLock);
+            LogToConsole = false;
         }
 
 
@@ -26,6 +27,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public static void OnPropertyChanged(string propertyName) => StaticPropertyChanged?.Invoke(typeof(LoggingModel), new PropertyChangedEventArgs(propertyName));
 
 
+        public static bool LogToConsole { get; set; } //Used with tests only
         public static ObservableCollection<LoggingModel> Logs { get; } = new ObservableCollection<LoggingModel>();
         public static string StatusMessage => _latestLogMessage?.Message;
         public static bool IsUiEnabled => !_isLoading;
@@ -40,12 +42,14 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
-
         public static void AddLogMessage(LoggingModel logMessage, bool updateStatus)
         {
             lock (_logsLock)
             {
                 Logs.Add(logMessage);
+
+                if (LogToConsole)
+                    Console.WriteLine(logMessage);
             }
 
             if (updateStatus)
@@ -91,6 +95,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                     {
                         streamWriter.WriteLine(log.ToString());
                     }
+
                     AddLogMessage($"Saved logging to {saveFileDialog.FileName}");
                 }
             }
