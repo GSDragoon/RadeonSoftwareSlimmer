@@ -34,22 +34,16 @@ Global
 		src\Shared\Shared.projitems*{a57f631f-11bb-4d48-a795-b90039733f4c}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
-		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A57F631F-11BB-4D48-A795-B90039733F4C}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{A57F631F-11BB-4D48-A795-B90039733F4C}.Debug|x64.ActiveCfg = Debug|x64
 		{A57F631F-11BB-4D48-A795-B90039733F4C}.Debug|x64.Build.0 = Debug|x64
-		{A57F631F-11BB-4D48-A795-B90039733F4C}.Release|Any CPU.ActiveCfg = Release|x64
 		{A57F631F-11BB-4D48-A795-B90039733F4C}.Release|x64.ActiveCfg = Release|x64
 		{A57F631F-11BB-4D48-A795-B90039733F4C}.Release|x64.Build.0 = Release|x64
-		{16BE9BC0-E55D-47B2-9B57-4F7D5D18220B}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{16BE9BC0-E55D-47B2-9B57-4F7D5D18220B}.Debug|x64.ActiveCfg = Debug|x64
 		{16BE9BC0-E55D-47B2-9B57-4F7D5D18220B}.Debug|x64.Build.0 = Debug|x64
-		{16BE9BC0-E55D-47B2-9B57-4F7D5D18220B}.Release|Any CPU.ActiveCfg = Release|x64
 		{16BE9BC0-E55D-47B2-9B57-4F7D5D18220B}.Release|x64.ActiveCfg = Release|x64
 		{16BE9BC0-E55D-47B2-9B57-4F7D5D18220B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
