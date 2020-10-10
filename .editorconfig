@@ -96,3 +96,18 @@ dotnet_analyzer_diagnostic.category-StyleCop.CSharp.DocumentationRules.severity 
 
 # Default severity for analyzer diagnostics with category 'StyleCop.CSharp.LayoutRules'
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.LayoutRules.severity = none
+
+# *******************************************************************************************
+# SonarAnalyzer Rules
+# S3897: Classes that provide "Equals(<T>)" should implement "IEquatable<T>"
+dotnet_diagnostic.S3897.severity = silent
+
+# S4035: Classes implementing "IEquatable<T>" should be sealed
+dotnet_diagnostic.S4035.severity = silent
+
+# S3458: Empty "case" clauses that fall through to the "default" should be omitted
+dotnet_diagnostic.S3458.severity = none
+
+# S1939: Inheritance list should not be redundant
+dotnet_diagnostic.S1939.severity = none
+# ********************************************************************************************

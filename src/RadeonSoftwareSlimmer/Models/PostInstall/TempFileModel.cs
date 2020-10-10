@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -54,7 +55,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 {
                     bytes += fileInfo.Length;
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    StaticViewModel.AddDebugMessage(ex, $"Unable to determine file size of {fileInfo.FullName}");
+                }
 
                 files++;
             }
@@ -90,7 +94,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     {
                         fileInfo.Delete();
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        StaticViewModel.AddDebugMessage(ex, $"Unable to delete {fileInfo.FullName}");
+                    }
                 }
 
                 foreach (DirectoryInfo subDirectoryInfo in directoryInfo.EnumerateDirectories())
@@ -101,7 +108,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     {
                         subDirectoryInfo.Delete();
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        StaticViewModel.AddDebugMessage(ex, $"Unable to delete {subDirectoryInfo.FullName}");
+                    }
                 }
             }
         }

@@ -48,7 +48,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             //https://sevenzip.osdn.jp/chm/cmdline/exit_codes.htm
             //Add messages for each possibility?
             if (exitCode == 7)
-                throw new Exception("Extraction failed. 7-Zip Command line error");
+                throw new IOException("Extraction failed. 7-Zip error. See logging for more details.");
         }
 
         public void RunRadeonSoftwareSetup()

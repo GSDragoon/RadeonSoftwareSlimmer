@@ -66,7 +66,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 }
                 else
                 {
-                    //ProcessExecutor.RunProcess(_uninstallExe, _uninstallArguments);
                     StaticViewModel.AddDebugMessage($"Non-Windows Uninstaller for {DisplayName} not supported");
                 }
             }
@@ -87,7 +86,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void DetermineUninstallCommand()
         {
-            //if (_windowsInstaller || UninstallCommand.StartsWith("msiexec", StringComparison.OrdinalIgnoreCase))
             if (_windowsInstaller)
             {
                 _uninstallExe = "msiexec.exe";
@@ -104,9 +102,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
             else if (!string.IsNullOrWhiteSpace(UninstallCommand))
             {
-                //_uninstallExe = "cmd.exe";
-                //_uninstallArguments = $"/C \"{UninstallCommand}\"";
-                //UninstallCommand = $"{_uninstallExe} {_uninstallArguments}";
                 StaticViewModel.AddDebugMessage($"Keeping default uninstall command {UninstallCommand} for {DisplayName}");
             }
             else

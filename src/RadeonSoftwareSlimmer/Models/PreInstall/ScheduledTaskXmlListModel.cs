@@ -41,7 +41,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public static void UnhideAndDisableScheduledTask(ScheduledTaskXmlModel scheduledTaskToRemove)
         {
             if (scheduledTaskToRemove == null)
-                throw new NullReferenceException();
+                throw new ArgumentNullException(nameof(scheduledTaskToRemove));
 
             if (!TryGetScheduledTaskXDocument(scheduledTaskToRemove.File, out XDocument xDoc))
                 throw new IOException();

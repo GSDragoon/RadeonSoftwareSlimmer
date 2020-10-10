@@ -27,7 +27,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 {
                     // Can't find a better way to handle servics that don't exist :(
                     _exists = false;
-                    return;
                 }
             }
         }

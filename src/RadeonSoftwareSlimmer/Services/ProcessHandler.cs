@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -15,7 +14,7 @@ namespace RadeonSoftwareSlimmer.Services
         public ProcessHandler(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
-                throw new NullReferenceException($"{fileName} is null or empty");
+                throw new ArgumentNullException($"{fileName} is null or empty");
 
             _file = new FileInfo(fileName);
             _fileNameWithoutExtension = _file.Name.Substring(0, _file.Name.Length - _file.Extension.Length);
@@ -71,18 +70,21 @@ namespace RadeonSoftwareSlimmer.Services
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            while (IsProcessRunning() == true)
+            while (IsProcessRunning())
             {
                 if (sw.ElapsedMilliseconds >= maxWaitSeconds * 1000)
                 {
-                    try
+                    foreach (Process process in Process.GetProcessesByName(_fileNameWithoutExtension))
                     {
-                        foreach (Process process in Process.GetProcessesByName(_fileNameWithoutExtension))
+                        try
                         {
                             process.Kill();
                         }
+                        catch (Exception ex)
+                        {
+                            StaticViewModel.AddDebugMessage(ex, $"Unable to stop process [{process.Id}] {process.ProcessName}");
+                        }
                     }
-                    catch (Win32Exception) { }
                 }
 
                 Thread.Sleep(1000);
