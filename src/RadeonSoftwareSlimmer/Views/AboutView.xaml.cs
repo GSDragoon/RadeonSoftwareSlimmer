@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Navigation;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -10,8 +11,8 @@ namespace RadeonSoftwareSlimmer.Views
         {
             InitializeComponent();
 
-            lblVersion.Text = "Version: " + System.Windows.Forms.Application.ProductVersion;
-            StaticViewModel.AddDebugMessage($"{nameof(RadeonSoftwareSlimmer)} version {System.Windows.Forms.Application.ProductVersion}");
+            lblVersion.Text = $"Version: {System.Windows.Forms.Application.ProductVersion} (.NET Version: {Environment.Version})";
+            StaticViewModel.AddDebugMessage($"{nameof(RadeonSoftwareSlimmer)} version {System.Windows.Forms.Application.ProductVersion} (.NET version {Environment.Version})");
         }
 
 
