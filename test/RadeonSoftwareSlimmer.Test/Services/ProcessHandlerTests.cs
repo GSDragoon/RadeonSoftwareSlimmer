@@ -36,7 +36,7 @@ namespace RadeonSoftwareSlimmer.Test.Services
         [Test]
         public void IsProcessRunning_ProcessNotRunning_ReturnsFalse()
         {
-            ProcessHandler processHandler = new ProcessHandler(@"C:\Windows\System32\cmd.exe");
+            ProcessHandler processHandler = new ProcessHandler(@"C:\Windows\System32\perfmon.exe");
             Assert.That(processHandler.IsProcessRunning(), Is.False);
         }
         [Test]

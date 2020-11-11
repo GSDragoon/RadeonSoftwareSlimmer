@@ -26,7 +26,11 @@ Documentation can be found on the [Wiki](https://github.com/GSDragoon/RadeonSoft
 
 Requirements:
 * Windows 10 64-bit (Latest version recommended)
-* [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48) (Included with Windows 10 1903 and later) **OR** [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1). Separate downloads are provided for each.
+* .NET (Any __one__ of the following)
+  * [.NET Desktop Runtime 5.0 x64](https://dotnet.microsoft.com/download/dotnet/5.0) (latest version recommended)
+  * [.NET Core Desktop Runtime 3.1 x64](https://dotnet.microsoft.com/download/dotnet-core/3.1) (latest version recommended)
+  * [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48) (Included with Windows 10 1903 [May 2019 update] and later)
+  
 * Administrator rights
 
 Installation:
