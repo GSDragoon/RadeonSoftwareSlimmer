@@ -9,7 +9,7 @@ namespace RadeonSoftwareSlimmer.Test.Services
     public class ProcessHandlerTests
     {
         [Test]
-        public void RunProcess_NoArguments_Returns0()
+        public void RunProcess_NoArguments_Returns1()
         {
             ProcessHandler processHandler = new ProcessHandler(@"C:\Windows\System32\ping.exe");
             Assert.That(processHandler.RunProcess(), Is.EqualTo(1));
@@ -21,9 +21,15 @@ namespace RadeonSoftwareSlimmer.Test.Services
             Assert.That(processHandler.RunProcess("localhost"), Is.EqualTo(0));
         }
         [Test]
-        public void RunProcess_DoesNotExist_Returns0()
+        public void RunProcess_DoesNotExist_ReturnsNegative1()
         {
             ProcessHandler processHandler = new ProcessHandler(@"C:\Windows\System32\DOES_NOT_EXIST.exe");
+            Assert.That(processHandler.RunProcess(), Is.EqualTo(-1));
+        }
+        [Test]
+        public void RunProcess_FileNameOnly_ReturnsNegative1()
+        {
+            ProcessHandler processHandler = new ProcessHandler("sc.exe");
             Assert.That(processHandler.RunProcess(), Is.EqualTo(-1));
         }
 
@@ -43,6 +49,12 @@ namespace RadeonSoftwareSlimmer.Test.Services
         public void IsProcessRunning_DoesNotExist_ReturnsFalse()
         {
             ProcessHandler processHandler = new ProcessHandler(@"C:\Windows\System32\DOES_NOT_EXIST.exe");
+            Assert.That(processHandler.IsProcessRunning(), Is.False);
+        }
+        [Test]
+        public void IsProcessRunning_FileNameOnly_ReturnsFalse()
+        {
+            ProcessHandler processHandler = new ProcessHandler("svchost.exe");
             Assert.That(processHandler.IsProcessRunning(), Is.False);
         }
 
