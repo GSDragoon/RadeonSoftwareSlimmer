@@ -79,16 +79,16 @@ jobs:
         draft: true
         prerelease: false
 
-    #- name: Upload Release Asset net50
-    #  id: upload-release-asset-net50
-    #  uses: actions/upload-release-asset@v1
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #  with:
-    #    upload_url: ${{ steps.create_release.outputs.upload_url }}
-    #    asset_path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net50.zip
-    #    asset_name: RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net50.zip
-    #    asset_content_type: application/zip
+    - name: Upload Release Asset net50
+      id: upload-release-asset-net50
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net50.zip
+        asset_name: RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net50.zip
+        asset_content_type: application/zip
 
     - name: Upload Release Asset netcoreapp31
       id: upload-release-asset-netcoreapp31

@@ -70,7 +70,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 "AMDRadeonsettings",
 
                 //Radeon Pro Enterprise
-                "amducsi", //also for RDNA2/NAVI20
+                "amducsi",
                 "SSGService",
             };
 
