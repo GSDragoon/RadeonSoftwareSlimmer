@@ -90,20 +90,20 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void Disable()
         {
-            if (_rsServDisabledFile.Exists)
-            {
-                StaticViewModel.AddDebugMessage($"Deleting previous disable file ${_rsServDisabledFile.FullName}");
-                _rsServDisabledFile.Delete();
-            }
-
             if (_rsServFile.Exists)
             {
+                if (_rsServDisabledFile.Exists)
+                {
+                    StaticViewModel.AddDebugMessage($"Deleting previous disable file ${_rsServDisabledFile.FullName}");
+                    _rsServDisabledFile.Delete();
+                }
+
                 StaticViewModel.AddDebugMessage($"Renaming {_rsServFile.Name} to {_rsServDisabledFile.Name}");
                 _rsServFile.MoveTo(_rsServDisabledFile.FullName);
-            }
 
-            StaticViewModel.AddDebugMessage("Host Service Disabled");
-            Enabled = false;
+                StaticViewModel.AddDebugMessage("Host Service Disabled");
+                Enabled = false;
+            }
         }
 
 
