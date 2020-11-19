@@ -18,9 +18,9 @@ dotnet clean --configuration Release --framework net48
 dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
 
 # Build and create artifacts
-dotnet publish --configuration Release --framework net5.0-windows --self-contained false --force --output .\local-ci\net5.0 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
-dotnet publish --configuration Release --framework netcoreapp3.1 --self-contained false --force --output .\local-ci\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
-dotnet publish --configuration Release  --framework net48 --force --output .\local-ci\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj
+dotnet publish --configuration Release --framework net5.0-windows --self-contained false --force --output .\local-ci\net5.0 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
+dotnet publish --configuration Release --framework netcoreapp3.1 --self-contained false --force --output .\local-ci\netcoreapp3.1 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
+dotnet publish --configuration Release  --framework net48 --force --output .\local-ci\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
 
 # Get the version from the published executable
 $version = (Get-Item .\local-ci\net5.0\RadeonSoftwareSlimmer.exe).VersionInfo.ProductVersion
