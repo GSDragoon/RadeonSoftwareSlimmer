@@ -12,7 +12,6 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
         public bool Keep { get; set; }
         public string ProductName { get; internal set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = "This is what it's called in the XML file by AMD.")]
         public string Url { get; internal set; }
         public string Type { get; internal set; }
         public string Description { get; internal set; }

@@ -55,6 +55,12 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             StaticViewModel.AddDebugMessage("Stopping Radeon Software Host Service");
             RadeonSoftwareCli(CNCMD_EXIT);
+
+            //The command to stop the services does not wait for them to fully end
+            ProcessHandler hostProcess = new ProcessHandler(_cnDir.FullName + "AMDRSServ.exe");
+            hostProcess.WaitForProcessToEnd(30);
+            ProcessHandler radeonSoftwareProcess = new ProcessHandler(_cnDir.FullName + "RadeonSoftware.exe");
+            radeonSoftwareProcess.WaitForProcessToEnd(30);
         }
 
         public void RestartRadeonSoftware()
@@ -86,20 +92,20 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void Disable()
         {
-            if (_rsServDisabledFile.Exists)
-            {
-                StaticViewModel.AddDebugMessage($"Deleting previous disable file ${_rsServDisabledFile.FullName}");
-                _rsServDisabledFile.Delete();
-            }
-
             if (_rsServFile.Exists)
             {
+                if (_rsServDisabledFile.Exists)
+                {
+                    StaticViewModel.AddDebugMessage($"Deleting previous disable file ${_rsServDisabledFile.FullName}");
+                    _rsServDisabledFile.Delete();
+                }
+
                 StaticViewModel.AddDebugMessage($"Renaming {_rsServFile.Name} to {_rsServDisabledFile.Name}");
                 _rsServFile.MoveTo(_rsServDisabledFile.FullName);
-            }
 
-            StaticViewModel.AddDebugMessage("Host Service Disabled");
-            Enabled = false;
+                StaticViewModel.AddDebugMessage("Host Service Disabled");
+                Enabled = false;
+            }
         }
 
 
@@ -142,7 +148,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void RadeonSoftwareCli(string arugument)
         {
-            ProcessExecutor.RunProcess(_cnDir.FullName + RADEON_SOFTWARE_CLI_FILE_NAME, arugument);
+            ProcessHandler processHandler = new ProcessHandler(_cnDir.FullName + RADEON_SOFTWARE_CLI_FILE_NAME);
+            processHandler.RunProcess(arugument);
         }
     }
 }

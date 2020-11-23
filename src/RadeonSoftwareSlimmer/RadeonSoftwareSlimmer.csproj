@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net48</TargetFrameworks>
+    <TargetFrameworks>net5.0-windows;netcoreapp3.1;net48</TargetFrameworks>
     <!-- Limiting to 7.3 because of .NET Framework -->
     <LangVersion>7.3</LangVersion>
     <UseWPF>true</UseWPF>
@@ -10,10 +10,12 @@
     <Platforms>x64</Platforms>
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     
+    <!-- Roslyn Analyzers-->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    
     <StartupObject>RadeonSoftwareSlimmer.App</StartupObject>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <!-- Needed to avoid headaches from analyzers -->
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <Product>Radeon Software Slimmer</Product>
     <Authors>GSDragoon</Authors>
@@ -21,6 +23,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <PublishSingleFile>false</PublishSingleFile>
 
     <!-- Release versions-->
     <!--<Version>1.0.0</Version>-->
@@ -32,23 +35,21 @@
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro" Version="2.2.0" />
-    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.4.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.3.4" />
+    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.8.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.14.0.22654">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
-    <PackageReference Include="TaskScheduler" Version="2.8.20" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="5.0.0" />
+    <PackageReference Include="TaskScheduler" Version="2.8.21" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net48'">

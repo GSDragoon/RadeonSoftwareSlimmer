@@ -40,7 +40,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public static void RemovePackage(PackageModel packageToRemove)
         {
             if (packageToRemove == null)
-                throw new NullReferenceException();
+                throw new ArgumentNullException(nameof(packageToRemove));
 
             JObject fullJson;
 

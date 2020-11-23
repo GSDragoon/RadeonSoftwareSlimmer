@@ -30,6 +30,9 @@
 
         <mah:MetroTabControl Grid.Row="2" mah:HeaderedControlHelper.HeaderFontWeight="Thin" IsEnabled="{Binding LoadedPanelEnabled}" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
+            <!--
+            Disabled for now since not having these services running will cause high CPU usage with RadeonSoftware.exe
+
             <mah:MetroTabItem Padding="8,4" Header="Host Services">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -39,7 +42,7 @@
                     <TextBlock Text="Processes that handles Radeon ReLive (Overylays, Hotkeys, Instant Replay, In-Game Replay, Recording Desktop and more). Disabling this will rename RSServCmd.exe so it and it's child processes doesn't load." TextWrapping="Wrap" />
                     <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
                 </StackPanel>
-            </mah:MetroTabItem>
+            </mah:MetroTabItem>-->
 
             <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
                 <StackPanel>

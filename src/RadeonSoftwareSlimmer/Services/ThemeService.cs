@@ -23,12 +23,12 @@ namespace RadeonSoftwareSlimmer.Services
 
             switch (theme)
             {
+                case Theme.Dark:
+                    themeString = "Dark.Red";
+                    break;
                 case Theme.Light:
                 default:
                     themeString = "Light.Crimson";
-                    break;
-                case Theme.Dark:
-                    themeString = "Dark.Red";
                     break;
             }
 

@@ -27,7 +27,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 {
                     // Can't find a better way to handle servics that don't exist :(
                     _exists = false;
-                    return;
                 }
             }
         }
@@ -68,7 +67,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     if (StartMode != serviceController.StartType)
                     {
                         //It's this or WMI...
-                        ProcessExecutor.RunProcess("sc.exe", $"config \"{Name}\" start= {GetStartModeCommandString(StartMode)}");
+                        ProcessHandler processHandler = new ProcessHandler(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\sc.exe");
+                        processHandler.RunProcess($"config \"{Name}\" start= {GetStartModeCommandString(StartMode)}");
 
                         serviceController.Refresh();
                         StartMode = serviceController.StartType;
