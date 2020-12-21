@@ -32,6 +32,17 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             Services = new List<ServiceModel>(GetAllRadeonServices());
         }
 
+        public void ApplyChanges()
+        {
+            foreach (ServiceModel service in _services)
+            {
+                if (service.Enabled)
+                    service.Enable();
+                else
+                    service.Disable();
+            }
+        }
+
 
         private static IEnumerable<ServiceModel> GetAllRadeonServices()
         {

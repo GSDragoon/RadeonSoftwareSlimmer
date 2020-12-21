@@ -47,6 +47,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             InstalledItems = new List<InstalledModel>(GetAllRadeonScheduledTasks());
         }
 
+        public void ApplyChanges()
+        {
+            foreach (InstalledModel install in _installedItems)
+            {
+                if (install.Uninstall)
+                    install.RunUninstaller();
+            }
+        }
+
 
         private IEnumerable<InstalledModel> GetAllRadeonScheduledTasks()
         {

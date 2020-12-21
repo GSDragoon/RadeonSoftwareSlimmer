@@ -9,6 +9,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class ScheduledTaskModel : INotifyPropertyChanged
     {
+        private bool _enabled;
         private bool _active;
         private TaskState _state;
 
@@ -24,7 +25,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             Active = scheduledTask.IsActive;
             State = scheduledTask.State;
             Command = scheduledTask.Definition.Actions.First().ToString(CultureInfo.CurrentCulture);
-            Author = scheduledTask.Definition.RegistrationInfo.Author;
+            LastRun = scheduledTask.LastRunTime;
         }
 
 
@@ -32,7 +33,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 
-        public bool Enabled { get; set; }
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                _enabled = value;
+                OnPropertyChanged(nameof(Enabled));
+            }
+        }
         public string Name { get; }
         public string Description { get; }
         public string Command { get; }
@@ -54,7 +63,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 OnPropertyChanged(nameof(State));
             }
         }
-        public string Author { get; }
+        public DateTime LastRun { get; }
 
 
         public void Enable()

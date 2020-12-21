@@ -34,6 +34,17 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             RadeonScheduledTasks = new List<ScheduledTaskModel>(GetAllRadeonScheduledTasks());
         }
 
+        public void ApplyChanges()
+        { 
+            foreach (ScheduledTaskModel scheduledTask in _scheduledTasks)
+            {
+                if (scheduledTask.Enabled)
+                    scheduledTask.Enable();
+                else
+                    scheduledTask.Disable();
+            }
+        }
+
 
         private static IEnumerable<ScheduledTaskModel> GetAllRadeonScheduledTasks()
         {

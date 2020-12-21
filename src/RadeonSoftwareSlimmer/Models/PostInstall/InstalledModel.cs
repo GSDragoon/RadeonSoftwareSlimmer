@@ -45,7 +45,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             set
             {
                 _uninstall = value;
-                OnPropertyChanged(nameof(Uninstall));
+                OnPropertyChanged(nameof(RunUninstaller));
             }
         }
         public string DisplayName { get; }
@@ -55,9 +55,9 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         public string UninstallCommand { get; private set; }
 
 
-        public void UninstallIfSelected()
+        public void RunUninstaller()
         {
-            if (_uninstall && !string.IsNullOrWhiteSpace(UninstallCommand))
+            if (!string.IsNullOrWhiteSpace(UninstallCommand))
             {
                 if (_windowsInstaller)
                 {
@@ -66,9 +66,11 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 }
                 else
                 {
-                    StaticViewModel.AddDebugMessage($"Non-Windows Uninstaller for {DisplayName} not supported");
+                    StaticViewModel.AddDebugMessage($"Non-Windows uninstaller for {DisplayName} not supported");
                 }
             }
+            else
+                StaticViewModel.AddDebugMessage($"No uninstaller command for {DisplayName}");
         }
 
 

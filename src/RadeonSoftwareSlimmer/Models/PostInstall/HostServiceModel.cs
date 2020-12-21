@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using Microsoft.Win32;
@@ -11,6 +12,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
     {
         private bool _enabled;
         private DirectoryInfo _cnDir;
+        private IList<RunningHostServiceModel> _hostServices;
         private FileInfo _rsServFile;
         private FileInfo _rsServDisabledFile;
 
@@ -34,6 +36,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 
+        public IList<RunningHostServiceModel> HostServices
+        {
+            get { return _hostServices; }
+            set
+            {
+                _hostServices = value;
+                OnPropertyChanged(nameof(HostServices));
+            }
+        }
         public bool Enabled
         {
             get { return _enabled; }
@@ -48,6 +59,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         public void LoadOrRefresh()
         {
             LoadCnDirectory();
+            LoadRunningHostServiceProcesses();
             CheckIfHostServiceIsEnabled();
         }
 
@@ -67,6 +79,24 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             StaticViewModel.AddDebugMessage("Restarting Radeon Software Host Service");
             RadeonSoftwareCli(CNCMD_RESTART);
+
+            //Wait for services to start back up
+            ProcessHandler radeonSoftwareProcess = new ProcessHandler(_cnDir.FullName + "RadeonSoftware.exe");
+            radeonSoftwareProcess.WaitForProcessToStart(30);
+            
+            if (Enabled)
+            {
+                ProcessHandler hostProcess = new ProcessHandler(_cnDir.FullName + "AMDRSServ.exe");
+                hostProcess.WaitForProcessToStart(30);
+            }
+        }
+
+        public void ApplyChanges()
+        {
+            if (Enabled)
+                Enable();
+            else
+                Disable();
         }
 
         public void Enable()
@@ -108,6 +138,17 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
         }
 
+
+        private void LoadRunningHostServiceProcesses()
+        {
+            HostServices = new List<RunningHostServiceModel>
+            {
+                new RunningHostServiceModel("RadeonSoftware", "Radeon Software: Host Application"),
+                new RunningHostServiceModel("AMDRSServ", "Radeon Settings: Host Service"),
+                new RunningHostServiceModel("amdow", "Radeon Settings: Desktop Overlay"),
+                new RunningHostServiceModel("AMDRSSrcExt", "Radeon Settings: Source Extension"),
+            };
+        }
 
         private void CheckIfHostServiceIsEnabled()
         {

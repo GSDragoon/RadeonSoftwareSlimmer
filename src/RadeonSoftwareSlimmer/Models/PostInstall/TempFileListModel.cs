@@ -34,6 +34,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             TempFiles = new List<TempFileModel>(GetAllRadeonTempFiles());
         }
 
+        public void ApplyChanges()
+        {
+            foreach (TempFileModel tempFile in _tempFiles)
+            {
+                if (tempFile.Clear)
+                    tempFile.ClearFolder();
+            }
+        }
+
 
         private static IEnumerable<TempFileModel> GetAllRadeonTempFiles()
         {
@@ -46,11 +55,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CIM\Log",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CIM\Reports",
 
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\Dx9Cache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\DxCache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\GLCache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\VkCache",
+
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\Radeonsoftware\cache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\RadeonInstaller\cache",
+
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\Dx9Cache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\DxCache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\GLCache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\VkCache",
