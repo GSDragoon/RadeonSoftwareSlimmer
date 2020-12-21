@@ -40,7 +40,6 @@
 
         <mah:MetroTabControl Grid.Row="2" mah:HeaderedControlHelper.HeaderFontWeight="Thin" IsEnabled="{Binding LoadedPanelEnabled}" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
-
             <mah:MetroTabItem Padding="8,4" Header="Host Services">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -84,7 +83,7 @@
                     </GroupBox>
 
                 </StackPanel>
-            </mah:MetroTabItem>
+            </mah:MetroTabItem>-->
 
 
             <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
