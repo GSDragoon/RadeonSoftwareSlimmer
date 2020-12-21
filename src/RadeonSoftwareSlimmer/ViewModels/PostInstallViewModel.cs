@@ -68,19 +68,10 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
-        public void TempFilesSetAll(bool clear)
-        {
-            foreach (TempFileModel tempFile in TempFileList.TempFiles)
-            {
-                tempFile.Clear = clear;
-            }
-        }
-
-        public async Task ApplyyChangesAsync()
+        public async Task ApplyChangesAsync()
         {
             await Task.Run(() => ApplyChanges());
         }
-
 
         private void ApplyChanges()
         {
@@ -91,38 +82,12 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 StaticViewModel.AddLogMessage("Applying changes post install");
 
                 HostService.StopRadeonSoftware();
-
-                if (HostService.Enabled)
-                    HostService.Enable();
-                else
-                    HostService.Disable();
-
-                foreach (ScheduledTaskModel scheduledTask in RadeonScheduledTaskList.RadeonScheduledTasks)
-                {
-                    if (scheduledTask.Enabled)
-                        scheduledTask.Enable();
-                    else
-                        scheduledTask.Disable();
-                }
-
-                foreach (ServiceModel service in ServiceList.Services)
-                {
-                    service.SetStartMode();
-                }
-
-                foreach (InstalledModel install in InstalledList.InstalledItems)
-                {
-                    install.UninstallIfSelected();
-                }
-
-                foreach (TempFileModel tempFile in TempFileList.TempFiles)
-                {
-                    if (tempFile.Clear)
-                        tempFile.ClearFolder();
-                }
-
-                if (HostService.Enabled)
-                    HostService.RestartRadeonSoftware();
+                
+                HostService.ApplyChanges();
+                RadeonScheduledTaskList.ApplyChanges();
+                ServiceList.ApplyChanges();
+                InstalledList.ApplyChanges();
+                TempFileList.ApplyChanges();
 
                 LoadOrRefresh();
                 StaticViewModel.AddLogMessage("Changes applied to post install");
@@ -134,6 +99,96 @@ namespace RadeonSoftwareSlimmer.ViewModels
             finally
             {
                 StaticViewModel.IsLoading = false;
+            }
+        }
+
+
+        public async Task HostServices_StopAsync()
+        {
+            try
+            {
+                StaticViewModel.AddLogMessage("Stopping Radeon Software Host Services");
+                StaticViewModel.IsLoading = true;
+
+                await Task.Run(() => HostService.StopRadeonSoftware());
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex);
+            }
+            finally
+            {
+                LoadOrRefresh();
+                StaticViewModel.IsLoading = false;
+            }
+        }
+
+        public async Task HostServices_RestartAsync()
+        {
+            try
+            {
+                StaticViewModel.AddLogMessage("Restarting Radeon Software Host Services");
+                StaticViewModel.IsLoading = true;
+
+                await Task.Run(() => HostService.RestartRadeonSoftware());
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex);
+            }
+            finally
+            {
+                LoadOrRefresh();
+                StaticViewModel.IsLoading = false;
+            }
+        }
+
+
+        public void ScheduledTask_SetAll(bool enabled)
+        {
+            foreach (ScheduledTaskModel scheduledTask in RadeonScheduledTaskList.RadeonScheduledTasks)
+            {
+                scheduledTask.Enabled = enabled;
+            }
+        }
+
+
+        public static async Task Service_StopAsync(object selectedService)
+        {
+            ServiceModel service = (ServiceModel)selectedService;
+            if (service != null)
+                await Task.Run(() => service.TryStop());
+        }
+        public static async Task Service_StartAsync(object selectedService)
+        {
+            ServiceModel service = (ServiceModel)selectedService;
+            if (service != null)
+                await Task.Run(() => service.TryStart());
+        }
+        public static async Task Service_RestartAsync(object selectedService)
+        {
+            await Service_StopAsync(selectedService);
+            await Service_StartAsync(selectedService);
+        }
+        public static async Task Service_DeleteAsync(object selectedService)
+        {
+            ServiceModel service = (ServiceModel)selectedService;
+            if (service != null)
+                await Task.Run(() => service.Delete());
+        }
+        public static async Task Service_SetStartModeAsync(object selectedService, string selectedStartMode)
+        {
+            ServiceModel service = (ServiceModel)selectedService;
+            if (service != null)
+                await Task.Run(() => service.SetStartMode(selectedStartMode));
+        }
+
+
+        public void TempFilesSetAll(bool clear)
+        {
+            foreach (TempFileModel tempFile in TempFileList.TempFiles)
+            {
+                tempFile.Clear = clear;
             }
         }
     }

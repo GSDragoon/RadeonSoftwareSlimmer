@@ -34,6 +34,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             TempFiles = new List<TempFileModel>(GetAllRadeonTempFiles());
         }
 
+        public void ApplyChanges()
+        {
+            foreach (TempFileModel tempFile in _tempFiles)
+            {
+                if (tempFile.Clear)
+                    tempFile.ClearFolder();
+            }
+        }
+
 
         private static IEnumerable<TempFileModel> GetAllRadeonTempFiles()
         {

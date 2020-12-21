@@ -5,10 +5,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ss="clr-namespace:System.ServiceProcess;assembly=System.ServiceProcess.ServiceController"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
     d:DataContext="{d:DesignInstance vm:PostInstallViewModel}"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="ServiceStartModeEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="ss:ServiceStartMode" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
 
     <Grid x:Name="pnlEverything" IsEnabled="{Binding Path=(vm:StaticViewModel.IsUiEnabled)}">
         <Grid.RowDefinitions>
@@ -30,19 +40,52 @@
 
         <mah:MetroTabControl Grid.Row="2" mah:HeaderedControlHelper.HeaderFontWeight="Thin" IsEnabled="{Binding LoadedPanelEnabled}" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
-            <!--
-            Disabled for now since not having these services running will cause high CPU usage with RadeonSoftware.exe
 
             <mah:MetroTabItem Padding="8,4" Header="Host Services">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Radeon Software: Host Services (AMDRSServ.exe)" FontSize="16" FontWeight="Bold" />
+                        <Label Content="Radeon Software: Host Services" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Host-Services" />
                     </StackPanel>
-                    <TextBlock Text="Processes that handles Radeon ReLive (Overylays, Hotkeys, Instant Replay, In-Game Replay, Recording Desktop and more). Disabling this will rename RSServCmd.exe so it and it's child processes doesn't load." TextWrapping="Wrap" />
-                    <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
+                    <TextBlock Text="Processes that handle Radeon Software UI, tray icon, gaming stats, live streaming, Radeon ReLive Instant Replay, In-Game Replay, Recording Desktop, Overylays, Hotkeys and more." TextWrapping="Wrap" />
+
+                    <DataGrid
+                        Margin="0,8"
+                        GridLinesVisibility="Horizontal"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding HostService.HostServices}"
+                        Style="{StaticResource MahApps.Styles.DataGrid}" />
+
+                    <StackPanel Margin="4" Orientation="Horizontal">
+                        <Button
+                            x:Name="btnHostServicesRestart"
+                            HorizontalAlignment="Left"
+                            Click="btnHostServicesRestart_Click"
+                            Content="Start/Restart"
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Start (if not running) or restart (if running) Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
+                    </StackPanel>
+                    <StackPanel Margin="4" Orientation="Horizontal">
+                        <Button
+                            x:Name="btnHostServicesStop"
+                            HorizontalAlignment="Left"
+                            Click="btnHostServicesStop_Click"
+                            Content="Stop"
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Stop Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
+                    </StackPanel>
+
+                    <GroupBox Margin="8" Padding="8" HorizontalAlignment="Left" Header="Advanced">
+                        <StackPanel>
+                            <TextBlock Text="The clean way to prevent Host Services processes from running is to disable the 'StartCN' and 'StartDVR' Scheduled Tasks and don't open Radeon Software." TextWrapping="Wrap" />
+                            <TextBlock Text="The unoffical way to prevent host services processes from running is to rename Radeon Settings CLI (RSServCmd.exe) so they don't start. This is what 'Disabled' here does. This is unsupported by AMD and can cause problems. Use the option with caution!" TextWrapping="Wrap" />
+                            <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
+                        </StackPanel>
+                    </GroupBox>
+
                 </StackPanel>
-            </mah:MetroTabItem>-->
+            </mah:MetroTabItem>
+
 
             <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
                 <StackPanel>
@@ -50,8 +93,26 @@
                         <Label Content="Windows Scheduled Tasks" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
                     </StackPanel>
-                    <TextBlock Text="Uncheck or check 'Enabled' to disable or enable a Scheduled Task." TextWrapping="Wrap" />
+                    <TextBlock Text="Uncheck 'Enabled' to disable the scheduled task." TextWrapping="Wrap" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            x:Name="btnScheduledTaskEnableAll"
+                            HorizontalAlignment="Center"
+                            Click="btnScheduledTaskEnableAll_Click"
+                            Content="Enable All"
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button
+                            x:Name="btnScheduledTaskDisableAll"
+                            HorizontalAlignment="Center"
+                            Click="btnScheduledTaskDisableAll_Click"
+                            Content="Disable All"
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    </StackPanel>
+
                     <DataGrid
+                        x:Name="grdScheduledTasks"
+                        Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"
@@ -61,20 +122,65 @@
                 </StackPanel>
             </mah:MetroTabItem>
 
+
             <mah:MetroTabItem Padding="8,4" Header="System Services">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="System Services and Drivers" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" />
                     </StackPanel>
-                    <TextBlock Text="Change the 'StartMode' of a System Service. Be VERY careful. Setting an improper start mode can cause OS boot failures." TextWrapping="Wrap" />
+                    <TextBlock Text="Uncheck 'Enabled' to disable the service. A system restart is required for changes to kernel drivers to take effect." TextWrapping="Wrap" />
+
                     <DataGrid
+                        x:Name="grdServices"
+                        Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"
                         GridLinesVisibility="Horizontal"
                         ItemsSource="{Binding ServiceList.Services}"
+                        SelectionMode="Single"
                         Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                x:Name="btnServiceStart"
+                                HorizontalAlignment="Left"
+                                Click="btnServiceStart_Click"
+                                Content="Start/Restart"
+                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Start or restart selected service. Only works for Win32OwnProcess type, not KernelDriver." />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                x:Name="btnServiceStop"
+                                HorizontalAlignment="Left"
+                                Click="btnServiceStop_Click"
+                                Content="Stop"
+                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Stop selected Serice. Only works for Win32OwnProcess type, not KernelDriver." />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <GroupBox Margin="8" Padding="8" HorizontalAlignment="Left" Header="Advanced">
+                        <StackPanel>
+                            <TextBlock Text="Change the start mode of the selcted service. Setting an incorrect value can cause boot issues. Use with caution." />
+                            <StackPanel Margin="0,8" Orientation="Horizontal">
+                                <TextBlock Margin="0,0,8,0" VerticalAlignment="Center" Text="Service Start Mode" />
+                                <ComboBox x:Name="cbxServiceStartMode" ItemsSource="{Binding Source={StaticResource ServiceStartModeEnum}}" />
+                                <Button x:Name="btnServiceChangeStartMode" Click="btnServiceChangeStartMode_Click" Content="Change" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            </StackPanel>
+                            <Button
+                                x:Name="btnServiceDelete"
+                                HorizontalAlignment="Left"
+                                Click="btnServiceDelete_Click"
+                                Content="Delete Service"
+                                IsEnabled="False"
+                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}"
+                                Visibility="Collapsed" />
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </mah:MetroTabItem>
 
@@ -85,7 +191,9 @@
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Entries" />
                     </StackPanel>
                     <TextBlock Text="Check Uninstall to uninstall item" TextWrapping="Wrap" />
+
                     <DataGrid
+                        Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"
@@ -102,11 +210,14 @@
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Logging-and-Temp-Files" />
                     </StackPanel>
                     <TextBlock Text="Check the folder to clear all files and sub directories in it. Does not delete the root folder itself." TextWrapping="Wrap" />
+
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="btnTempFilesSelectAll" Click="btnTempFilesSelectAll_Click" Content="Select All" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                         <Button x:Name="btnTempFilesSelectNone" Click="btnTempFilesSelectNone_Click" Content="Select None" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                     </StackPanel>
+
                     <DataGrid
+                        Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"

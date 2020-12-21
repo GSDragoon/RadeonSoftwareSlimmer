@@ -67,6 +67,9 @@ namespace RadeonSoftwareSlimmer.Services
 
         public void WaitForProcessToEnd(int maxWaitSeconds)
         {
+            if (!_file.Exists)
+                return;
+
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
@@ -85,6 +88,26 @@ namespace RadeonSoftwareSlimmer.Services
                             StaticViewModel.AddDebugMessage(ex, $"Unable to stop process [{process.Id}] {process.ProcessName}");
                         }
                     }
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
+
+        public void WaitForProcessToStart(int maxWaitSeconds)
+        {
+            if (!_file.Exists)
+                return;
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            while (!IsProcessRunning())
+            {
+                if (sw.ElapsedMilliseconds >= maxWaitSeconds * 1000)
+                {
+                    StaticViewModel.AddDebugMessage($"Process {_file.Name} did not start");
+                    return;
                 }
 
                 Thread.Sleep(1000);
