@@ -15,8 +15,7 @@
             Margin="0,16"
             IsBannerEnabled="False"
             IsNavigationEnabled="False"
-            MouseHoverBorderEnabled="False"
-            SelectionChanged="flpWizard_SelectionChanged">
+            MouseHoverBorderEnabled="False">
             <mah:FlipView.Items>
 
                 <Grid>
