@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.ServiceProcess;
 using Microsoft.Win32;
@@ -97,37 +97,87 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void TryStart()
         {
-            TryStop();
-
-            using (ServiceController serviceController = LoadFreshService())
+            if (_startMode == ServiceStartMode.Disabled)
             {
-                if (serviceController.StartType != ServiceStartMode.Disabled && serviceController.ServiceType.HasFlag(ServiceType.Win32OwnProcess))
+                StaticViewModel.AddLogMessage($"Cannot start {Name} because it is disabled");
+                return;
+            }
+
+            if (_serviceType.HasFlag(ServiceType.KernelDriver))
+            {
+                StaticViewModel.AddLogMessage($"Cannot start {Name} because it is a kernel driver");
+                return;
+            }
+
+            try
+            {
+                StaticViewModel.AddLogMessage("Restarting " + Name);
+                StaticViewModel.IsLoading = true;
+
+                TryStop();
+
+                using (ServiceController serviceController = LoadFreshService())
                 {
-                    serviceController.Start();
-                    serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
-                    Status = serviceController.Status;
+                    if (serviceController.StartType != ServiceStartMode.Disabled && serviceController.ServiceType.HasFlag(ServiceType.Win32OwnProcess))
+                    {
+                        serviceController.Start();
+                        serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
+                        
+                        Status = serviceController.Status;
+                        StaticViewModel.AddLogMessage("Restarted " + Name);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex, "Failed to restart " + Name);
+            }
+            finally
+            {
+                StaticViewModel.IsLoading = false;
             }
         }
         
         public void TryStop()
         {
-            using (ServiceController serviceController = LoadFreshService())
+            if (_serviceType.HasFlag(ServiceType.KernelDriver))
             {
-                if (serviceController.Status == ServiceControllerStatus.Running && serviceController.ServiceType.HasFlag(ServiceType.Win32OwnProcess))
-                {
-                    try
-                    {
-                        serviceController.Stop();
-                        serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        StaticViewModel.AddDebugMessage(ex);
-                    }
+                StaticViewModel.AddLogMessage($"Cannot stop {Name} because it is a kernel driver");
+                return;
+            }
 
-                    Status = serviceController.Status;
+            try
+            {
+                StaticViewModel.AddLogMessage("Stopping " + Name);
+                StaticViewModel.IsLoading = true;
+
+                using (ServiceController serviceController = LoadFreshService())
+                {
+                    if (serviceController.Status == ServiceControllerStatus.Running && serviceController.ServiceType.HasFlag(ServiceType.Win32OwnProcess))
+                    {
+                        try
+                        {
+                            serviceController.Stop();
+                            serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            StaticViewModel.AddDebugMessage(ex);
+                        }
+
+                        Status = serviceController.Status;
+                    }
                 }
+                
+                StaticViewModel.AddLogMessage("Stopped " + Name);
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex, "Failed to stop " + Name);
+            }
+            finally
+            {
+                StaticViewModel.IsLoading = false;
             }
         }
 
@@ -161,6 +211,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
                     serviceController.Refresh();
                     StartMode = serviceController.StartType;
+                    Enabled = serviceController.StartType != ServiceStartMode.Disabled;
                 }
             }
         }
@@ -180,6 +231,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
                     serviceController.Refresh();
                     StartMode = serviceController.StartType;
+                    Enabled = serviceController.StartType != ServiceStartMode.Disabled;
                 }
             }
         }
@@ -201,6 +253,9 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
                 serviceController.Refresh();
                 StartMode = serviceController.StartType;
+                Enabled = serviceController.StartType != ServiceStartMode.Disabled;
+
+                StaticViewModel.AddLogMessage($"Changed start mode for {Name} to {StartMode}");
             }
         }
 
