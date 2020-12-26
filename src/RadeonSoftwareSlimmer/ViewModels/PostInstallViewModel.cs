@@ -105,42 +105,12 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
         public async Task HostServices_StopAsync()
         {
-            try
-            {
-                StaticViewModel.AddLogMessage("Stopping Radeon Software Host Services");
-                StaticViewModel.IsLoading = true;
-
-                await Task.Run(() => HostService.StopRadeonSoftware());
-            }
-            catch (Exception ex)
-            {
-                StaticViewModel.AddLogMessage(ex);
-            }
-            finally
-            {
-                LoadOrRefresh();
-                StaticViewModel.IsLoading = false;
-            }
+            await Task.Run(() => HostService.StopRadeonSoftware());
         }
 
         public async Task HostServices_RestartAsync()
         {
-            try
-            {
-                StaticViewModel.AddLogMessage("Restarting Radeon Software Host Services");
-                StaticViewModel.IsLoading = true;
-
-                await Task.Run(() => HostService.RestartRadeonSoftware());
-            }
-            catch (Exception ex)
-            {
-                StaticViewModel.AddLogMessage(ex);
-            }
-            finally
-            {
-                LoadOrRefresh();
-                StaticViewModel.IsLoading = false;
-            }
+            await Task.Run(() => HostService.RestartRadeonSoftware());
         }
 
 
