@@ -101,7 +101,7 @@
                             <Label Content="Packages" FontSize="18" FontWeight="Bold" />
                             <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" />
                         </StackPanel>
-                        <Label Content="Uncheck 'Keep' for packages you want to remove." />
+                        <TextBlock Text="Uncheck 'Keep' for packages you want to remove." />
                         <DataGrid
                             mah:DataGridHelper.EnableCellEditAssist="True"
                             CanUserAddRows="False"
@@ -115,7 +115,21 @@
                             <Label Content="Scheduled Tasks" FontSize="18" FontWeight="Bold" />
                             <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
                         </StackPanel>
-                        <Label Content="Uncheck 'Enabled' for Scheduled Tasks you want Unhidden and Disabled." />
+                        <TextBlock Text="Uncheck 'Enabled' to disable the scheduled task." />
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                x:Name="btnScheduledTaskEnableAll"
+                                HorizontalAlignment="Center"
+                                Click="btnScheduledTaskEnableAll_Click"
+                                Content="Enable All"
+                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            <Button
+                                x:Name="btnScheduledTaskDisableAll"
+                                HorizontalAlignment="Center"
+                                Click="btnScheduledTaskDisableAll_Click"
+                                Content="Disable All"
+                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        </StackPanel>
                         <DataGrid
                             mah:DataGridHelper.EnableCellEditAssist="True"
                             CanUserAddRows="False"

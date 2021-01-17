@@ -93,5 +93,16 @@ namespace RadeonSoftwareSlimmer.Views
             //Stop these DataGrid SelectionChanged events from triggering the SelectionChanged even on the FlipView
             e.Handled = true;
         }
+
+
+        private void btnScheduledTaskEnableAll_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ScheduledTask_SetAll(true);
+        }
+
+        private void btnScheduledTaskDisableAll_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ScheduledTask_SetAll(false);
+        }
     }
 }

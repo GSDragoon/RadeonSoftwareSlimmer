@@ -38,20 +38,20 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             ScheduledTasks = new List<ScheduledTaskXmlModel>(GetInstallerScheduledTasks(installDirectory));
         }
 
-        public static void UnhideAndDisableScheduledTask(ScheduledTaskXmlModel scheduledTaskToRemove)
+        public static void SetScheduledTaskStatusAndUnhide(ScheduledTaskXmlModel scheduledTaskToUpdate)
         {
-            if (scheduledTaskToRemove == null)
-                throw new ArgumentNullException(nameof(scheduledTaskToRemove));
+            if (scheduledTaskToUpdate == null)
+                throw new ArgumentNullException(nameof(scheduledTaskToUpdate));
 
-            if (!TryGetScheduledTaskXDocument(scheduledTaskToRemove.File, out XDocument xDoc))
+            if (!TryGetScheduledTaskXDocument(scheduledTaskToUpdate.File, out XDocument xDoc))
                 throw new IOException();
 
             XNamespace xNs = xDoc.Root.GetDefaultNamespace();
 
-            xDoc.Root.Element(xNs + "Settings").Element(xNs + "Enabled").Value = bool.FalseString;
+            xDoc.Root.Element(xNs + "Settings").Element(xNs + "Enabled").Value = scheduledTaskToUpdate.Enabled.ToString();
             xDoc.Root.Element(xNs + "Settings").Element(xNs + "Hidden").Value = bool.FalseString;
 
-            xDoc.Save(scheduledTaskToRemove.File.FullName, SaveOptions.None);
+            xDoc.Save(scheduledTaskToUpdate.File.FullName, SaveOptions.None);
         }
 
 
