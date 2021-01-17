@@ -63,10 +63,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\Radeonsoftware\cache",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\RadeonInstaller\cache",
 
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\Dx9Cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\DxCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\GLCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\LocalLow\AMD\VkCache",
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\Dx9Cache",
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\DxCache",
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\GLCache",
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\VkCache",
 
                 //C:\Windows\System32\AMD
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify)}\AMD",
