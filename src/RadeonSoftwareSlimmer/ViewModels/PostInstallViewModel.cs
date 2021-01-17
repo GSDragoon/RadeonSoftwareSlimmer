@@ -89,7 +89,6 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 InstalledList.ApplyChanges();
                 TempFileList.ApplyChanges();
 
-                LoadOrRefresh();
                 StaticViewModel.AddLogMessage("Changes applied to post install");
             }
             catch (Exception ex)
@@ -98,6 +97,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
             finally
             {
+                LoadOrRefresh();
                 StaticViewModel.IsLoading = false;
             }
         }
@@ -105,12 +105,22 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
         public async Task HostServices_StopAsync()
         {
-            await Task.Run(() => HostService.StopRadeonSoftware());
+            await Task.Run(() => HostServices_Stop());
+        }
+        private void HostServices_Stop()
+        {
+            HostService.StopRadeonSoftware();
+            HostService.LoadOrRefresh();
         }
 
         public async Task HostServices_RestartAsync()
         {
-            await Task.Run(() => HostService.RestartRadeonSoftware());
+            await Task.Run(() => HostServices_Restart());
+        }
+        private void HostServices_Restart()
+        {
+            HostService.RestartRadeonSoftware();
+            HostService.LoadOrRefresh();
         }
 
 

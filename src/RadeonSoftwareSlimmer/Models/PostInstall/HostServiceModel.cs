@@ -86,7 +86,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
             finally
             {
-                LoadOrRefresh();
                 StaticViewModel.IsLoading = false;
             }
         }
@@ -118,7 +117,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
             finally
             {
-                LoadOrRefresh();
                 StaticViewModel.IsLoading = false;
             }
         }
