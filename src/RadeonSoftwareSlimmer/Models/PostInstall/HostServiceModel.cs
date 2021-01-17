@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -86,6 +86,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
             finally
             {
+                LoadOrRefresh();
                 StaticViewModel.IsLoading = false;
             }
         }
@@ -117,6 +118,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
             finally
             {
+                LoadOrRefresh();
                 StaticViewModel.IsLoading = false;
             }
         }
