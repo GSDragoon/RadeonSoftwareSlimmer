@@ -168,6 +168,14 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
+        public void ScheduledTask_SetAll(bool enabled)
+        {
+            foreach (ScheduledTaskXmlModel scheduledTask in ScheduledTaskList.ScheduledTasks)
+            {
+                scheduledTask.Enabled = enabled;
+            }
+        }
+
         public void ModifyInstaller()
         {
             try
@@ -180,9 +188,9 @@ namespace RadeonSoftwareSlimmer.ViewModels
                     PackageListModel.RemovePackage(package);
                 }
 
-                foreach (ScheduledTaskXmlModel task in ScheduledTaskList.ScheduledTasks.Where(t => !t.Enabled))
+                foreach (ScheduledTaskXmlModel task in ScheduledTaskList.ScheduledTasks)
                 {
-                    ScheduledTaskXmlListModel.UnhideAndDisableScheduledTask(task);
+                    ScheduledTaskXmlListModel.SetScheduledTaskStatusAndUnhide(task);
                 }
 
                 ReadFromExtractedInstaller();
