@@ -10,6 +10,10 @@
 * abc
 * 123
 
+**Dependencies Updated**
+* abc
+* 123
+
 **Other Changes**
 * abc
 * 123
