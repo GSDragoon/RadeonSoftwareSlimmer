@@ -83,7 +83,6 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
                 HostService.StopRadeonSoftware();
                 
-                HostService.ApplyChanges();
                 RadeonScheduledTaskList.ApplyChanges();
                 ServiceList.ApplyChanges();
                 InstalledList.ApplyChanges();

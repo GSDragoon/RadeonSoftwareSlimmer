@@ -74,14 +74,6 @@
                         <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Stop Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
                     </StackPanel>
 
-                    <GroupBox Margin="8" Padding="8" HorizontalAlignment="Left" Header="Advanced">
-                        <StackPanel>
-                            <TextBlock Text="The clean way to prevent Host Services processes from running is to disable the 'StartCN' and 'StartDVR' Scheduled Tasks and don't open Radeon Software." TextWrapping="Wrap" />
-                            <TextBlock Text="The unoffical way to prevent host services processes from running is to rename Radeon Settings CLI (RSServCmd.exe) so they don't start. This is what 'Disabled' here does. This is unsupported by AMD and can cause problems. Use the option with caution!" TextWrapping="Wrap" />
-                            <mah:ToggleSwitch IsOn="{Binding HostService.Enabled}" OffContent="Disabled" OnContent="Enabled" />
-                        </StackPanel>
-                    </GroupBox>
-
                 </StackPanel>
             </mah:MetroTabItem>
 

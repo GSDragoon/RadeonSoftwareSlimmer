@@ -9,16 +9,17 @@
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
     d:DataContext="{d:DesignInstance vm:PreInstallViewModel}"
     mc:Ignorable="d">
-    <Grid VerticalAlignment="Center">
+    <Grid>
         <mah:FlipView
             x:Name="flpWizard"
             Margin="0,16"
+            FontSize="14"
             IsBannerEnabled="False"
             IsNavigationEnabled="False"
             MouseHoverBorderEnabled="False">
             <mah:FlipView.Items>
 
-                <Grid>
+                <Grid VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -52,7 +53,7 @@
 
                 </Grid>
 
-                <Grid>
+                <Grid VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -85,7 +86,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -95,55 +96,68 @@
                     <mah:MetroProgressBar Grid.Row="1" IsIndeterminate="True" />
                 </Grid>
 
-                <Grid>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Packages" FontSize="18" FontWeight="Bold" />
-                            <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" />
-                        </StackPanel>
-                        <TextBlock Text="Uncheck 'Keep' for packages you want to remove." />
-                        <DataGrid
-                            mah:DataGridHelper.EnableCellEditAssist="True"
-                            CanUserAddRows="False"
-                            CanUserDeleteRows="False"
-                            GridLinesVisibility="Horizontal"
-                            ItemsSource="{Binding PackageList.InstallerPackages}"
-                            SelectionChanged="DataGrid_SelectionChanged"
-                            Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                <Grid VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <mah:MetroTabControl Grid.Row="0" mah:HeaderedControlHelper.HeaderFontWeight="Thin" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Scheduled Tasks" FontSize="18" FontWeight="Bold" />
-                            <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
-                        </StackPanel>
-                        <TextBlock Text="Uncheck 'Enabled' to disable the scheduled task." />
-                        <StackPanel Orientation="Horizontal">
-                            <Button
-                                x:Name="btnScheduledTaskEnableAll"
-                                HorizontalAlignment="Center"
-                                Click="btnScheduledTaskEnableAll_Click"
-                                Content="Enable All"
-                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                            <Button
-                                x:Name="btnScheduledTaskDisableAll"
-                                HorizontalAlignment="Center"
-                                Click="btnScheduledTaskDisableAll_Click"
-                                Content="Disable All"
-                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        </StackPanel>
-                        <DataGrid
-                            mah:DataGridHelper.EnableCellEditAssist="True"
-                            CanUserAddRows="False"
-                            CanUserDeleteRows="False"
-                            GridLinesVisibility="Horizontal"
-                            ItemsSource="{Binding ScheduledTaskList.ScheduledTasks}"
-                            SelectionChanged="DataGrid_SelectionChanged"
-                            Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                        <mah:MetroTabItem Padding="8,4" Header="Packages">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Uncheck 'Keep' for packages you want to remove." />
+                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" />
+                                </StackPanel>
+                                <DataGrid
+                                    Margin="0,8"
+                                    mah:DataGridHelper.EnableCellEditAssist="True"
+                                    CanUserAddRows="False"
+                                    CanUserDeleteRows="False"
+                                    GridLinesVisibility="Horizontal"
+                                    ItemsSource="{Binding PackageList.InstallerPackages}"
+                                    SelectionChanged="DataGrid_SelectionChanged"
+                                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                            </StackPanel>
+                        </mah:MetroTabItem>
 
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button x:Name="btnNewInstaller" Click="btnNewInstaller_Click" Content="Select New Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                            <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Content="Modify Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                            <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" Content="Run Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        </StackPanel>
+                        <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Uncheck 'Enabled' to disable the scheduled task." />
+                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        x:Name="btnScheduledTaskEnableAll"
+                                        HorizontalAlignment="Center"
+                                        Click="btnScheduledTaskEnableAll_Click"
+                                        Content="Enable All"
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                    <Button
+                                        x:Name="btnScheduledTaskDisableAll"
+                                        HorizontalAlignment="Center"
+                                        Click="btnScheduledTaskDisableAll_Click"
+                                        Content="Disable All"
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                </StackPanel>
+                                <DataGrid
+                                    mah:DataGridHelper.EnableCellEditAssist="True"
+                                    CanUserAddRows="False"
+                                    CanUserDeleteRows="False"
+                                    GridLinesVisibility="Horizontal"
+                                    ItemsSource="{Binding ScheduledTaskList.ScheduledTasks}"
+                                    SelectionChanged="DataGrid_SelectionChanged"
+                                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                            </StackPanel>
+                        </mah:MetroTabItem>
+
+                    </mah:MetroTabControl>
+
+                    <StackPanel Grid.Row="1" Margin="0,16,0,0" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Button x:Name="btnNewInstaller" Click="btnNewInstaller_Click" Content="Select New Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Content="Modify Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" Content="Run Installer" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                     </StackPanel>
                 </Grid>
 

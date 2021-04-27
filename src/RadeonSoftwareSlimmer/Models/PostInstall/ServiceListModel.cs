@@ -53,6 +53,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 //Main display driver
                 //Probably no point in showing this. Is there even a reason to remove it?
                 //"amdkmdag",
+                //"amdwddmg",
 
                 //AMD PCI Root Bus Lower Filter
                 //Probably shouldn't mess with this one either
@@ -70,6 +71,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 "amdi2stdmafd",
                 "AMDSoundWireAudioService",
                 "AtiHDAudioService",
+                "AMDSAFD",
 
                 //NT/Windows Services
                 "AMD Crash Defender Service",
