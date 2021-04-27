@@ -55,6 +55,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CIM\Log",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CIM\Reports",
 
+                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD_Common",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CN\Analytics",
                 $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CN\NewsFeed",
 
