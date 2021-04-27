@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RadeonSoftwareSlimmer.ViewModels;
@@ -34,7 +35,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public void LoadOrRefresh(DirectoryInfo installDirectory)
         {
             if (installDirectory != null)
-                InstallerPackages = new List<PackageModel>(GetAllInstallerPackages(installDirectory));
+                InstallerPackages = new List<PackageModel>(GetAllInstallerPackages(installDirectory).OrderBy(p => p.ProductName));
         }
 
         public static void RemovePackage(PackageModel packageToRemove)
