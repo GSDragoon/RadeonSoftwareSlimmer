@@ -4,8 +4,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
     public class PackageModel
     {
-        public PackageModel()
+        private readonly FileInfo _file;
+
+        
+        public PackageModel(FileInfo file)
         {
+            _file = file;
+
             Keep = true;
         }
 
@@ -15,8 +20,12 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public string Url { get; internal set; }
         public string Type { get; internal set; }
         public string Description { get; internal set; }
-        public FileInfo File { get; internal set; }
 
+
+        public FileInfo GetFile()
+        {
+            return _file;
+        }
 
         public bool Equals(PackageModel package)
         {
@@ -25,9 +34,11 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
             return GetComparisonHashCode().Equals(package.GetComparisonHashCode());
         }
+
+
         private int GetComparisonHashCode()
         {
-            return $"{ProductName}|{Url}|{Description}|{Type}|{File.FullName}".GetHashCode();
+            return $"{ProductName}|{Url}|{Description}|{Type}|{_file.FullName}".GetHashCode();
         }
     }
 }

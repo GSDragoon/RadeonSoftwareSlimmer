@@ -6,9 +6,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
     public class ScheduledTaskXmlModel : INotifyPropertyChanged
     {
         private bool _enabled;
+        private readonly FileInfo _file;
 
 
-        public ScheduledTaskXmlModel() { }
+        public ScheduledTaskXmlModel(FileInfo file)
+        {
+            _file = file;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -27,6 +31,10 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public string Uri { get; internal set; }
         public string Command { get; internal set; }
         public string Description { get; internal set; }
-        public FileInfo File { get; internal set; }
+
+        public FileInfo GetFile()
+        {
+            return _file;
+        }
     }
 }

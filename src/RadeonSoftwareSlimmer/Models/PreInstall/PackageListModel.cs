@@ -44,21 +44,20 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
             JObject fullJson;
 
-            StaticViewModel.AddDebugMessage($"Removing package {packageToRemove.ProductName} from {packageToRemove.File.FullName}");
+            StaticViewModel.AddDebugMessage($"Removing package {packageToRemove.ProductName} from {packageToRemove.GetFile().FullName}");
 
-            using (StreamReader streamReader = new StreamReader(packageToRemove.File.FullName))
+            using (StreamReader streamReader = new StreamReader(packageToRemove.GetFile().FullName))
             using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
             {
                 fullJson = (JObject)JToken.ReadFrom(jsonTextReader);
                 JToken jToken = fullJson.SelectToken("Packages.Package");
                 foreach (JToken token in jToken.Children())
                 {
-                    PackageModel currentPackage = new PackageModel();
+                    PackageModel currentPackage = new PackageModel(packageToRemove.GetFile());
                     currentPackage.Description = token.SelectToken("Info.Description").ToString();
                     currentPackage.ProductName = token.SelectToken("Info.productName").ToString();
                     currentPackage.Url = token.SelectToken("Info.url").ToString();
                     currentPackage.Type = token.SelectToken("Info.ptype").ToString();
-                    currentPackage.File = packageToRemove.File;
 
                     if (currentPackage.Equals(packageToRemove))
                     {
@@ -68,7 +67,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 }
             }
 
-            using (StreamWriter streamWriter = new StreamWriter(packageToRemove.File.FullName))
+            using (StreamWriter streamWriter = new StreamWriter(packageToRemove.GetFile().FullName))
             using (JsonTextWriter jsonTextWriter = new JsonTextWriter(streamWriter))
             {
                 jsonTextWriter.Formatting = Formatting.Indented;
@@ -96,14 +95,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                         JToken jToken = jObject.SelectToken("Packages.Package");
                         foreach (JToken token in jToken.Children())
                         {
-                            PackageModel package = new PackageModel();
+                            PackageModel package = new PackageModel(file);
                             package.Description = token.SelectToken("Info.Description").ToString();
                             package.ProductName = token.SelectToken("Info.productName").ToString();
                             package.Url = token.SelectToken("Info.url").ToString();
                             package.Type = token.SelectToken("Info.ptype").ToString();
-                            package.File = file;
 
-                            StaticViewModel.AddDebugMessage($"Found package {package.ProductName} in {package.File.FullName}");
+                            StaticViewModel.AddDebugMessage($"Found package {package.ProductName} in {package.GetFile().FullName}");
                             yield return package;
                         }
                     }

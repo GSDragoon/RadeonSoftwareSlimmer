@@ -43,7 +43,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             if (scheduledTaskToUpdate == null)
                 throw new ArgumentNullException(nameof(scheduledTaskToUpdate));
 
-            if (!TryGetScheduledTaskXDocument(scheduledTaskToUpdate.File, out XDocument xDoc))
+            if (!TryGetScheduledTaskXDocument(scheduledTaskToUpdate.GetFile(), out XDocument xDoc))
                 throw new IOException();
 
             XNamespace xNs = xDoc.Root.GetDefaultNamespace();
@@ -51,7 +51,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             xDoc.Root.Element(xNs + "Settings").Element(xNs + "Enabled").Value = scheduledTaskToUpdate.Enabled.ToString();
             xDoc.Root.Element(xNs + "Settings").Element(xNs + "Hidden").Value = bool.FalseString;
 
-            xDoc.Save(scheduledTaskToUpdate.File.FullName, SaveOptions.None);
+            xDoc.Save(scheduledTaskToUpdate.GetFile().FullName, SaveOptions.None);
         }
 
 
@@ -62,7 +62,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             {
                 if (TryGetScheduledTaskXDocument(file, out XDocument xDoc))
                 {
-                    ScheduledTaskXmlModel scheduledTask = new ScheduledTaskXmlModel();
+                    ScheduledTaskXmlModel scheduledTask = new ScheduledTaskXmlModel(file);
                     XNamespace xNs = xDoc.Root.GetDefaultNamespace();
 
                     //Not every file has a URI specified :(
@@ -76,8 +76,6 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                     string command = xDoc.Root.Element(xNs + "Actions").Element(xNs + "Exec").Element(xNs + "Command").Value;
                     string arguments = xDoc.Root.Element(xNs + "Actions").Element(xNs + "Exec").Element(xNs + "Arguments").Value;
                     scheduledTask.Command = $"{command} {arguments}";
-
-                    scheduledTask.File = file;
 
                     StaticViewModel.AddDebugMessage($"Found scheduled task {uri} in {file.FullName}");
                     yield return scheduledTask;
