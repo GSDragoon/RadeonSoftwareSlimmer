@@ -6,6 +6,14 @@ if (Test-Path -Path .\local-ci)
 	Remove-Item -Path .\local-ci -Recurse -Force
 }
 
+if (Test-Path -Path .\test-results)
+{
+	Remove-Item -Path .\test-results -Recurse -Force
+}
+
+# Install Report Generator
+dotnet tool install dotnet-reportgenerator-globaltool --tool-path .\test-results
+
 # Clean
 dotnet clean --configuration Debug --framework net5.0-windows
 dotnet clean --configuration Debug --framework netcoreapp3.1
@@ -15,7 +23,16 @@ dotnet clean --configuration Release --framework netcoreapp3.1
 dotnet clean --configuration Release --framework net48
 
 # Test
-dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
+# dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
+dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj --framework net48
+dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj --framework netcoreapp3.1
+dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj --framework net5.0-windows --settings coverage.runsettings
+
+# Run Report Generator to create coverage reports
+.\test-results\reportgenerator "-reports:test-results\*\coverage.cobertura.xml" "-targetdir:test-results\coveragereport" "-reporttypes:Html;TextSummary;Badges"
+
+# Output coverage results to console
+Get-Content .\test-results\coveragereport\Summary.txt
 
 # Build and create artifacts
 dotnet publish --configuration Release --framework net5.0-windows --self-contained false --force --output .\local-ci\net5.0 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci

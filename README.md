@@ -44,7 +44,7 @@ Thanks to the following third parties used with this software:
 
 * .NET
   * https://dotnet.microsoft.com/
-  * Built with .NET Core, .NET Framework and related Microsoft libraries
+  * Built with .NET and related Microsoft libraries
 * 7-Zip
   * https://www.7-zip.org/
   * 7z.exe included in download
@@ -61,3 +61,6 @@ Thanks to the following third parties used with this software:
 * Task Scheduler Manged Wrapper
   * https://github.com/dahall/taskscheduler
   * Used to read and modify system scheduled tasks
+* System.IO.Abstractions
+  * https://github.com/System-IO-Abstractions/System.IO.Abstractions
+  * Provides abstractions for System.IO for testability

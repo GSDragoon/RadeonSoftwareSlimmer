@@ -3,6 +3,7 @@ using RadeonSoftwareSlimmer.Services;
 
 namespace RadeonSoftwareSlimmer
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class MainWindow : MetroWindow
     {
         public MainWindow()

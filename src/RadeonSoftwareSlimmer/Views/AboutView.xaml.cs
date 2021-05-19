@@ -5,6 +5,7 @@ using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class AboutView : System.Windows.Controls.UserControl
     {
         public AboutView()
