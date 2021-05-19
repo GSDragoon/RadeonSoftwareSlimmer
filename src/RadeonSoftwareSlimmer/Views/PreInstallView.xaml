@@ -152,6 +152,24 @@
                             </StackPanel>
                         </mah:MetroTabItem>
 
+                        <mah:MetroTabItem Padding="8,4" Header="Display Driver Components">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Uncheck 'Keep' for components you want to remove." />
+                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" />
+                                </StackPanel>
+                                <DataGrid
+                                    Margin="0,8"
+                                    mah:DataGridHelper.EnableCellEditAssist="True"
+                                    CanUserAddRows="False"
+                                    CanUserDeleteRows="False"
+                                    GridLinesVisibility="Horizontal"
+                                    ItemsSource="{Binding DisplayComponentList.DisplayDriverComponents}"
+                                    SelectionChanged="DataGrid_SelectionChanged"
+                                    Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
+                            </StackPanel>
+                        </mah:MetroTabItem>
+
                     </mah:MetroTabControl>
 
                     <StackPanel Grid.Row="1" Margin="0,16,0,0" HorizontalAlignment="Center" Orientation="Horizontal">

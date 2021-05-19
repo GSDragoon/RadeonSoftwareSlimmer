@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Win32;
@@ -18,6 +19,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
             InstallerFiles = new InstallerFilesModel();
             PackageList = new PackageListModel();
             ScheduledTaskList = new ScheduledTaskXmlListModel();
+            DisplayComponentList = new DisplayComponentListModel(new FileSystem());
         }
 
 
@@ -28,6 +30,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public InstallerFilesModel InstallerFiles { get; }
         public PackageListModel PackageList { get; }
         public ScheduledTaskXmlListModel ScheduledTaskList { get; }
+        public DisplayComponentListModel DisplayComponentList { get; }
         public bool InstallerAlreadyExtracted { get; set; }
         public WizardIndex FlipViewIndex { get; set; }
 
@@ -155,6 +158,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 DirectoryInfo extractedDirectory = new DirectoryInfo(InstallerFiles.ExtractedInstallerDirectory);
                 PackageList.LoadOrRefresh(extractedDirectory);
                 ScheduledTaskList.LoadOrRefresh(extractedDirectory);
+                DisplayComponentList.LoadOrRefresh(extractedDirectory.FullName);
 
                 StaticViewModel.AddLogMessage("Finished loading installer information");
             }
@@ -192,6 +196,8 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 {
                     ScheduledTaskXmlListModel.SetScheduledTaskStatusAndUnhide(task);
                 }
+
+                DisplayComponentList.RemoveComponentsNotKeeping();
 
                 ReadFromExtractedInstaller();
 

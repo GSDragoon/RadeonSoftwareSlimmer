@@ -6,6 +6,7 @@ using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)

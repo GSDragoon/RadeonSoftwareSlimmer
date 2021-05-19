@@ -5,6 +5,7 @@ using System.Windows.Controls;
 
 namespace RadeonSoftwareSlimmer.Views
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class HelpLink : UserControl
     {
         public static readonly DependencyProperty LinkProperty = DependencyProperty.Register(nameof(Link), typeof(Uri), typeof(MainWindow));
