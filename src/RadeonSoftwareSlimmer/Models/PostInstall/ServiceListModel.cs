@@ -61,6 +61,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
                 //System Devices/Kernel Drivers
                 "amdfendr",
+                "amdfendrmgr",
                 "amdlog",
                 "AMDXE",
 
