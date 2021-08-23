@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
+using System.IO.Abstractions;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class TempFileListModel : INotifyPropertyChanged
     {
+        private readonly IFileSystem _fileSystem;
         private IEnumerable<TempFileModel> _tempFiles;
 
 
-        public TempFileListModel() { }
+        public TempFileListModel(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,7 +48,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         }
 
 
-        private static IEnumerable<TempFileModel> GetAllRadeonTempFiles()
+        private IEnumerable<TempFileModel> GetAllRadeonTempFiles()
         {
             string[] tempFolders =
             {
@@ -78,10 +82,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
             foreach (string tempFolder in tempFolders)
             {
-                if (Directory.Exists(tempFolder))
+                if (_fileSystem.Directory.Exists(tempFolder))
                 {
                     StaticViewModel.AddDebugMessage($"Found temp folder {tempFolder}");
-                    yield return new TempFileModel(tempFolder);
+                    yield return new TempFileModel(tempFolder, _fileSystem);
                 }
                 else
                 {

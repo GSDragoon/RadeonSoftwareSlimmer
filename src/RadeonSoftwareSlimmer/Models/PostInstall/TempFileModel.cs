@@ -1,26 +1,33 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Abstractions;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class TempFileModel : INotifyPropertyChanged
     {
+        private readonly IFileSystem _fileSystem;
+
         //1024 instead of 1000, since this isn't a disk drive manufacturer...
         private const float DIV = 1024.0F;
         private bool _delete;
 
-        public TempFileModel(string folder)
+
+        public TempFileModel(string folder, IFileSystem fileSystem)
         {
+            _fileSystem = fileSystem;
             Clear = false;
             Folder = folder;
+
             CalculateSize();
         }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
 
         public bool Clear
         {
@@ -47,10 +54,12 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             long bytes = 0;
             int files = 0;
-            DirectoryInfo directoryInfo = new DirectoryInfo(Folder);
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(Folder);
 
-            foreach (FileInfo fileInfo in directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories))
+            foreach (IFileInfo fileInfo in directoryInfo.EnumerateFiles("*", SearchOption.AllDirectories))
             {
+                files++;
+
                 try
                 {
                     bytes += fileInfo.Length;
@@ -59,8 +68,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 {
                     StaticViewModel.AddDebugMessage(ex, $"Unable to determine file size of {fileInfo.FullName}");
                 }
-
-                files++;
             }
 
             Files = files;
@@ -82,36 +89,33 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             return $"{bytes / (DIV * DIV * DIV):N2} GB";
         }
 
-        private static void ClearFolder(string folder)
+        private void ClearFolder(string folder)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(folder);
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(folder);
 
-            if (directoryInfo.Exists)
+            foreach (IFileInfo fileInfo in directoryInfo.EnumerateFiles())
             {
-                foreach (FileInfo fileInfo in directoryInfo.EnumerateFiles())
+                try
                 {
-                    try
-                    {
-                        fileInfo.Delete();
-                    }
-                    catch (Exception ex)
-                    {
-                        StaticViewModel.AddDebugMessage(ex, $"Unable to delete {fileInfo.FullName}");
-                    }
+                    fileInfo.Delete();
                 }
-
-                foreach (DirectoryInfo subDirectoryInfo in directoryInfo.EnumerateDirectories())
+                catch (Exception ex)
                 {
-                    ClearFolder(subDirectoryInfo.FullName);
+                    StaticViewModel.AddDebugMessage(ex, $"Unable to delete {fileInfo.FullName}");
+                }
+            }
 
-                    try
-                    {
-                        subDirectoryInfo.Delete();
-                    }
-                    catch (Exception ex)
-                    {
-                        StaticViewModel.AddDebugMessage(ex, $"Unable to delete {subDirectoryInfo.FullName}");
-                    }
+            foreach (IDirectoryInfo subDirectoryInfo in directoryInfo.EnumerateDirectories())
+            {
+                ClearFolder(subDirectoryInfo.FullName);
+
+                try
+                {
+                    subDirectoryInfo.Delete();
+                }
+                catch (Exception ex)
+                {
+                    StaticViewModel.AddDebugMessage(ex, $"Unable to delete {subDirectoryInfo.FullName}");
                 }
             }
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -12,10 +13,14 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
     //So many problems with these files... This is why we can't have nice things.
     public class ScheduledTaskXmlListModel : INotifyPropertyChanged
     {
+        private readonly IFileSystem _fileSystem;
         private IEnumerable<ScheduledTaskXmlModel> _scheduledTasks;
 
 
-        public ScheduledTaskXmlListModel() { }
+        public ScheduledTaskXmlListModel(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -33,17 +38,17 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         }
 
 
-        public void LoadOrRefresh(DirectoryInfo installDirectory)
+        public void LoadOrRefresh(IDirectoryInfo installDirectory)
         {
             ScheduledTasks = new List<ScheduledTaskXmlModel>(GetInstallerScheduledTasks(installDirectory));
         }
 
-        public static void SetScheduledTaskStatusAndUnhide(ScheduledTaskXmlModel scheduledTaskToUpdate)
+        public void SetScheduledTaskStatusAndUnhide(ScheduledTaskXmlModel scheduledTaskToUpdate)
         {
             if (scheduledTaskToUpdate == null)
                 throw new ArgumentNullException(nameof(scheduledTaskToUpdate));
 
-            if (!TryGetScheduledTaskXDocument(scheduledTaskToUpdate.GetFile(), out XDocument xDoc))
+            if (!TryGetScheduledTaskXDocument(scheduledTaskToUpdate.GetFile(), FileAccess.ReadWrite, out XDocument xDoc))
                 throw new IOException();
 
             XNamespace xNs = xDoc.Root.GetDefaultNamespace();
@@ -55,12 +60,12 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         }
 
 
-        private static IEnumerable<ScheduledTaskXmlModel> GetInstallerScheduledTasks(DirectoryInfo installDirectory)
+        private IEnumerable<ScheduledTaskXmlModel> GetInstallerScheduledTasks(IDirectoryInfo installDirectory)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(installDirectory + "\\Config");
-            foreach (FileInfo file in directoryInfo.EnumerateFiles("*.xml", SearchOption.TopDirectoryOnly).Where(f => !f.Name.StartsWith("Monet", StringComparison.CurrentCulture)))
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(installDirectory + "\\Config");
+            foreach (IFileInfo file in directoryInfo.EnumerateFiles("*.xml", SearchOption.TopDirectoryOnly).Where(f => !f.Name.StartsWith("Monet", StringComparison.CurrentCulture)))
             {
-                if (TryGetScheduledTaskXDocument(file, out XDocument xDoc))
+                if (TryGetScheduledTaskXDocument(file, FileAccess.Read, out XDocument xDoc))
                 {
                     ScheduledTaskXmlModel scheduledTask = new ScheduledTaskXmlModel(file);
                     XNamespace xNs = xDoc.Root.GetDefaultNamespace();
@@ -77,13 +82,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                     string arguments = xDoc.Root.Element(xNs + "Actions").Element(xNs + "Exec").Element(xNs + "Arguments").Value;
                     scheduledTask.Command = $"{command} {arguments}";
 
-                    StaticViewModel.AddDebugMessage($"Found scheduled task {uri} in {file.FullName}");
+                    StaticViewModel.AddDebugMessage($"Found scheduled task {scheduledTask.Description} in {file.FullName}");
                     yield return scheduledTask;
                 }
             }
         }
 
-        private static bool TryGetScheduledTaskXDocument(FileInfo file, out XDocument xDocument)
+        private bool TryGetScheduledTaskXDocument(IFileInfo file, FileAccess fileAccess, out XDocument xDocument)
         {
             xDocument = null;
 
@@ -92,14 +97,17 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
             try
             {
-                xDocument = XDocument.Load(file.FullName);
+                using (Stream stream = file.Open(FileMode.Open, fileAccess))
+                {
+                    xDocument = XDocument.Load(stream);
+                }
             }
             catch (XmlException)
             {
                 //Some files have incorrect encoding :(
                 //https://stackoverflow.com/questions/29915467/there-is-no-unicode-byte-order-mark-cannot-switch-to-unicode
                 StaticViewModel.AddDebugMessage($"Wrong encoding for {file.FullName}");
-                xDocument = XDocument.Parse(File.ReadAllText(file.FullName));
+                xDocument = XDocument.Parse(_fileSystem.File.ReadAllText(file.FullName));
             }
 
             if (!xDocument.Root.Name.LocalName.Equals("Task", StringComparison.CurrentCulture))

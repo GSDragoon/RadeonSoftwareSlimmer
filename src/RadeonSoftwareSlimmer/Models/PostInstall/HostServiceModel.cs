@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
+using System.IO.Abstractions;
 using Microsoft.Win32;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
@@ -10,7 +10,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class HostServiceModel : INotifyPropertyChanged
     {
-        private DirectoryInfo _cnDir;
+        private readonly IFileSystem _fileSystem;
+        private IDirectoryInfo _cnDir;
         private IList<RunningHostServiceModel> _hostServices;
 
         //File paths and names
@@ -24,7 +25,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         public const string CNCMD_RESTART = "restart";
 
 
-        public HostServiceModel() { }
+        public HostServiceModel(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -125,18 +129,18 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
                     if (string.IsNullOrWhiteSpace(installDir))
                     {
-                        _cnDir = new DirectoryInfo(INSTALL_FOLDER_DEFAULT_PATH);
+                        _cnDir = _fileSystem.DirectoryInfo.FromDirectoryName(INSTALL_FOLDER_DEFAULT_PATH);
                         StaticViewModel.AddDebugMessage($"Unable to read {INSTALL_FOLDER_REGISTRY_VALUE_NAME} from {INSTALL_FOLDER_REGISTRY_KEY}. Defaulting to {INSTALL_FOLDER_DEFAULT_PATH}.");
                     }
                     else
                     {
-                        _cnDir = new DirectoryInfo(installDir);
+                        _cnDir = _fileSystem.DirectoryInfo.FromDirectoryName(installDir);
                         StaticViewModel.AddDebugMessage($"Found {installDir} from {INSTALL_FOLDER_REGISTRY_KEY}.");
                     }
                 }
                 else
                 {
-                    _cnDir = new DirectoryInfo(INSTALL_FOLDER_DEFAULT_PATH);
+                    _cnDir = _fileSystem.DirectoryInfo.FromDirectoryName(INSTALL_FOLDER_DEFAULT_PATH);
                     StaticViewModel.AddDebugMessage($"Unable to read from {INSTALL_FOLDER_REGISTRY_KEY}. Defaulting to {INSTALL_FOLDER_DEFAULT_PATH}.");
                 }
             }

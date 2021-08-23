@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel;
-using System.IO;
+using System.IO.Abstractions;
 
 namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
     public class ScheduledTaskXmlModel : INotifyPropertyChanged
     {
         private bool _enabled;
-        private readonly FileInfo _file;
+        private readonly IFileInfo _file;
 
 
-        public ScheduledTaskXmlModel(FileInfo file)
+        public ScheduledTaskXmlModel(IFileInfo file)
         {
             _file = file;
         }
@@ -32,7 +32,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public string Command { get; internal set; }
         public string Description { get; internal set; }
 
-        public FileInfo GetFile()
+        public IFileInfo GetFile()
         {
             return _file;
         }

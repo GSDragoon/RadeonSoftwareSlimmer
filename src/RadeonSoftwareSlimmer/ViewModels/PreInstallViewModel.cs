@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,15 +10,18 @@ namespace RadeonSoftwareSlimmer.ViewModels
 {
     public class PreInstallViewModel : INotifyPropertyChanged
     {
-        public PreInstallViewModel()
+        private readonly IFileSystem _fileSystem;
+
+        public PreInstallViewModel(IFileSystem fileSystem)
         {
+            _fileSystem = fileSystem;
             FlipViewIndex = WizardIndex.SelectInstaller;
             InstallerAlreadyExtracted = false;
 
-            InstallerFiles = new InstallerFilesModel();
-            PackageList = new PackageListModel();
-            ScheduledTaskList = new ScheduledTaskXmlListModel();
-            DisplayComponentList = new DisplayComponentListModel(new FileSystem());
+            InstallerFiles = new InstallerFilesModel(_fileSystem);
+            PackageList = new PackageListModel(_fileSystem);
+            ScheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem);
+            DisplayComponentList = new DisplayComponentListModel(_fileSystem);
         }
 
 
@@ -71,7 +73,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
             if (result == true)
             {
-                FileInfo file = new FileInfo(openFileDialog.FileName);
+                IFileInfo file = _fileSystem.FileInfo.FromFileName(openFileDialog.FileName);
                 InstallerFiles.InstallerFile = openFileDialog.FileName;
                 InstallerFiles.ExtractedInstallerDirectory = $@"{file.Directory}\{file.Name.Substring(0, file.Name.Length - file.Extension.Length)}";
             }
@@ -86,16 +88,13 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
         public void ValidateExtractLocation()
         {
-            if (InstallerFiles.ValidateExtractLocation(InstallerAlreadyExtracted))
+            if (InstallerAlreadyExtracted && InstallerFiles.ValidateExtractedLocation())
             {
-                if (InstallerAlreadyExtracted)
-                {
-                    FlipViewIndex = WizardIndex.ModifyInstaller;
-                }
-                else
-                {
-                    FlipViewIndex = WizardIndex.ExtractingInstaller;
-                }
+                FlipViewIndex = WizardIndex.ModifyInstaller;
+            }
+            else if (InstallerFiles.ValidatePreExtractLocation())
+            {
+                FlipViewIndex = WizardIndex.ExtractingInstaller;
             }
         }
 
@@ -106,7 +105,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
             {
                 folderBrowserDialog.ShowNewFolderButton = true;
 
-                if (Directory.Exists(InstallerFiles.ExtractedInstallerDirectory))
+                if (_fileSystem.Directory.Exists(InstallerFiles.ExtractedInstallerDirectory))
                     folderBrowserDialog.SelectedPath = InstallerFiles.ExtractedInstallerDirectory;
 
                 if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -155,7 +154,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 StaticViewModel.IsLoading = true;
                 StaticViewModel.AddLogMessage("Loading installer information");
 
-                DirectoryInfo extractedDirectory = new DirectoryInfo(InstallerFiles.ExtractedInstallerDirectory);
+                IDirectoryInfo extractedDirectory = _fileSystem.DirectoryInfo.FromDirectoryName(InstallerFiles.ExtractedInstallerDirectory);
                 PackageList.LoadOrRefresh(extractedDirectory);
                 ScheduledTaskList.LoadOrRefresh(extractedDirectory);
                 DisplayComponentList.LoadOrRefresh(extractedDirectory.FullName);
@@ -194,7 +193,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
                 foreach (ScheduledTaskXmlModel task in ScheduledTaskList.ScheduledTasks)
                 {
-                    ScheduledTaskXmlListModel.SetScheduledTaskStatusAndUnhide(task);
+                    ScheduledTaskList.SetScheduledTaskStatusAndUnhide(task);
                 }
 
                 DisplayComponentList.RemoveComponentsNotKeeping();

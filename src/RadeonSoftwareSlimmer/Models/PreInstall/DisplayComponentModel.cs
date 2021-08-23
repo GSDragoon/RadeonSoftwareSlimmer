@@ -64,7 +64,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             StaticViewModel.AddDebugMessage($"Processing inf file {infFile.FullName}");
 
-            using (StreamReader reader = infFile.OpenText())
+            using (StreamReader reader = new StreamReader(infFile.OpenRead()))
             {
                 string line = string.Empty;
                 do

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Abstractions;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -9,11 +10,15 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
     public class InstallerFilesModel : INotifyPropertyChanged
     {
+        private readonly IFileSystem _fileSystem;
         private string _installerFile;
         private string _extractedInstallerDirectory;
 
 
-        public InstallerFilesModel() { }
+        public InstallerFilesModel(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -70,7 +75,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 return false;
             }
 
-            if (!File.Exists(_installerFile))
+            if (!_fileSystem.File.Exists(_installerFile))
             {
                 StaticViewModel.AddLogMessage($"Installer file {_installerFile} does not exist or cannot be accessed");
                 return false;
@@ -79,7 +84,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             return true;
         }
 
-        public bool ValidateExtractLocation(bool alreadyExtracted)
+        public bool ValidatePreExtractLocation()
         {
             if (string.IsNullOrWhiteSpace(_extractedInstallerDirectory))
             {
@@ -87,37 +92,43 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 return false;
             }
 
-            DirectoryInfo directoryInfo = new DirectoryInfo(_extractedInstallerDirectory);
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(_extractedInstallerDirectory);
 
-            if (alreadyExtracted)
+            if (directoryInfo.Exists && (directoryInfo.GetDirectories().Length > 0 || directoryInfo.GetFiles().Length > 0))
             {
-                if (directoryInfo.Exists)
-                {
-                    if (directoryInfo.GetFiles("Setup.exe", SearchOption.TopDirectoryOnly).Length != 1 ||
-                        directoryInfo.GetDirectories("Bin64", SearchOption.TopDirectoryOnly).Length != 1 ||
-                        directoryInfo.GetDirectories("Config", SearchOption.TopDirectoryOnly).Length != 1)
-                    {
-                        StaticViewModel.AddLogMessage($"Installer files not found in {_extractedInstallerDirectory}");
-                        return false;
-                    }
+                StaticViewModel.AddLogMessage($"Extraction folder {_extractedInstallerDirectory} is not empty");
+                return false;
+            }
 
-                    return true;
-                }
-                else
+            return true;
+        }
+
+        public bool ValidateExtractedLocation()
+        {
+            if (string.IsNullOrWhiteSpace(_extractedInstallerDirectory))
+            {
+                StaticViewModel.AddLogMessage($"Please enter an extraction path");
+                return false;
+            }
+
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(_extractedInstallerDirectory);
+
+            if (directoryInfo.Exists)
+            {
+                if (directoryInfo.GetFiles("Setup.exe", SearchOption.TopDirectoryOnly).Length != 1 ||
+                    directoryInfo.GetDirectories("Bin64", SearchOption.TopDirectoryOnly).Length != 1 ||
+                    directoryInfo.GetDirectories("Config", SearchOption.TopDirectoryOnly).Length != 1)
                 {
                     StaticViewModel.AddLogMessage($"Installer files not found in {_extractedInstallerDirectory}");
                     return false;
                 }
+
+                return true;
             }
             else
             {
-                if (directoryInfo.Exists && (directoryInfo.GetDirectories().Length > 1 || directoryInfo.GetFiles().Length > 1))
-                {
-                    StaticViewModel.AddLogMessage($"Extraction folder {_extractedInstallerDirectory} is not empty");
-                    return false;
-                }
-
-                return true;
+                StaticViewModel.AddLogMessage($"Installer files not found in {_extractedInstallerDirectory}");
+                return false;
             }
         }
     }
