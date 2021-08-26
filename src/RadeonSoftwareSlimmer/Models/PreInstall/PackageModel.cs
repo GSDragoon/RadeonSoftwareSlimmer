@@ -10,7 +10,6 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public PackageModel(IFileInfo file)
         {
             _file = file;
-
             Keep = true;
         }
 
