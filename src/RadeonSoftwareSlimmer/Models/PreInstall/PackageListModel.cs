@@ -74,7 +74,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 }
             }
 
-            using (StreamWriter streamWriter = new StreamWriter(packageToRemove.GetFile().OpenWrite()))
+            using (StreamWriter streamWriter = new StreamWriter(packageToRemove.GetFile().Open(FileMode.Create, FileAccess.Write, FileShare.None)))
             using (JsonTextWriter jsonTextWriter = new JsonTextWriter(streamWriter))
             {
                 jsonTextWriter.Formatting = Formatting.Indented;
