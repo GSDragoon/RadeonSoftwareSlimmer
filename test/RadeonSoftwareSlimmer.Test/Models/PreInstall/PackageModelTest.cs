@@ -5,7 +5,6 @@ using System.IO.Abstractions.TestingHelpers;
 
 namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 {
-    [TestFixture]
     public class PackageModelTest
     {
         private MockFileSystem _fileSystem;

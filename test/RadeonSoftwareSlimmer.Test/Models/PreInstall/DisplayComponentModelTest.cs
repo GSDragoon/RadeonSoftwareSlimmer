@@ -7,7 +7,6 @@ using RadeonSoftwareSlimmer.Models.PreInstall;
 
 namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 {
-    [TestFixture]
     public class DisplayComponentModelTest
     {
         [Test]

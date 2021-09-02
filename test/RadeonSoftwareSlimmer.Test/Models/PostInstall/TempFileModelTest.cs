@@ -6,7 +6,6 @@ using RadeonSoftwareSlimmer.Models.PostInstall;
 
 namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 {
-    [TestFixture]
     public class TempFileModelTest
     {
         [Test]

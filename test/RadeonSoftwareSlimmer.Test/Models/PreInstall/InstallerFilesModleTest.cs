@@ -4,7 +4,6 @@ using RadeonSoftwareSlimmer.Models.PreInstall;
 
 namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 {
-    [TestFixture]
     public class InstallerFilesModleTest
     {
         private MockFileSystem _fileSystem;

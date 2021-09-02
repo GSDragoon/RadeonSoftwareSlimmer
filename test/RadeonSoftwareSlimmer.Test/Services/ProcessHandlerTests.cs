@@ -4,7 +4,6 @@ using RadeonSoftwareSlimmer.Services;
 
 namespace RadeonSoftwareSlimmer.Test.Services
 {
-    [TestFixture]
     [NonParallelizable]
     public class ProcessHandlerTests
     {
