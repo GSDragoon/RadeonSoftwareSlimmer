@@ -82,6 +82,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             Assert.That(actualPackages[3].Equals(exectedPackages[3]), Is.True);
         }
 
+        [Test]
         public void RemovePackage_PackageExists_IsRemoved()
         {
             string installRoot = @"Parent\Child\InstallerFolder";
