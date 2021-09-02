@@ -41,4 +41,13 @@
     <ProjectReference Include="..\..\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Include="TestData\PackageModel_cccmanifest.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="TestData\PackageModel_installmanifest.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
 </Project>

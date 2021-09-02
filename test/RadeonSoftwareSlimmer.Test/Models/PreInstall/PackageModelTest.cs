@@ -95,5 +95,21 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             Assert.That(equals, Is.False);
         }
+
+        [Test]
+        public void Equals_IsNull_ReturnsFalse()
+        {
+            PackageModel packageModel = new PackageModel(_dummyFile);
+            packageModel.Keep = false;
+            packageModel.ProductName = "Test Product Name";
+            packageModel.Url = "Test URL";
+            packageModel.Type = "Test Type";
+            packageModel.Description = "Test Description";
+
+
+            bool equals = packageModel.Equals(null);
+
+            Assert.That(equals, Is.False);
+        }
     }
 }
