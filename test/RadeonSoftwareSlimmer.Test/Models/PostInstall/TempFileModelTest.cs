@@ -15,7 +15,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
             MockFileSystem fileSystem = new MockFileSystem();
             fileSystem.AddDirectory(@"C:\SomePath\FolderExists");
 
-            Assert.That(() => { new TempFileModel(@"c:\SomePath\FolderDoesNotExist", fileSystem); }, Throws.TypeOf<DirectoryNotFoundException>());
+            Assert.That(() => { _ = new TempFileModel(@"c:\SomePath\FolderDoesNotExist", fileSystem); }, Throws.TypeOf<DirectoryNotFoundException>());
         }
 
         [Test]
