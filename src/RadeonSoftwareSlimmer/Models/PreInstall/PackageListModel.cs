@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,10 +12,14 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
     public class PackageListModel : INotifyPropertyChanged
     {
+        private readonly IFileSystem _fileSystem;
         private IEnumerable<PackageModel> _packages;
 
 
-        public PackageListModel() { }
+        public PackageListModel(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,7 +37,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         }
 
 
-        public void LoadOrRefresh(DirectoryInfo installDirectory)
+        public void LoadOrRefresh(IDirectoryInfo installDirectory)
         {
             if (installDirectory != null)
                 InstallerPackages = new List<PackageModel>(GetAllInstallerPackages(installDirectory).OrderBy(p => p.ProductName));
@@ -47,7 +52,8 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
             StaticViewModel.AddDebugMessage($"Removing package {packageToRemove.ProductName} from {packageToRemove.GetFile().FullName}");
 
-            using (StreamReader streamReader = new StreamReader(packageToRemove.GetFile().FullName))
+
+            using (StreamReader streamReader = new StreamReader(packageToRemove.GetFile().OpenRead()))
             using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
             {
                 fullJson = (JObject)JToken.ReadFrom(jsonTextReader);
@@ -68,7 +74,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 }
             }
 
-            using (StreamWriter streamWriter = new StreamWriter(packageToRemove.GetFile().FullName))
+            using (StreamWriter streamWriter = new StreamWriter(packageToRemove.GetFile().Open(FileMode.Create, FileAccess.Write, FileShare.None)))
             using (JsonTextWriter jsonTextWriter = new JsonTextWriter(streamWriter))
             {
                 jsonTextWriter.Formatting = Formatting.Indented;
@@ -77,15 +83,15 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         }
 
 
-        private static IEnumerable<PackageModel> GetAllInstallerPackages(DirectoryInfo installDirectory)
+        private IEnumerable<PackageModel> GetAllInstallerPackages(IDirectoryInfo installDirectory)
         {
-            FileInfo[] packageFiles =
+            IFileInfo[] packageFiles =
             {
-                new FileInfo($@"{installDirectory.FullName}\Bin64\cccmanifest_64.json"),
-                new FileInfo($@"{installDirectory.FullName}\Config\InstallManifest.json"),
+                _fileSystem.FileInfo.FromFileName($@"{installDirectory.FullName}\Bin64\cccmanifest_64.json"),
+                _fileSystem.FileInfo.FromFileName($@"{installDirectory.FullName}\Config\InstallManifest.json"),
             };
 
-            foreach (FileInfo file in packageFiles)
+            foreach (IFileInfo file in packageFiles)
             {
                 if (file.Exists)
                 {

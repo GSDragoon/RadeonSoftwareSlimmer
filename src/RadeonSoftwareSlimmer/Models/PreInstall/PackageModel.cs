@@ -1,16 +1,15 @@
-﻿using System.IO;
+﻿using System.IO.Abstractions;
 
 namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
     public class PackageModel
     {
-        private readonly FileInfo _file;
+        private readonly IFileInfo _file;
 
         
-        public PackageModel(FileInfo file)
+        public PackageModel(IFileInfo file)
         {
             _file = file;
-
             Keep = true;
         }
 
@@ -22,7 +21,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public string Description { get; internal set; }
 
 
-        public FileInfo GetFile()
+        public IFileInfo GetFile()
         {
             return _file;
         }

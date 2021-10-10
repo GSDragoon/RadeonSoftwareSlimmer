@@ -4,7 +4,6 @@ namespace RadeonSoftwareSlimmer.Views
 {
     public partial class LoggingView : System.Windows.Controls.UserControl
     {
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public LoggingView()
         {
             InitializeComponent();

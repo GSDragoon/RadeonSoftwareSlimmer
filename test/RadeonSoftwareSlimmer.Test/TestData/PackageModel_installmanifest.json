@@ -1,0 +1,22 @@
+﻿{
+  "Packages": {
+    "Package": [
+      {
+		"Info": {
+		  "Description": "Test Description",
+		  "productName": "ZTest productName",
+		  "url": "\\Parent\\child\\file.extension",
+		  "ptype": "Test ptype"
+		}
+	  },
+	  {
+		  "Info": {
+		  "Description": "Test2 Description",
+		  "productName": "ATest2 productName",
+		  "url": "\\Parent2\\child2\\file2.extension",
+		  "ptype": "Test2 ptype"
+		}
+	  }
+	]
+  }
+}

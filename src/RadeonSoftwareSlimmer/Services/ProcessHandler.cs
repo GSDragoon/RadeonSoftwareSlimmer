@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -8,15 +8,18 @@ namespace RadeonSoftwareSlimmer.Services
 {
     public class ProcessHandler
     {
-        private readonly FileInfo _file;
+        private readonly IFileInfo _file;
         private readonly string _fileNameWithoutExtension;
 
-        public ProcessHandler(string fileName)
+
+        public ProcessHandler(string fileName) : this(fileName, new FileSystem()) {}
+
+        public ProcessHandler(string fileName, IFileSystem fileSystem)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentNullException($"{fileName} is null or empty");
 
-            _file = new FileInfo(fileName);
+            _file = fileSystem.FileInfo.FromFileName(fileName);
             _fileNameWithoutExtension = _file.Name.Substring(0, _file.Name.Length - _file.Extension.Length);
         }
 

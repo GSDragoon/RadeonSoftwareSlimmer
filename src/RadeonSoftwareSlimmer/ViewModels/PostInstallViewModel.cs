@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using RadeonSoftwareSlimmer.Models.PostInstall;
 
@@ -9,15 +10,15 @@ namespace RadeonSoftwareSlimmer.ViewModels
     {
         private bool _loadedPanelEnabled;
 
-        public PostInstallViewModel()
+        public PostInstallViewModel(FileSystem fileSystem)
         {
             LoadedPanelEnabled = false;
 
-            HostService = new HostServiceModel();
+            HostService = new HostServiceModel(fileSystem);
             RadeonScheduledTaskList = new ScheduledTaskListModel();
             ServiceList = new ServiceListModel();
             InstalledList = new InstalledListModel();
-            TempFileList = new TempFileListModel();
+            TempFileList = new TempFileListModel(fileSystem);
         }
 
 

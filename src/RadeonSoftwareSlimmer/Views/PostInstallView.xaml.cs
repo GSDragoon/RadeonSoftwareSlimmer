@@ -1,13 +1,13 @@
-﻿using System.Windows;
+﻿using System.IO.Abstractions;
+using System.Windows;
 using System.Windows.Controls;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class PostInstallView : UserControl
     {
-        private readonly PostInstallViewModel _viewModel = new PostInstallViewModel();
+        private readonly PostInstallViewModel _viewModel = new PostInstallViewModel(new FileSystem());
 
 
         public PostInstallView()
