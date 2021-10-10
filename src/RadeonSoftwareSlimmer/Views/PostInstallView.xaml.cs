@@ -5,7 +5,6 @@ using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class PostInstallView : UserControl
     {
         private readonly PostInstallViewModel _viewModel = new PostInstallViewModel(new FileSystem());
