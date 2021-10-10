@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using RadeonSoftwareSlimmer.Models.PreInstall;
-using System.IO.Abstractions;
+﻿using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using NUnit.Framework;
+using RadeonSoftwareSlimmer.Models.PreInstall;
 
 namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 {
