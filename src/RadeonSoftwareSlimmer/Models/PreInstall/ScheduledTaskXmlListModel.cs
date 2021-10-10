@@ -56,7 +56,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             xDoc.Root.Element(xNs + "Settings").Element(xNs + "Enabled").Value = scheduledTaskToUpdate.Enabled.ToString();
             xDoc.Root.Element(xNs + "Settings").Element(xNs + "Hidden").Value = bool.FalseString;
 
-            xDoc.Save(scheduledTaskToUpdate.GetFile().FullName, SaveOptions.None);
+            xDoc.Save(scheduledTaskToUpdate.GetFile().Open(FileMode.Create, FileAccess.Write), SaveOptions.None);
         }
 
 
@@ -105,15 +105,25 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             catch (XmlException)
             {
                 //Some files have incorrect encoding :(
+                //This happens even with legit exported files from Windows itself
                 //https://stackoverflow.com/questions/29915467/there-is-no-unicode-byte-order-mark-cannot-switch-to-unicode
                 StaticViewModel.AddDebugMessage($"Wrong encoding for {file.FullName}");
-                xDocument = XDocument.Parse(_fileSystem.File.ReadAllText(file.FullName));
+                
+                try
+                {
+                    xDocument = XDocument.Parse(_fileSystem.File.ReadAllText(file.FullName));
+                }
+                catch (XmlException ex)
+                {
+                    StaticViewModel.AddDebugMessage(ex);
+                    return false;
+                }
             }
 
-            if (!xDocument.Root.Name.LocalName.Equals("Task", StringComparison.CurrentCulture))
-                return false;
+            if (xDocument.Root.Name.LocalName.Equals("Task", StringComparison.CurrentCulture))
+                return true;
 
-            return true;
+            return false;
         }
     }
 }
