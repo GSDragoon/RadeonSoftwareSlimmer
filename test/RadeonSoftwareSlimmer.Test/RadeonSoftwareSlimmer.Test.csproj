@@ -42,10 +42,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<None Include="TestData\PackageModel_cccmanifest.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="TestData\PackageModel_installmanifest.json">
+		<None Include="TestData\*.*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
