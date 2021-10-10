@@ -56,7 +56,10 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             xDoc.Root.Element(xNs + "Settings").Element(xNs + "Enabled").Value = scheduledTaskToUpdate.Enabled.ToString();
             xDoc.Root.Element(xNs + "Settings").Element(xNs + "Hidden").Value = bool.FalseString;
 
-            xDoc.Save(scheduledTaskToUpdate.GetFile().Open(FileMode.Create, FileAccess.Write), SaveOptions.None);
+            using (Stream stream = scheduledTaskToUpdate.GetFile().Open(FileMode.Create, FileAccess.Write))
+            {
+                xDoc.Save(stream, SaveOptions.None);
+            }
         }
 
 
