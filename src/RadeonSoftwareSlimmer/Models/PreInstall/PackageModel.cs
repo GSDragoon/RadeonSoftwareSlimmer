@@ -1,10 +1,12 @@
-﻿using System.IO.Abstractions;
+﻿using System.ComponentModel;
+using System.IO.Abstractions;
 
 namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
-    public class PackageModel
+    public class PackageModel : INotifyPropertyChanged
     {
         private readonly IFileInfo _file;
+        private bool _keep;
 
         
         public PackageModel(IFileInfo file)
@@ -14,7 +16,19 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         }
 
 
-        public bool Keep { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+        public bool Keep
+        {
+            get { return _keep; }
+            set
+            {
+                _keep = value;
+                OnPropertyChanged(nameof(Keep));
+            }
+        }
         public string ProductName { get; internal set; }
         public string Url { get; internal set; }
         public string Type { get; internal set; }

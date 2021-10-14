@@ -109,6 +109,20 @@
                                     <TextBlock Text="Uncheck 'Keep' for packages you want to remove." />
                                     <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" />
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        x:Name="btnPackageKeepAll"
+                                        HorizontalAlignment="Center"
+                                        Click="btnPackageKeepAll_Click"
+                                        Content="Keep All"
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                    <Button
+                                        x:Name="btnPackageRemoveAll"
+                                        HorizontalAlignment="Center"
+                                        Click="btnPackageRemoveAll_Click"
+                                        Content="Remove All"
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                </StackPanel>
                                 <DataGrid
                                     Margin="0,8"
                                     mah:DataGridHelper.EnableCellEditAssist="True"

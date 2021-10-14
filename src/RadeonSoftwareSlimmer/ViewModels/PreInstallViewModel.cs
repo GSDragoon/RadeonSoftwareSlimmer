@@ -171,6 +171,14 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
+        public void Packages_SetAll(bool keep)
+        {
+            foreach (PackageModel package in PackageList.InstallerPackages)
+            {
+                package.Keep = keep;
+            }
+        }
+
         public void ScheduledTask_SetAll(bool enabled)
         {
             foreach (ScheduledTaskXmlModel scheduledTask in ScheduledTaskList.ScheduledTasks)
