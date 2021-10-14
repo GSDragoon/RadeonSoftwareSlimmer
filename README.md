@@ -3,8 +3,12 @@
 **https://github.com/GSDragoon/RadeonSoftwareSlimmer**
 
 ![Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Release/badge.svg) 
-![Pre-Release](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Pre-Release/badge.svg) 
 ![Continuous-Integration](https://github.com/GSDragoon/RadeonSoftwareSlimmer/workflows/Continuous-Integration/badge.svg)
+
+![Latest-Release-Version](https://img.shields.io/github/v/release/GSDragoon/RadeonSoftwareSlimmer?color=yellow)
+![Latest-Release-Date](https://img.shields.io/github/release-date/GSDragoon/RadeonSoftwareSlimmer)
+![Total-Downloads](https://img.shields.io/github/downloads/GSDragoon/RadeonSoftwareSlimmer/total?color=blue)
+![Latest-Downloads](https://img.shields.io/github/downloads/GSDragoon/RadeonSoftwareSlimmer/latest/total?color=blue)
 
 ***
 
@@ -64,3 +68,6 @@ Thanks to the following third parties used with this software:
 * System.IO.Abstractions
   * https://github.com/System-IO-Abstractions/System.IO.Abstractions
   * Provides abstractions for System.IO for testability
+* Shields.io
+  * https://shields.io/
+  * Provides badges on readme
