@@ -64,11 +64,14 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
 
             string name = scheduledTask.Name;
-            if (!string.IsNullOrWhiteSpace(name)
-                && (
-                    name.Equals("StartCN", StringComparison.OrdinalIgnoreCase)
-                    || name.Equals("StartDVR", StringComparison.OrdinalIgnoreCase)
-                    || name.Equals("StartCNBM", StringComparison.OrdinalIgnoreCase)))
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            if (name.Equals("DVRAnalytics", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("StartAUEP", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("StartCN", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("StartCNBM", StringComparison.OrdinalIgnoreCase)
+                || name.Equals("StartDVR", StringComparison.OrdinalIgnoreCase))
             {
                 StaticViewModel.AddDebugMessage($"Found scheduled task {name}");
                 return true;
