@@ -25,7 +25,7 @@ Improper use could cause system instability. **Use at your own risk!**
 Documentation can be found on the [Wiki](https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki).
 
 Requirements:
-* Windows 10 64-bit (Latest version recommended)
+* Windows 10 64-bit or Windows 11 (Latest version recommended)
 * .NET (Any __one__ of the following)
   * [.NET Desktop Runtime 5.0 x64](https://dotnet.microsoft.com/download/dotnet/5.0) (latest version recommended)
   * [.NET Core Desktop Runtime 3.1 x64](https://dotnet.microsoft.com/download/dotnet-core/3.1) (latest version recommended)
