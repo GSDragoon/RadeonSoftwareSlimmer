@@ -104,8 +104,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             string modifiedXml = _fileSystem.GetFile(installRoot + @"\Config\Task.xml").TextContents;
             string expectedXml = File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_TaskEnabled.xml");
-            // Writing the file changes the casing of some things, so do a case-insensitive comparison
-            Assert.That(modifiedXml.Equals(expectedXml, System.StringComparison.OrdinalIgnoreCase));
+            Assert.That(modifiedXml, Is.EqualTo(expectedXml));
         }
 
         [Test]
@@ -126,8 +125,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             string modifiedXml = _fileSystem.GetFile(installRoot + @"\Config\Task.xml").TextContents;
             string expectedXml = File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_TaskDisabled.xml");
-            // Writing the file changes the casing of some things, so do a case-insensitive comparison
-            Assert.That(modifiedXml.Equals(expectedXml, System.StringComparison.OrdinalIgnoreCase));
+            Assert.That(modifiedXml, Is.EqualTo(expectedXml));
         }
 
 

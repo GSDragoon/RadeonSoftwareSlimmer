@@ -52,9 +52,8 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 throw new IOException();
 
             XNamespace xNs = xDoc.Root.GetDefaultNamespace();
-
-            xDoc.Root.Element(xNs + "Settings").Element(xNs + "Enabled").Value = scheduledTaskToUpdate.Enabled.ToString();
-            xDoc.Root.Element(xNs + "Settings").Element(xNs + "Hidden").Value = bool.FalseString;
+            xDoc.Root.Element(xNs + "Settings").Element(xNs + "Enabled").Value = XmlConvert.ToString(scheduledTaskToUpdate.Enabled);
+            xDoc.Root.Element(xNs + "Settings").Element(xNs + "Hidden").Value = XmlConvert.ToString(false);
 
             using (Stream stream = scheduledTaskToUpdate.GetFile().Open(FileMode.Create, FileAccess.Write))
             {
