@@ -52,7 +52,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             if (!installerRootDirectory.Exists)
                 throw new DirectoryNotFoundException("Installer folder does not exist or cannot access.");
 
-            foreach(IFileInfo cccInstallFile in installerRootDirectory.EnumerateFiles("ccc2_install.exe", SearchOption.AllDirectories))
+            foreach (IFileInfo cccInstallFile in installerRootDirectory.EnumerateFiles("ccc2_install.exe", SearchOption.AllDirectories))
             {
                 IDirectoryInfo displayDriverFolder = cccInstallFile.Directory.Parent;
 

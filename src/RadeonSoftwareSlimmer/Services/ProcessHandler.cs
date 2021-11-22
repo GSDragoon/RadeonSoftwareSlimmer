@@ -12,7 +12,7 @@ namespace RadeonSoftwareSlimmer.Services
         private readonly string _fileNameWithoutExtension;
 
 
-        public ProcessHandler(string fileName) : this(fileName, new FileSystem()) {}
+        public ProcessHandler(string fileName) : this(fileName, new FileSystem()) { }
 
         public ProcessHandler(string fileName, IFileSystem fileSystem)
         {

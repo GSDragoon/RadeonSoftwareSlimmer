@@ -91,7 +91,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
             _tempFileListModel.ApplyChanges();
 
 
-            foreach(string folder in tempFolders)
+            foreach (string folder in tempFolders)
             {
                 Assert.That(_fileSystem.Directory.Exists(folder), Is.True);
             }

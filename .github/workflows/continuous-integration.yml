@@ -10,7 +10,8 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
+    # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     steps:
 
