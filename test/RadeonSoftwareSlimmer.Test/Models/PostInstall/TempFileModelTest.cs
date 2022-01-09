@@ -26,8 +26,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem);
 
-            Assert.That(tempFileModel.Files, Is.Zero);
-            Assert.That(tempFileModel.Size, Is.EqualTo("0 bytes"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(tempFileModel.Files, Is.Zero);
+                Assert.That(tempFileModel.Size, Is.EqualTo("0 bytes"));
+            });
         }
 
         [Test]
@@ -39,8 +42,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem);
 
-            Assert.That(tempFileModel.Folder, Is.EqualTo(folderPath));
-            Assert.That(tempFileModel.Clear, Is.False);
+            Assert.Multiple(() =>
+            {
+                Assert.That(tempFileModel.Folder, Is.EqualTo(folderPath));
+                Assert.That(tempFileModel.Clear, Is.False);
+            });
         }
 
         [Test]
@@ -88,8 +94,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem);
 
-            Assert.That(tempFileModel.Files, Is.EqualTo(2));
-            Assert.That(tempFileModel.Size, Is.EqualTo("579 bytes"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(tempFileModel.Files, Is.EqualTo(2));
+                Assert.That(tempFileModel.Size, Is.EqualTo("579 bytes"));
+            });
         }
 
         [Test]
@@ -102,8 +111,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem);
 
-            Assert.That(tempFileModel.Files, Is.EqualTo(2));
-            Assert.That(tempFileModel.Size, Is.EqualTo("566.65 KB"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(tempFileModel.Files, Is.EqualTo(2));
+                Assert.That(tempFileModel.Size, Is.EqualTo("566.65 KB"));
+            });
         }
 
         [Test]
@@ -116,8 +128,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem);
 
-            Assert.That(tempFileModel.Files, Is.EqualTo(2));
-            Assert.That(tempFileModel.Size, Is.EqualTo("12.72 MB"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(tempFileModel.Files, Is.EqualTo(2));
+                Assert.That(tempFileModel.Size, Is.EqualTo("12.72 MB"));
+            });
         }
 
         [Test]
@@ -130,10 +145,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem);
 
-            Assert.That(tempFileModel.Files, Is.EqualTo(2));
-            Assert.That(tempFileModel.Size, Is.EqualTo("2.07 GB"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(tempFileModel.Files, Is.EqualTo(2));
+                Assert.That(tempFileModel.Size, Is.EqualTo("2.07 GB"));
+            });
         }
-
 
         [Test]
         public void ClearFolder_SingleFolderMultipleFiles_IsCleared()
@@ -148,9 +165,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             tempFileModel.ClearFolder();
 
-            Assert.That(fileSystem.Directory.Exists(folderPath), Is.True);
-            Assert.That(fileSystem.Directory.EnumerateDirectories(folderPath, "*").Count(), Is.EqualTo(0));
-            Assert.That(fileSystem.Directory.EnumerateFiles(folderPath, "*").Count(), Is.EqualTo(0));
+            Assert.Multiple(() =>
+            {
+                Assert.That(fileSystem.Directory.Exists(folderPath), Is.True);
+                Assert.That(fileSystem.Directory.EnumerateDirectories(folderPath, "*").Count(), Is.EqualTo(0));
+                Assert.That(fileSystem.Directory.EnumerateFiles(folderPath, "*").Count(), Is.EqualTo(0));
+            });
         }
 
         [Test]
@@ -175,9 +195,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             tempFileModel.ClearFolder();
 
-            Assert.That(fileSystem.Directory.Exists(folderPath), Is.True);
-            Assert.That(fileSystem.Directory.EnumerateDirectories(folderPath, "*").Count(), Is.EqualTo(0));
-            Assert.That(fileSystem.Directory.EnumerateFiles(folderPath, "*").Count(), Is.EqualTo(0));
+            Assert.Multiple(() =>
+            {
+                Assert.That(fileSystem.Directory.Exists(folderPath), Is.True);
+                Assert.That(fileSystem.Directory.EnumerateDirectories(folderPath, "*").Count(), Is.EqualTo(0));
+                Assert.That(fileSystem.Directory.EnumerateFiles(folderPath, "*").Count(), Is.EqualTo(0));
+            });
         }
     }
 }

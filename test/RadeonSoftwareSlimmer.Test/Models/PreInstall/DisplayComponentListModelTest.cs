@@ -55,7 +55,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             displayComponentListModel.LoadOrRefresh(@"C:\driver");
             
             List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
-            Assert.That(displayComponentModels.Count, Is.EqualTo(1));
+            Assert.That(displayComponentModels, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             displayComponentListModel.LoadOrRefresh(@"C:\driver");
 
             List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
-            Assert.That(displayComponentModels.Count, Is.EqualTo(2));
+            Assert.That(displayComponentModels, Has.Count.EqualTo(2));
         }
 
 
@@ -134,8 +134,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1\"), Is.False);
-            Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component2\"), Is.False);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1\"), Is.False);
+                Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component2\"), Is.False);
+            });
         }
 
         [Test]
@@ -154,8 +157,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1\"), Is.True);
-            Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component2\"), Is.False);
+            Assert.Multiple(() =>
+            {
+                Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1\"), Is.True);
+                Assert.That(fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component2\"), Is.False);
+            });
         }
     }
 }

@@ -39,10 +39,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             Assert.That(scheduledTaskList.ScheduledTasks, Is.Not.Null);
             List<ScheduledTaskXmlModel> actualTasks = scheduledTaskList.ScheduledTasks.ToList();
             IList<ScheduledTaskXmlModel> exectedTasks = ExpectedLoadedScheduledTaskListModel(installRoot);
-            Assert.That(actualTasks, Is.Not.Null);
-            Assert.That(actualTasks.Count, Is.EqualTo(3));
             Assert.Multiple(() =>
             {
+                Assert.That(actualTasks, Is.Not.Null);
+                Assert.That(actualTasks, Has.Count.EqualTo(3));
+            
                 for (int i = 0; i < 3; i++)
                 {
                     Assert.That(actualTasks[i], Is.Not.Null);
@@ -65,8 +66,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             scheduledTaskList.LoadOrRefresh(installerDir);
 
-            Assert.That(scheduledTaskList.ScheduledTasks, Is.Not.Null);
-            Assert.That(scheduledTaskList.ScheduledTasks.ToList().Count, Is.EqualTo(0));
+            Assert.Multiple(() =>
+            {
+                Assert.That(scheduledTaskList.ScheduledTasks, Is.Not.Null);
+                Assert.That(scheduledTaskList.ScheduledTasks.ToList(), Is.Empty);
+            });
         }
 
         [Test]
@@ -81,8 +85,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             scheduledTaskList.LoadOrRefresh(installerDir);
 
-            Assert.That(scheduledTaskList.ScheduledTasks, Is.Not.Null);
-            Assert.That(scheduledTaskList.ScheduledTasks.ToList().Count, Is.EqualTo(0));
+            Assert.Multiple(() =>
+            {
+                Assert.That(scheduledTaskList.ScheduledTasks, Is.Not.Null);
+                Assert.That(scheduledTaskList.ScheduledTasks.ToList(), Is.Empty);
+            });
         }
 
 

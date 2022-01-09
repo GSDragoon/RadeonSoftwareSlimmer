@@ -46,9 +46,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             _tempFileListModel.LoadOrRefresh();
 
-            Assert.That(_tempFileListModel.TempFiles.Count(), Is.EqualTo(6));
-            Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == @"D:\AMD"), Is.Empty);
-            Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == @"c:\This\is\Not\The\Directory\You\Are\Looking\For"), Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(_tempFileListModel.TempFiles.Count(), Is.EqualTo(6));
+                Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == @"D:\AMD"), Is.Empty);
+                Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == @"c:\This\is\Not\The\Directory\You\Are\Looking\For"), Is.Empty);
+            });
         }
 
 
@@ -156,25 +159,28 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
 
             _tempFileListModel.ApplyChanges();
 
+            Assert.Multiple(() =>
+            {
 
-            foreach (string folder in tempFoldersToClear)
-            {
-                Assert.That(_fileSystem.Directory.Exists(folder), Is.True);
-                Assert.That(_fileSystem.Directory.GetDirectories(folder, "*").Length, Is.Zero);
-                Assert.That(_fileSystem.Directory.GetFiles(folder, "*").Length, Is.Zero);
-            }
-            foreach (string folder in expectedFileSystem.AllDirectories)
-            {
-                Assert.That(_fileSystem.Directory.Exists(folder), Is.True);
-            }
-            foreach (string file in expectedFileSystem.AllFiles)
-            {
-                Assert.That(_fileSystem.File.Exists(file), Is.True);
-            }
-            foreach (TempFileModel tempFileModel in _tempFileListModel.TempFiles)
-            {
-                Assert.That(tempFileModel.Clear, Is.True);
-            }
+                foreach (string folder in tempFoldersToClear)
+                {
+                    Assert.That(_fileSystem.Directory.Exists(folder), Is.True);
+                    Assert.That(_fileSystem.Directory.GetDirectories(folder, "*"), Has.Length.EqualTo(0));
+                    Assert.That(_fileSystem.Directory.GetFiles(folder, "*"), Has.Length.EqualTo(0));
+                }
+                foreach (string folder in expectedFileSystem.AllDirectories)
+                {
+                    Assert.That(_fileSystem.Directory.Exists(folder), Is.True);
+                }
+                foreach (string file in expectedFileSystem.AllFiles)
+                {
+                    Assert.That(_fileSystem.File.Exists(file), Is.True);
+                }
+                foreach (TempFileModel tempFileModel in _tempFileListModel.TempFiles)
+                {
+                    Assert.That(tempFileModel.Clear, Is.True);
+                }
+            });
         }
     }
 }

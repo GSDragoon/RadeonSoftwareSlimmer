@@ -36,12 +36,15 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             Assert.That(packageList.InstallerPackages, Is.Not.Null);
             List<PackageModel> actualPackages = packageList.InstallerPackages.ToList();
             IList<PackageModel> exectedPackages = ExpectedLoadedPackageModel(installRoot);
-            Assert.That(actualPackages, Is.Not.Null);
-            Assert.That(actualPackages.Count, Is.EqualTo(4));
-            Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
-            Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
-            Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
-            Assert.That(actualPackages[3].Equals(exectedPackages[3]), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualPackages, Is.Not.Null);
+                Assert.That(actualPackages, Has.Count.EqualTo(4));
+                Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
+                Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
+                Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
+                Assert.That(actualPackages[3].Equals(exectedPackages[3]), Is.True);
+            });
         }
 
 
@@ -74,12 +77,15 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             packageList.LoadOrRefresh(installerDir);
             List<PackageModel> actualPackages = packageList.InstallerPackages.ToList();
             IList<PackageModel> exectedPackages = ExpectedLoadedPackageModel(installRoot);
-            Assert.That(actualPackages, Is.Not.Null);
-            Assert.That(actualPackages.Count, Is.EqualTo(4));
-            Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
-            Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
-            Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
-            Assert.That(actualPackages[3].Equals(exectedPackages[3]), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualPackages, Is.Not.Null);
+                Assert.That(actualPackages, Has.Count.EqualTo(4));            
+                Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
+                Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
+                Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
+                Assert.That(actualPackages[3].Equals(exectedPackages[3]), Is.True);
+            });
         }
 
         [Test]
@@ -105,13 +111,15 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             packageList.LoadOrRefresh(installerDir);
             List<PackageModel> actualPackages = packageList.InstallerPackages.ToList();
             IList<PackageModel> exectedPackages = ExpectedRemovePackageModel(installRoot);
-            Assert.That(actualPackages, Is.Not.Null);
-            Assert.That(actualPackages.Count, Is.EqualTo(3));
-            Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
-            Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
-            Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualPackages, Is.Not.Null);
+                Assert.That(actualPackages, Has.Count.EqualTo(3));
+                Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
+                Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
+                Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
+            });
         }
-
 
         private IList<PackageModel> ExpectedLoadedPackageModel(string installerRoot)
         {

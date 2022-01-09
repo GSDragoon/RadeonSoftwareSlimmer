@@ -23,12 +23,15 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
-            Assert.That(displayComponentModel.Description, Is.EqualTo("test"));
-            Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-            Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
-            Assert.That(displayComponentModel.Keep, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.EqualTo("test"));
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
         }
-        
+
         [Test]
         public void Ctor_ExtendedGraphics_Description_Is_Valid()
         {
@@ -43,10 +46,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
-            Assert.That(displayComponentModel.Description, Is.EqualTo("test"));
-            Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-            Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
-            Assert.That(displayComponentModel.Keep, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.EqualTo("test"));
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
         }
 
         [Test]
@@ -63,10 +69,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
-            Assert.That(displayComponentModel.Description, Is.Null);
-            Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-            Assert.That(displayComponentModel.InfFile, Is.Null);
-            Assert.That(displayComponentModel.Keep, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.Null);
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.Null);
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
         }
 
         [Test]
@@ -82,10 +91,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
-            Assert.That(displayComponentModel.Description, Is.Null);
-            Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-            Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
-            Assert.That(displayComponentModel.Keep, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.Null);
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
         }
 
         [Test]
@@ -102,10 +114,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
-            Assert.That(displayComponentModel.Description, Is.Null);
-            Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-            Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
-            Assert.That(displayComponentModel.Keep, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.Null);
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
         }
 
         [Test]
@@ -122,10 +137,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
-            Assert.That(displayComponentModel.Description, Is.Null);
-            Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-            Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
-            Assert.That(displayComponentModel.Keep, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.Null);
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
         }
 
         [Test]
@@ -142,12 +160,14 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
-            Assert.That(displayComponentModel.Description, Is.Null);
-            Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-            Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
-            Assert.That(displayComponentModel.Keep, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.Null);
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
         }
-
 
         [Test]
         public void Remove_Directory_Does_Not_Exist_Does_Nothing()
@@ -183,9 +203,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             displayComponentModel.Remove();
 
-            Assert.That(componentDir.Exists, Is.True);
-            Assert.That(componentDir.GetFiles().Length, Is.EqualTo(1));
-            Assert.That(rootDir.Exists, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(componentDir.Exists, Is.True);
+                Assert.That(componentDir.GetFiles(), Has.Length.EqualTo(1));
+                Assert.That(rootDir.Exists, Is.True);
+            });
         }
 
         [Test]
@@ -204,8 +227,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             displayComponentModel.Remove();
 
-            Assert.That(componentDir.Exists, Is.False);
-            Assert.That(rootDir.Exists, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(componentDir.Exists, Is.False);
+                Assert.That(rootDir.Exists, Is.True);
+            });
         }
 
         [Test]
@@ -223,8 +249,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             displayComponentModel.Remove();
 
-            Assert.That(componentDir.Exists, Is.False);
-            Assert.That(rootDir.Exists, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(componentDir.Exists, Is.False);
+                Assert.That(rootDir.Exists, Is.True);
+            });
         }
     }
 }
