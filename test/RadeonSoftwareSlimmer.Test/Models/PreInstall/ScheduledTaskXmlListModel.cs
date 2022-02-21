@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using RadeonSoftwareSlimmer.Models.PreInstall;
 
@@ -13,11 +14,14 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
     public class ScheduledTaskXmlListModelTest
     {
         private MockFileSystem _fileSystem;
+        private string _currentDirectory;
 
         [SetUp]
+        [SuppressMessage("System.IO.Abstractions", "IO0006:Replace Path class with IFileSystem.Path for improved testability", Justification = "Used to set path to load files from VS and command line")]
         public void Setup()
         {
             _fileSystem = new MockFileSystem();
+            _currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
 
@@ -28,9 +32,9 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             //These files were created in Task Scheduler on Windows 11 then exported to file
             //Test does not cover all the odd configurations the files come in from AMD
             //Task Scheduler allows OS compatibility options, but not much is different and shouldn't have any impact on this software. All 3 options are tested.
-            _fileSystem.AddFile(installRoot + @"\Config\TaskVista.xml", new MockFileData(File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
-            _fileSystem.AddFile(installRoot + @"\Config\Task7.xml", new MockFileData(File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_Task7.xml")));
-            _fileSystem.AddFile(installRoot + @"\Config\Task10.xml", new MockFileData(File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_Task10.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\TaskVista.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task7.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_Task7.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task10.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_Task10.xml")));
             IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.FromDirectoryName(installRoot);
             ScheduledTaskXmlListModel scheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem);
 
@@ -97,7 +101,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         public void SetScheduledTaskStatusAndUnhide_Enable_EnablesAndUnhides()
         {
             string installRoot = @"C:\Parent\Child\InstallerFolder";
-            _fileSystem.AddFile(installRoot + @"\Config\Task.xml", new MockFileData(File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
             ScheduledTaskXmlListModel scheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem);
             ScheduledTaskXmlModel scheduledTask = new ScheduledTaskXmlModel(_fileSystem.FileInfo.FromFileName(installRoot + @"\Config\Task.xml"))
             {
@@ -110,7 +114,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             scheduledTaskList.SetScheduledTaskStatusAndUnhide(scheduledTask);
 
             string modifiedXml = _fileSystem.GetFile(installRoot + @"\Config\Task.xml").TextContents;
-            string expectedXml = File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_TaskEnabled.xml");
+            string expectedXml = File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskEnabled.xml");
             Assert.That(modifiedXml, Is.EqualTo(expectedXml));
         }
 
@@ -118,7 +122,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         public void SetScheduledTaskStatusAndUnhide_Disable_EnablesAndUnhides()
         {
             string installRoot = @"C:\Parent\Child\InstallerFolder";
-            _fileSystem.AddFile(installRoot + @"\Config\Task.xml", new MockFileData(File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
             ScheduledTaskXmlListModel scheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem);
             ScheduledTaskXmlModel scheduledTask = new ScheduledTaskXmlModel(_fileSystem.FileInfo.FromFileName(installRoot + @"\Config\Task.xml"))
             {
@@ -131,7 +135,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             scheduledTaskList.SetScheduledTaskStatusAndUnhide(scheduledTask);
 
             string modifiedXml = _fileSystem.GetFile(installRoot + @"\Config\Task.xml").TextContents;
-            string expectedXml = File.ReadAllText(@"TestData\ScheduledTaskXmlListModel_TaskDisabled.xml");
+            string expectedXml = File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskDisabled.xml");
             Assert.That(modifiedXml, Is.EqualTo(expectedXml));
         }
 

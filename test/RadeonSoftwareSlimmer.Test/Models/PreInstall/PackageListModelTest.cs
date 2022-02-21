@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using RadeonSoftwareSlimmer.Models.PreInstall;
 
@@ -14,11 +15,14 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
     public class PackageListModelTest
     {
         private MockFileSystem _fileSystem;
+        private string _currentDirectory;
 
         [SetUp]
+        [SuppressMessage("System.IO.Abstractions", "IO0006:Replace Path class with IFileSystem.Path for improved testability", Justification = "Used to set path to load files from VS and command line")]
         public void Setup()
         {
             _fileSystem = new MockFileSystem();
+            _currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
 
@@ -27,8 +31,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         {
             PackageListModel packageList = new PackageListModel(_fileSystem);
             string installRoot = @"Parent\Child\InstallerFolder";
-            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(@"TestData\PackageModel_cccmanifest.json")));
-            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(@"TestData\PackageModel_installmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
             IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.FromDirectoryName(installRoot);
 
             packageList.LoadOrRefresh(installerDir);
@@ -58,8 +62,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         public void RemovePackage_PackageDoesNotExist_DoesNotRemove()
         {
             string installRoot = @"Parent\Child\InstallerFolder";
-            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(@"TestData\PackageModel_cccmanifest.json")));
-            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(@"TestData\PackageModel_installmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
             IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.FromDirectoryName(installRoot);
 
             PackageModel packageToRemove = new PackageModel(_fileSystem.FileInfo.FromFileName(installerDir + @"\Bin64\cccmanifest_64.json"))
@@ -92,8 +96,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         public void RemovePackage_PackageExists_IsRemoved()
         {
             string installRoot = @"Parent\Child\InstallerFolder";
-            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(@"TestData\PackageModel_cccmanifest.json")));
-            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(@"TestData\PackageModel_installmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
             IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.FromDirectoryName(installRoot);
 
             PackageModel packageToRemove = new PackageModel(_fileSystem.FileInfo.FromFileName(installerDir + @"\Bin64\cccmanifest_64.json"))
