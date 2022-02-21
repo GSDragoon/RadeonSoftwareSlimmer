@@ -181,10 +181,14 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             componentDir.Delete(true);
+            rootDir.Refresh();
+            componentDir.Refresh();
             displayComponentModel.Keep = false;
 
             displayComponentModel.Remove();
 
+            rootDir.Refresh();
+            componentDir.Refresh();
             Assert.That(rootDir.Exists, Is.True);
         }
 
@@ -200,9 +204,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             displayComponentModel.Keep = true;
+            rootDir.Refresh();
+            componentDir.Refresh();
 
             displayComponentModel.Remove();
 
+            rootDir.Refresh();
+            componentDir.Refresh();
             Assert.Multiple(() =>
             {
                 Assert.That(componentDir.Exists, Is.True);
@@ -224,9 +232,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             displayComponentModel.Keep = false;
             componentDir.GetFiles()[0].IsReadOnly = true;
+            rootDir.Refresh();
+            componentDir.Refresh();
 
             displayComponentModel.Remove();
 
+            rootDir.Refresh();
+            componentDir.Refresh();
             Assert.Multiple(() =>
             {
                 Assert.That(componentDir.Exists, Is.False);
@@ -246,9 +258,13 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             displayComponentModel.Keep = false;
+            rootDir.Refresh();
+            componentDir.Refresh();
 
             displayComponentModel.Remove();
 
+            rootDir.Refresh();
+            componentDir.Refresh();
             Assert.Multiple(() =>
             {
                 Assert.That(componentDir.Exists, Is.False);
