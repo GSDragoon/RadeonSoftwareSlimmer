@@ -9,6 +9,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
     {
         private readonly IFileSystem _fileSystem;
         private IEnumerable<DisplayComponentModel> _components;
+        private readonly string[] _displayDriverFolders = new string[5]{string.Empty, "Packages", "Drivers", "Display", "WT6A_INF" };
 
         public DisplayComponentListModel(IFileSystem fileSystem)
         {
@@ -52,10 +53,10 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             if (!installerRootDirectory.Exists)
                 throw new DirectoryNotFoundException("Installer folder does not exist or cannot access.");
 
-            foreach (IFileInfo cccInstallFile in installerRootDirectory.EnumerateFiles("ccc2_install.exe", SearchOption.AllDirectories))
+            _displayDriverFolders[0] = installerRoot;
+            IDirectoryInfo displayDriverFolder = _fileSystem.DirectoryInfo.FromDirectoryName(_fileSystem.Path.Combine(_displayDriverFolders));
+            if (displayDriverFolder.Exists)
             {
-                IDirectoryInfo displayDriverFolder = cccInstallFile.Directory.Parent;
-
                 foreach (IDirectoryInfo componentDirectory in displayDriverFolder.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
                 {
                     if (componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly).Length == 1)
