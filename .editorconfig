@@ -44,4 +44,8 @@ dotnet_diagnostic.S3458.severity = none
 
 # S1939: Inheritance list should not be redundant
 dotnet_diagnostic.S1939.severity = none
+
+# S1172: Unused method parameters should be removed
+# Rule is not working properly
+dotnet_diagnostic.S1172.severity = none
 # ********************************************************************************************
