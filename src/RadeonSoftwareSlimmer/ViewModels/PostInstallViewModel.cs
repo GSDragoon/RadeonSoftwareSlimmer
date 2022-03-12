@@ -19,6 +19,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
             ServiceList = new ServiceListModel();
             InstalledList = new InstalledListModel();
             TempFileList = new TempFileListModel(fileSystem);
+            AdvancedRegistry = new AdvancedRegistryModel();
         }
 
 
@@ -31,6 +32,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public ServiceListModel ServiceList { get; }
         public InstalledListModel InstalledList { get; }
         public TempFileListModel TempFileList { get; }
+        public AdvancedRegistryModel AdvancedRegistry { get; set; }
         public bool LoadedPanelEnabled
         {
             get { return _loadedPanelEnabled; }
@@ -55,6 +57,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 ServiceList.LoadOrRefresh();
                 InstalledList.LoadOrRefresh();
                 TempFileList.LoadOrRefresh();
+                AdvancedRegistry.LoadOrRefresh();
 
                 StaticViewModel.AddLogMessage("Loading post install complete ");
                 LoadedPanelEnabled = true;

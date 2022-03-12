@@ -218,6 +218,30 @@
                 </StackPanel>
             </mah:MetroTabItem>
 
+            <mah:MetroTabItem Padding="8,4" Header="Advanced">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Advanced Registry Settings" FontSize="16" FontWeight="Bold" />
+                        <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Advanced-Settings" />
+                    </StackPanel>
+                    <TextBlock Text="Enable/Disable features" TextWrapping="Wrap" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnAdvancedRegEnableAll" Content="Select All" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnAdvancedRegDisableAll" Content="Select None" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnAdvancedRegRestoreDefaults" Content="Select None" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,16">
+                        <mah:ToggleSwitch Header="Release Notes Link" IsOn="{Binding AdvancedRegistry.ReleaseNotes.Enabled}" Margin="0,12"/>
+                        <mah:ToggleSwitch Header="Driver Update Component" IsOn="{Binding AdvancedRegistry.DriverUpdateComponent.Enabled}" Margin="0,12"/>
+                        <mah:ToggleSwitch Header="AMD Link Devices" IsOn="{Binding AdvancedRegistry.AmdLinkDevices.Enabled}" Margin="0,12"/>
+                        <mah:ToggleSwitch Header="AMD Link Context Menu" IsOn="{Binding AdvancedRegistry.AmdLinkContextMenu.Enabled}" Margin="0,12"/>
+                    </StackPanel>
+                    
+                </StackPanel>
+            </mah:MetroTabItem>
+
         </mah:MetroTabControl>
 
         <Button
