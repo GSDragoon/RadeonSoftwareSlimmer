@@ -67,6 +67,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
                 //Audio
                 "amdacpbus",
+                "AMDAcpBtAudioService",
                 "AMDAfdAudioService",
                 "AMDHDAudBusService",
                 "amdi2stdmafd",
