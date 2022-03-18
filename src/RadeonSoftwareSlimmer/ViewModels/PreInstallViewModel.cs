@@ -65,7 +65,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public void BrowseForInstallerFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Radeon Software Installers (*Radeon*.exe)|*Radeon*.exe|Executables (*.exe)|*.exe|All Files (*.*)|*.*";
+            openFileDialog.Filter = "Radeon Software Installers (*radeon*.exe;*adrenalin*.exe)|*radeon*.exe;*adrenalin*.exe|Executables (*.exe)|*.exe|All Files (*.*)|*.*";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Multiselect = false;
 
