@@ -4,10 +4,10 @@ using RadeonSoftwareSlimmer.ViewModels;
 namespace RadeonSoftwareSlimmer.Test
 {
     [SetUpFixture]
-    public class SetupFixture
+    public static class SetupFixture
     {
         [OneTimeSetUp]
-        public void OneTimeSetup()
+        public static void OneTimeSetup()
         {
             StaticViewModel.LogToConsole = true;
         }
