@@ -77,13 +77,10 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                             line = reader.ReadLine();
 
                             //Would love some consistency here
-                            if (line.IndexOf("desc", StringComparison.OrdinalIgnoreCase) >= 0 && line.IndexOf("\"", StringComparison.OrdinalIgnoreCase) > 1)
-                            {
-                                StaticViewModel.AddDebugMessage($"Attempting to obtain inf file description from {line}");
-                                Description = line.Substring(line.IndexOf("\"", StringComparison.OrdinalIgnoreCase)).Trim('\"');
-                                return;
-                            }
-                            if (line.IndexOf("ExtendedGraphics", StringComparison.OrdinalIgnoreCase) >= 0 && line.IndexOf("\"", StringComparison.OrdinalIgnoreCase) > 1)
+                            if ((line.IndexOf("desc", StringComparison.OrdinalIgnoreCase) >= 0 && line.IndexOf("\"", StringComparison.OrdinalIgnoreCase) > 1) ||
+                                (line.IndexOf("ExtendedGraphics", StringComparison.OrdinalIgnoreCase) >= 0 && line.IndexOf("\"", StringComparison.OrdinalIgnoreCase) > 1) ||
+                                (line.StartsWith("AMDFDANSName", StringComparison.OrdinalIgnoreCase))
+                                )
                             {
                                 StaticViewModel.AddDebugMessage($"Attempting to obtain inf file description from {line}");
                                 Description = line.Substring(line.IndexOf("\"", StringComparison.OrdinalIgnoreCase)).Trim('\"');
