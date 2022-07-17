@@ -40,10 +40,14 @@
     <ProjectReference Include="..\..\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<None Include="TestData\*.*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="TestData\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <RunSettingsFilePath>$(MSBuildProjectDirectory)\$(MSBuildProjectName).runsettings</RunSettingsFilePath>
+  </PropertyGroup>
 
 </Project>

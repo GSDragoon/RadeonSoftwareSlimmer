@@ -15,15 +15,11 @@ if (Test-Path -Path .\test-results)
 dotnet tool install dotnet-reportgenerator-globaltool --tool-path .\test-results
 
 # Clean
-dotnet clean --configuration Debug --framework net6.0-windows
-dotnet clean --configuration Debug --framework net48
 dotnet clean --configuration Release --framework net6.0-windows
 dotnet clean --configuration Release --framework net48
 
 # Test
-# dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj
-dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj --framework net48
-dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj --framework net6.0-windows --settings coverage.runsettings
+dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj --logger trx --results-directory .\test-results
 
 # Run Report Generator to create coverage reports
 .\test-results\reportgenerator "-reports:test-results\*\coverage.cobertura.xml" "-targetdir:test-results\coveragereport" "-reporttypes:Html;TextSummary;Badges"

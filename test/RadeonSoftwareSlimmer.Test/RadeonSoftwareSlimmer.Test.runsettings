@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <RunSettings>
-  <RunConfiguration>
-    <ResultsDirectory>.\test-results</ResultsDirectory>
-  </RunConfiguration>
-  <LoggerRunSettings>
-    <Loggers>
-      <Logger friendlyName="console" enabled="true" />
-      <Logger friendlyName="trx" enabled="true" />
-      <Logger friendlyName="html" enabled="true"/>
-    </Loggers>
-  </LoggerRunSettings>
   <DataCollectionRunSettings>
     <DataCollectors>
-      <DataCollector friendlyName="XPlat Code Coverage">
+      <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
           <ExcludeByFile>**/*.xaml,**/*.xaml.cs,AssemblyInfo.cs</ExcludeByFile>
