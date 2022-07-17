@@ -43,6 +43,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
             _fileSystem.AddDirectory($@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\Radeonsoftware\cache");
             _fileSystem.AddDirectory(@"c:\This\is\Not\The\Directory\You\Are\Looking\For");
             _fileSystem.AddDirectory($@"{Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify)}\AMD");
+            _fileSystem.AddDirectory($@"{Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify)}\AMD\EeuDumps");
 
             _tempFileListModel.LoadOrRefresh();
 
@@ -50,6 +51,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
             {
                 Assert.That(_tempFileListModel.TempFiles.Count(), Is.EqualTo(6));
                 Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == @"D:\AMD"), Is.Empty);
+                Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == $@"{Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify)}\AMD"), Is.Empty);
                 Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == @"c:\This\is\Not\The\Directory\You\Are\Looking\For"), Is.Empty);
             });
         }
