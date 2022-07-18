@@ -66,3 +66,9 @@ jobs:
 
     - name: Publish
       run: .\build\publish.ps1 ${{ steps.gitversion.outputs.semVer }}
+
+    # https://github.com/marketplace/actions/dependency-review
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v2
+      with:
+        fail-on-severity: moderate
