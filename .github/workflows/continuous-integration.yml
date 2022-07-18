@@ -10,24 +10,25 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
     # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on
-
+    runs-on: windows-2022
     steps:
 
-    # GitVersion
-    # https://github.com/GitTools/actions/blob/master/docs/examples/github/gitversion/index.md
+    # https://github.com/marketplace/actions/checkout
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
+
+    # https://github.com/marketplace/actions/gittools
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.11
+      uses: gittools/actions/gitversion/setup@v0.9.13
       with:
         versionSpec: '5.x'
+
     - name: Use GitVersion
       id: gitversion # step id used as reference for output values
-      uses: gittools/actions/gitversion/execute@v0.9.11
+      uses: gittools/actions/gitversion/execute@v0.9.13
     - run: |
         echo "Major: ${{ steps.gitversion.outputs.major }}"
         echo "Minor: ${{ steps.gitversion.outputs.minor }}"
