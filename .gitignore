@@ -389,4 +389,3 @@ FodyWeavers.xsd
 
 # My edits for test files and local building
 /local-ci
-/test-results

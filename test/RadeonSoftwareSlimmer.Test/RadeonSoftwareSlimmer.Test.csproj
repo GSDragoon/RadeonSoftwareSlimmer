@@ -46,8 +46,9 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'!='true'">
     <RunSettingsFilePath>$(MSBuildProjectDirectory)\$(MSBuildProjectName).runsettings</RunSettingsFilePath>
+    <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName)_$(TargetFramework)_$(Platform).trx</VSTestLogger>
   </PropertyGroup>
 
 </Project>

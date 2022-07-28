@@ -1,42 +1,59 @@
 ﻿# Local version of CI to run before committing changes
 
-# Delete old local-ci folder, if it exists
+# Delete old directory, if it exists
 if (Test-Path -Path .\local-ci)
 {
 	Remove-Item -Path .\local-ci -Recurse -Force
 }
 
-if (Test-Path -Path .\test-results)
-{
-	Remove-Item -Path .\test-results -Recurse -Force
-}
+# Create new directory
+New-Item -ItemType Directory -Path .\local-ci -Force | Out-Null
+
+# Directories being used for results/output
+$localCiDir = Resolve-Path -Path .\local-ci
+$testResultsDir = "${localCiDir}\TestResults"
+$coveragerDir = "${localCiDir}\CoverageReports"
+$publishDir = "${localCiDir}\Publish"
 
 # Install Report Generator
-dotnet tool install dotnet-reportgenerator-globaltool --tool-path .\test-results
+$reportGeneratorPath = "${localCiDir}\ReportGeneratorTool"
+$reportGeneratorExe = "${reportGeneratorPath}\reportgenerator.exe"
+dotnet tool install dotnet-reportgenerator-globaltool --tool-path "${reportGeneratorPath}"
 
 # Clean
 dotnet clean --configuration Release --framework net6.0-windows
 dotnet clean --configuration Release --framework net48
 
+# Build
+dotnet build --configuration Release --framework net6.0-windows
+dotnet build --configuration Release --framework net48
+
 # Test
-dotnet test .\test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj --logger trx --results-directory .\test-results
+dotnet test --no-build --configuration Release --results-directory $testResultsDir
 
 # Run Report Generator to create coverage reports
-.\test-results\reportgenerator "-reports:test-results\*\coverage.cobertura.xml" "-targetdir:test-results\coveragereport" "-reporttypes:Html;TextSummary;Badges"
+$reportGenArgs = @(
+  "-reports:${testResultsDir}\*\coverage.cobertura*.xml",
+  "-targetdir:${coveragerDir}",
+  "-reporttypes:Badges;Cobertura;Html;HtmlSummary;TextSummary",
+  #"-verbosity:Verbose",
+  "--settings:createSubdirectoryForAllReportTypes=true"
+)
+& $reportGeneratorExe $reportGenArgs
 
 # Output coverage results to console
-Get-Content .\test-results\coveragereport\Summary.txt
+Get-Content "${coveragerDir}\TextSummary\Summary.txt"
 
 # Build and create artifacts
-dotnet publish --configuration Release --framework net6.0-windows --self-contained false --force --output .\local-ci\net60 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
-dotnet publish --configuration Release  --framework net48 --force --output .\local-ci\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
+dotnet publish --configuration Release --framework net6.0-windows --self-contained false --force --output "${publishDir}\net60" .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
+dotnet publish --configuration Release  --framework net48 --force --output "${publishDir}\net48" .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
 
 # Get the version from the published executable
-$version = (Get-Item .\local-ci\net60\RadeonSoftwareSlimmer.exe).VersionInfo.ProductVersion
+$version = (Get-Item "${publishDir}\net60\RadeonSoftwareSlimmer.exe").VersionInfo.ProductVersion
 
 # Archive the artifacts
-Compress-Archive -Path .\local-ci\net60\* -DestinationPath ".\local-ci\RadeonSoftwareSlimmer_${version}_net60.zip"
-Compress-Archive -Path .\local-ci\net48\* -DestinationPath ".\local-ci\RadeonSoftwareSlimmer_${version}_net48.zip"
+Compress-Archive -Path "${publishDir}\net60\*" -DestinationPath "${publishDir}\RadeonSoftwareSlimmer_${version}_net60.zip"
+Compress-Archive -Path "${publishDir}\net48\*" -DestinationPath "${publishDir}\RadeonSoftwareSlimmer_${version}_net48.zip"
 
 # Output the version
 Write-Host "Published: $version"
