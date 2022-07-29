@@ -27,12 +27,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.41.0.50478">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.42.0.51121">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="17.0.21" />
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.0.21" />
+    <PackageReference Include="System.IO.Abstractions" Version="17.0.24" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.0.24" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="6.0.0" />
   </ItemGroup>
 
