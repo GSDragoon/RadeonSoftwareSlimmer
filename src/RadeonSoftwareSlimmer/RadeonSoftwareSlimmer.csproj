@@ -18,8 +18,9 @@
     <NeutralLanguage>en-US</NeutralLanguage>
 
     <Product>Radeon Software Slimmer</Product>
-    <Authors>GSDragoon</Authors>
-    <Company>GSDragoon</Company>
+    <!--File Description-->
+    <AssemblyTitle>Radeon Software Slimmer</AssemblyTitle>
+    <Authors>Greg Seaton</Authors>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
