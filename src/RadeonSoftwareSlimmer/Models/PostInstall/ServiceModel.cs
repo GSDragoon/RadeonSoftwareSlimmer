@@ -293,7 +293,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void LoadOriginalStartMode()
         {
-            using (RegistryKey serviceKey = Registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name))
+            using (Microsoft.Win32.RegistryKey serviceKey = Registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name))
             {
                 object original = serviceKey.GetValue(SERVICE_ORIGINAL_START_VALUE_NAME, null);
 
@@ -313,7 +313,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void SaveOriginalStartMode()
         {
-            using (RegistryKey serviceKey = Registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name, true))
+            using (Microsoft.Win32.RegistryKey serviceKey = Registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name, true))
             {
                 object currentStartMode = serviceKey.GetValue(SERVICE_START_VALUE_NAME);
                 serviceKey.SetValue(SERVICE_ORIGINAL_START_VALUE_NAME, currentStartMode, RegistryValueKind.DWord);

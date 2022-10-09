@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
+using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.Models.PostInstall;
 
 namespace RadeonSoftwareSlimmer.ViewModels
@@ -10,11 +11,12 @@ namespace RadeonSoftwareSlimmer.ViewModels
     {
         private bool _loadedPanelEnabled;
 
-        public PostInstallViewModel(FileSystem fileSystem)
+        public PostInstallViewModel(IFileSystem fileSystem, IRegistry registry)
         {
             LoadedPanelEnabled = false;
 
             HostService = new HostServiceModel(fileSystem);
+            WindowsAppStartup = new WindowsAppStartupModel(registry);
             RadeonScheduledTaskList = new ScheduledTaskListModel();
             ServiceList = new ServiceListModel();
             InstalledList = new InstalledListModel();
@@ -27,6 +29,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
 
         public HostServiceModel HostService { get; }
+        public WindowsAppStartupModel WindowsAppStartup { get; set; }
         public ScheduledTaskListModel RadeonScheduledTaskList { get; }
         public ServiceListModel ServiceList { get; }
         public InstalledListModel InstalledList { get; }
@@ -51,6 +54,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 LoadedPanelEnabled = false;
 
                 HostService.LoadOrRefresh();
+                WindowsAppStartup.LoadOrRefresh();
                 RadeonScheduledTaskList.LoadOrRefresh();
                 ServiceList.LoadOrRefresh();
                 InstalledList.LoadOrRefresh();
@@ -83,7 +87,8 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 StaticViewModel.AddLogMessage("Applying changes post install");
 
                 HostService.StopRadeonSoftware();
-                
+
+                WindowsAppStartup.ApplyChanges();
                 RadeonScheduledTaskList.ApplyChanges();
                 ServiceList.ApplyChanges();
                 InstalledList.ApplyChanges();
