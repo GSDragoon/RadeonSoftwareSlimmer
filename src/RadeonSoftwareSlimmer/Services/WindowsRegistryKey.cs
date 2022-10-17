@@ -9,6 +9,7 @@ namespace RadeonSoftwareSlimmer.Services
         private readonly RegistryKey _regKey;
         private bool disposedValue;
 
+
         public WindowsRegistryKey(RegistryKey registryKey)
         {
             if (registryKey == null)
@@ -16,6 +17,10 @@ namespace RadeonSoftwareSlimmer.Services
 
             _regKey = registryKey;
         }
+
+
+        public string Name { get; }
+
 
         public object GetValue(string name)
         {
@@ -27,6 +32,12 @@ namespace RadeonSoftwareSlimmer.Services
             return _regKey.GetValue(name, defaultValue);
         }
 
+        public void SetValue(string name, object value, RegistryValueKind valueKind)
+        {
+            _regKey.SetValue(name, value, valueKind);
+        }
+
+
         public IRegistryKey OpenSubKey(string name, bool writable)
         {
             RegistryKey openKey = _regKey.OpenSubKey(name, writable);
@@ -37,11 +48,11 @@ namespace RadeonSoftwareSlimmer.Services
                 return new WindowsRegistryKey(openKey);
         }
 
-
-        public void SetValue(string name, object value, RegistryValueKind valueKind)
+        public string[] GetSubKeyNames()
         {
-            _regKey.SetValue(name, value, valueKind);
+            return _regKey.GetSubKeyNames();
         }
+
 
         protected virtual void Dispose(bool disposing)
         {

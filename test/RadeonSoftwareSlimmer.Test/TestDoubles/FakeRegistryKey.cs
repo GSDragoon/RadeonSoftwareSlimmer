@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Win32;
 using RadeonSoftwareSlimmer.Intefaces;
 
@@ -7,6 +8,7 @@ namespace RadeonSoftwareSlimmer.Test.TestDoubles
     public class FakeRegistryKey : IRegistryKey
     {
         private bool disposedValue;
+        private string _name;
 
         public IDictionary<string, RegistryValue> Values { get; }
         public IDictionary<string, FakeRegistryKey> SubKeys { get; }
@@ -16,10 +18,17 @@ namespace RadeonSoftwareSlimmer.Test.TestDoubles
         {
             Values = new Dictionary<string, RegistryValue>();
             SubKeys = new Dictionary<string, FakeRegistryKey>();
+            _name = string.Empty;
         }
 
 
         #region Test Setup
+        public FakeRegistryKey SetTestName(string name)
+        {
+            _name = name;
+            return this;
+        }
+
         public FakeRegistryKey AddTestValue(string name, object value)
         {
             return AddTestValue(name, value, RegistryValueKind.None);
@@ -43,6 +52,9 @@ namespace RadeonSoftwareSlimmer.Test.TestDoubles
 
 
         #region IRegistryKey
+        public string Name => _name;
+
+
         public void SetValue(string name, object value, RegistryValueKind valueKind)
         {
             if (Values.ContainsKey(name))
@@ -61,10 +73,11 @@ namespace RadeonSoftwareSlimmer.Test.TestDoubles
             if (string.IsNullOrWhiteSpace(name))
                 return defaultValue;
             if (Values.ContainsKey(name))
-                return Values[name];
+                return Values[name].Value;
             else
                 return defaultValue;
         }
+
 
         public IRegistryKey OpenSubKey(string name, bool writable)
         {
@@ -74,6 +87,11 @@ namespace RadeonSoftwareSlimmer.Test.TestDoubles
                 return SubKeys[name];
             else
                 return null;
+        }
+
+        public string[] GetSubKeyNames()
+        {
+            return SubKeys.Keys.ToArray();
         }
         #endregion
 

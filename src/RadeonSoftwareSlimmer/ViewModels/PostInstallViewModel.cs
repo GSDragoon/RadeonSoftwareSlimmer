@@ -15,11 +15,11 @@ namespace RadeonSoftwareSlimmer.ViewModels
         {
             LoadedPanelEnabled = false;
 
-            HostService = new HostServiceModel(fileSystem);
+            HostService = new HostServiceModel(fileSystem, registry);
             WindowsAppStartup = new WindowsAppStartupModel(registry);
             RadeonScheduledTaskList = new ScheduledTaskListModel();
-            ServiceList = new ServiceListModel();
-            InstalledList = new InstalledListModel();
+            ServiceList = new ServiceListModel(registry);
+            InstalledList = new InstalledListModel(registry);
             TempFileList = new TempFileListModel(fileSystem);
         }
 

@@ -14,7 +14,7 @@ namespace RadeonSoftwareSlimmer
 
             SetupExceptionHandling();
 
-            ThemeService.SetThemeToUserSettings();
+            ThemeService.SetThemeToUserSettings(new WindowsRegistry());
         }
 
 
