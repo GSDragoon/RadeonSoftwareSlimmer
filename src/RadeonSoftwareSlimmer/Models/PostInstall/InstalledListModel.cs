@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Microsoft.Win32;
+using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class InstalledListModel : INotifyPropertyChanged
     {
+        private readonly IRegistry _registry;
         private IEnumerable<InstalledModel> _installedItems;
 
         private const string UNINSTALL_REGISTRY_PATH = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
@@ -24,7 +25,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         };
 
 
-        public InstalledListModel() { }
+        public InstalledListModel(IRegistry registry)
+        {
+            _registry = registry;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,7 +48,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void LoadOrRefresh()
         {
-            InstalledItems = new List<InstalledModel>(GetAllRadeonScheduledTasks());
+            InstalledItems = new List<InstalledModel>(GetAllUninstallEntries());
         }
 
         public void ApplyChanges()
@@ -57,13 +61,13 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         }
 
 
-        private IEnumerable<InstalledModel> GetAllRadeonScheduledTasks()
+        private IEnumerable<InstalledModel> GetAllUninstallEntries()
         {
-            using (RegistryKey uninstallRootKey = Registry.LocalMachine.OpenSubKey(UNINSTALL_REGISTRY_PATH))
+            using (IRegistryKey uninstallRootKey = _registry.LocalMachine.OpenSubKey(UNINSTALL_REGISTRY_PATH, false))
             {
                 foreach (string uninstallName in uninstallRootKey.GetSubKeyNames())
                 {
-                    using (RegistryKey uninstallKey = uninstallRootKey.OpenSubKey(uninstallName))
+                    using (IRegistryKey uninstallKey = uninstallRootKey.OpenSubKey(uninstallName, false))
                     {
                         if (IsRadeonUninstall(uninstallKey))
                         {
@@ -75,11 +79,11 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
             if (Environment.Is64BitOperatingSystem)
             {
-                using (RegistryKey uninstallRootKey = Registry.LocalMachine.OpenSubKey(UNINSTALL_REGISTRY_PATH_WOW6432Node))
+                using (IRegistryKey uninstallRootKey = _registry.LocalMachine.OpenSubKey(UNINSTALL_REGISTRY_PATH_WOW6432Node, false))
                 {
                     foreach (string uninstallName in uninstallRootKey.GetSubKeyNames())
                     {
-                        using (RegistryKey uninstallKey = uninstallRootKey.OpenSubKey(uninstallName))
+                        using (IRegistryKey uninstallKey = uninstallRootKey.OpenSubKey(uninstallName, false))
                         {
                             if (IsRadeonUninstall(uninstallKey))
                             {
@@ -91,7 +95,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
         }
 
-        private bool IsRadeonUninstall(RegistryKey uninstallKey)
+        private bool IsRadeonUninstall(IRegistryKey uninstallKey)
         {
             object publisher = uninstallKey.GetValue("Publisher");
             object displayName = uninstallKey.GetValue("DisplayName");

@@ -1,15 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class ServiceListModel : INotifyPropertyChanged
     {
+        private readonly IRegistry _registry;
         private IEnumerable<ServiceModel> _services;
 
 
-        public ServiceListModel() { }
+        public ServiceListModel(IRegistry registry)
+        {
+            _registry = registry;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,7 +49,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         }
 
 
-        private static IEnumerable<ServiceModel> GetAllRadeonServices()
+        private IEnumerable<ServiceModel> GetAllRadeonServices()
         {
             string[] serviceNames =
             {
@@ -91,7 +96,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
             foreach (string service in serviceNames)
             {
-                ServiceModel serviceModel = new ServiceModel(service);
+                ServiceModel serviceModel = new ServiceModel(service, _registry);
 
                 if (serviceModel.Exists())
                 {

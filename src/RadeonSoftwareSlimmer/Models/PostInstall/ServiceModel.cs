@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.ServiceProcess;
-using Microsoft.Win32;
+using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -9,6 +9,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class ServiceModel : INotifyPropertyChanged
     {
+        private readonly IRegistry _registry;
         private readonly bool _exists;
         private bool _enabled;
         private ServiceStartMode _startMode;
@@ -20,8 +21,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         private const string SERVICE_START_VALUE_NAME = "Start";
         private const string SERVICE_ORIGINAL_START_VALUE_NAME = "RadeonSoftwareSlimmerOriginalStart";
 
-        public ServiceModel(string serviceName)
+        public ServiceModel(string serviceName, IRegistry registry)
         {
+            _registry = registry;
+
             using (ServiceController serviceController = new ServiceController(serviceName))
             {
                 try
@@ -293,7 +296,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void LoadOriginalStartMode()
         {
-            using (RegistryKey serviceKey = Registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name))
+            using (IRegistryKey serviceKey = _registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name, false))
             {
                 object original = serviceKey.GetValue(SERVICE_ORIGINAL_START_VALUE_NAME, null);
 
@@ -313,10 +316,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void SaveOriginalStartMode()
         {
-            using (RegistryKey serviceKey = Registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name, true))
+            using (IRegistryKey serviceKey = _registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name, true))
             {
                 object currentStartMode = serviceKey.GetValue(SERVICE_START_VALUE_NAME);
-                serviceKey.SetValue(SERVICE_ORIGINAL_START_VALUE_NAME, currentStartMode, RegistryValueKind.DWord);
+                serviceKey.SetValue(SERVICE_ORIGINAL_START_VALUE_NAME, currentStartMode, Microsoft.Win32.RegistryValueKind.DWord);
             }
         }
     }

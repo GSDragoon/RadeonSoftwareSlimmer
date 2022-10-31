@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using Microsoft.Win32;
+using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -14,7 +14,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         private string _uninstallExe;
         private string _uninstallArguments;
 
-        public InstalledModel(RegistryKey uninstallKey, string keyShortName)
+        public InstalledModel(IRegistryKey uninstallKey, string keyShortName)
         {
             Uninstall = false;
 
@@ -74,7 +74,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         }
 
 
-        private static string GetRegistryValueString(RegistryKey registryKey, string valueName)
+        private static string GetRegistryValueString(IRegistryKey registryKey, string valueName)
         {
             if (registryKey == null || string.IsNullOrWhiteSpace(valueName))
                 return null;

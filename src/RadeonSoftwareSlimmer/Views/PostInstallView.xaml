@@ -74,6 +74,16 @@
                         <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Stop Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
                     </StackPanel>
 
+                    <GroupBox Margin="8" Padding="8" HorizontalAlignment="Left" Header="Radeon Software Startup Task">
+                        <StackPanel>
+                            <TextBlock Text="Enable or disable the Windows app that starts up Radeon Software at logon/reboot" />
+                            <StackPanel Margin="0,8" Orientation="Horizontal">
+                                <TextBlock Margin="0,0,8,0" VerticalAlignment="Center" Text="Status" />
+                                <mah:ToggleSwitch OnContent="Enabled" OffContent="Disabled" IsOn="{Binding WindowsAppStartup.Enabled}" IsEnabled="{Binding WindowsAppStartup.Exists}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                    
                 </StackPanel>
             </mah:MetroTabItem>
 

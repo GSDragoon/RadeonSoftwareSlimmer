@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Abstractions;
-using Microsoft.Win32;
+using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -11,6 +11,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
     public class HostServiceModel : INotifyPropertyChanged
     {
         private readonly IFileSystem _fileSystem;
+        private readonly IRegistry _registry;
         private IDirectoryInfo _cnDir;
         private IList<RunningHostServiceModel> _hostServices;
 
@@ -25,9 +26,10 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         public const string CNCMD_RESTART = "restart";
 
 
-        public HostServiceModel(IFileSystem fileSystem)
+        public HostServiceModel(IFileSystem fileSystem, IRegistry registry)
         {
             _fileSystem = fileSystem;
+            _registry = registry;
         }
 
 
@@ -121,7 +123,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void LoadCnDirectory()
         {
-            using (RegistryKey cnKey = Registry.LocalMachine.OpenSubKey(INSTALL_FOLDER_REGISTRY_KEY))
+            using (IRegistryKey cnKey = _registry.LocalMachine.OpenSubKey(INSTALL_FOLDER_REGISTRY_KEY, false))
             {
                 if (cnKey != null)
                 {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using ControlzEx.Theming;
-using Microsoft.Win32;
+using RadeonSoftwareSlimmer.Intefaces;
 
 namespace RadeonSoftwareSlimmer.Services
 {
@@ -35,15 +35,15 @@ namespace RadeonSoftwareSlimmer.Services
             ThemeManager.Current.ChangeTheme(Application.Current, themeString);
         }
 
-        public static void SetThemeToUserSettings()
+        public static void SetThemeToUserSettings(IRegistry registry)
         {
-            SetTheme(GetUserAppTheme());
+            SetTheme(GetUserAppTheme(registry));
         }
 
 
-        private static Theme GetUserAppTheme()
+        private static Theme GetUserAppTheme(IRegistry registry)
         {
-            using (RegistryKey cnKey = Registry.CurrentUser.OpenSubKey(PERSONALIZE_REGISTRY_PATH))
+            using (IRegistryKey cnKey = registry.CurrentUser.OpenSubKey(PERSONALIZE_REGISTRY_PATH, false))
             {
                 if (cnKey != null)
                 {
