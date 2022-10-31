@@ -13,8 +13,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         private static readonly string RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME = "LastDisabledTime";
         private static readonly object STATE_ENABLED_VALUE = 2;
         private static readonly object STATE_DISABLED_VALUE = 1;
-        //if we set this, can we bypass the reboot requirement after a new install to disalbe this right away?
-        //otherwise the first reboot after a new install enables this startup task
         private static readonly string RSX_LAUNCHER_REG_STARTUPONCE_NAME = "UserEnabledStartupOnce";
         private static readonly object STATE_STARTUPONCE_YES = 1;
 
@@ -57,21 +55,29 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void LoadOrRefresh()
         {
+            Exists = false;
+
             using (IRegistryKey launcherKey = _registry.CurrentUser.OpenSubKey(RSX_LAUNCHER_REG_PATH, false))
             {
                 if (launcherKey == null)
                     return;
 
+                Exists = true;
                 object state = launcherKey.GetValue(RSX_LAUNCHER_REG_STATUS_NAME);
 
-                if (state != null)
-                {
-                    Exists = true;
 
-                    if (state == STATE_ENABLED_VALUE)
-                        Enabled = true;
-                    else if (state == STATE_DISABLED_VALUE)
+                if (state != null && state.Equals(STATE_ENABLED_VALUE))
+                    Enabled = true;
+                if (state == null || state.Equals(STATE_DISABLED_VALUE))
+                {
+                    // Any other value besides enabled (2) is treated as disabled (1)
+                    // If the flag that the user has enabled statup once isn't set (0 or missing), then it will be re-enabled next logon/reboot
+                    object startupOnce = launcherKey.GetValue(RSX_LAUNCHER_REG_STARTUPONCE_NAME);
+
+                    if (startupOnce != null && startupOnce.Equals(STATE_STARTUPONCE_YES))
                         Enabled = false;
+                    else
+                        Enabled = true;
                 }
             }
         }
@@ -88,7 +94,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
         }
 
-        //make this take in a time to make it testable
         public void Disable()
         {
             using (IRegistryKey launcherKey = _registry.CurrentUser.OpenSubKey(RSX_LAUNCHER_REG_PATH, true))
