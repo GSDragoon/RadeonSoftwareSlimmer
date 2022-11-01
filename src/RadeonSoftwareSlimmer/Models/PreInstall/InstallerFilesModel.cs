@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
+using System.Reflection;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -47,7 +47,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
         public void ExtractInstallerFiles()
         {
-            ProcessHandler processHandler = new ProcessHandler($@"{Environment.CurrentDirectory}\7-Zip\7z.exe");
+            ProcessHandler processHandler = new ProcessHandler($@"{_fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\7-Zip\7z.exe");
             int exitCode = processHandler.RunProcess($"x \"{InstallerFile}\" -o\"{ExtractedInstallerDirectory}\"");
 
             //https://sevenzip.osdn.jp/chm/cmdline/exit_codes.htm
