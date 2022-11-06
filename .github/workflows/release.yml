@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
     runs-on: windows-2022
     steps:
 
@@ -64,38 +64,27 @@ jobs:
     - name: Publish
       run: .\build\publish.ps1 ${{ steps.gitversion.outputs.semVer }}
 
-    # https://github.com/actions/create-release
+      # https://github.com/marketplace/actions/create-release
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # You may pin to the exact commit or the version.
+      # uses: ncipollo/release-action@4c75f0f2e4ae5f3c807cf0904605408e319dcaac
+      uses: ncipollo/release-action@v1.11.1
       with:
-        tag_name: ${{ steps.gitversion.outputs.semVer }}
-        release_name: Radeon Software Slimmer ${{ steps.gitversion.outputs.semVer }}
-        body_path: build/release-notes-template.md
+        # An optional flag which indicates if artifact read or upload errors should fail the build.
+        artifactErrorsFailBuild: true
+        # An optional set of paths representing artifacts to upload to the release. This may be a single path or a comma delimited list of paths (or globs)
+        artifacts: "publish\RadeonSoftwareSlimmer_*_net*.zip"
+        # The content type of the artifact. Defaults to raw
+        artifactContentType: "application/zip"
+        # An optional body file for the release. This should be the path to the file
+        bodyFile: "build/release-notes-template.md"
+        # Optionally marks this release as a draft release. Set to true to enable.
         draft: true
+        # Indicates if release notes should be automatically generated.
+        generateReleaseNotes: false
+        # An optional name for the release. If this is omitted the tag will be used.
+        name: "Radeon Software Slimmer ${{ steps.gitversion.outputs.semVer }}"
+        # Indicates if the release body should be omitted.
         prerelease: false
-
-    # https://github.com/actions/upload-release-asset
-    - name: Upload Release Asset net60
-      id: upload-release-asset-net60
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net60.zip
-        asset_name: RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net60.zip
-        asset_content_type: application/zip
-
-    - name: Upload Release Asset net48
-      id: upload-release-asset-net48
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: publish\RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net48.zip
-        asset_name: RadeonSoftwareSlimmer_${{ steps.gitversion.outputs.semVer }}_net48.zip
-        asset_content_type: application/zip
+        # The Github token.
+        token: ${{ secrets.GITHUB_TOKEN }}

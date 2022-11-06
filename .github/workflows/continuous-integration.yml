@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
     runs-on: windows-2022
     steps:
 
