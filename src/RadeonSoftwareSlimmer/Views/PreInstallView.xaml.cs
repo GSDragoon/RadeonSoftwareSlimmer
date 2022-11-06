@@ -96,24 +96,32 @@ namespace RadeonSoftwareSlimmer.Views
             e.Handled = true;
         }
 
-        private void btnPackageKeepAll_Click(object sender, RoutedEventArgs e)
+
+        private void btnPackageSelectAll_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.Packages_SetAll(true);
         }
-
-        private void btnPackageRemoveAll_Click(object sender, RoutedEventArgs e)
+        private void btnPackageSelectNone_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.Packages_SetAll(false);
         }
 
-        private void btnScheduledTaskEnableAll_Click(object sender, RoutedEventArgs e)
+        private void btnScheduledTaskSelectAll_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.ScheduledTask_SetAll(true);
         }
-
-        private void btnScheduledTaskDisableAll_Click(object sender, RoutedEventArgs e)
+        private void btnScheduledTaskSelectNone_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.ScheduledTask_SetAll(false);
+        }
+
+        private void btnDisplayComponentsSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.DisplayComponents_SetAll(true);
+        }
+        private void btnDisplayComponentsSelectNone_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.DisplayComponents_SetAll(false);
         }
     }
 }

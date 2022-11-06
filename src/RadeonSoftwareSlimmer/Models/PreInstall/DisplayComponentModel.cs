@@ -1,13 +1,15 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
-    public class DisplayComponentModel
+    public class DisplayComponentModel : INotifyPropertyChanged
     {
         private readonly IDirectoryInfo _componentDirectory;
+        private bool _keep;
 
 
         public DisplayComponentModel(IDirectoryInfo installerRootDirectory, IDirectoryInfo componentDirectory)
@@ -27,7 +29,19 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         }
 
 
-        public bool Keep { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+        public bool Keep
+        {
+            get { return _keep; }
+            set
+            {
+                _keep = value;
+                OnPropertyChanged(nameof(Keep));
+            }
+        }
         public string Directory { get; }
         public string InfFile { get; }
         public string Description { get; private set; }

@@ -111,16 +111,16 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
-                                        x:Name="btnPackageKeepAll"
+                                        x:Name="btnPackageSelectAll"
                                         HorizontalAlignment="Center"
-                                        Click="btnPackageKeepAll_Click"
-                                        Content="Keep All"
+                                        Click="btnPackageSelectAll_Click"
+                                        Content="Select All"
                                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                                     <Button
-                                        x:Name="btnPackageRemoveAll"
+                                        x:Name="btnPackageSelectNone"
                                         HorizontalAlignment="Center"
-                                        Click="btnPackageRemoveAll_Click"
-                                        Content="Remove All"
+                                        Click="btnPackageSelectNone_Click"
+                                        Content="Select None"
                                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                                 </StackPanel>
                                 <DataGrid
@@ -143,16 +143,16 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
-                                        x:Name="btnScheduledTaskEnableAll"
+                                        x:Name="btnScheduledTaskSelectAll"
                                         HorizontalAlignment="Center"
-                                        Click="btnScheduledTaskEnableAll_Click"
-                                        Content="Enable All"
+                                        Click="btnScheduledTaskSelectAll_Click"
+                                        Content="Select All"
                                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                                     <Button
-                                        x:Name="btnScheduledTaskDisableAll"
+                                        x:Name="btnScheduledTaskSelectNone"
                                         HorizontalAlignment="Center"
-                                        Click="btnScheduledTaskDisableAll_Click"
-                                        Content="Disable All"
+                                        Click="btnScheduledTaskSelectNone_Click"
+                                        Content="Select None"
                                         Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                                 </StackPanel>
                                 <DataGrid
@@ -171,6 +171,20 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Uncheck 'Keep' for components you want to remove." />
                                     <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        x:Name="btnDisplayComponentsSelectAll"
+                                        HorizontalAlignment="Center"
+                                        Click="btnDisplayComponentsSelectAll_Click"
+                                        Content="Select All"
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                    <Button
+                                        x:Name="btnDisplayComponentsSelectNone"
+                                        HorizontalAlignment="Center"
+                                        Click="btnDisplayComponentsSelectNone_Click"
+                                        Content="Select None"
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                                 </StackPanel>
                                 <DataGrid
                                     Margin="0,8"

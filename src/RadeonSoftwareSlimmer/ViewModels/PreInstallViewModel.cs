@@ -187,6 +187,14 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
+        public void DisplayComponents_SetAll(bool keep)
+        {
+            foreach (DisplayComponentModel displayComponent in DisplayComponentList.DisplayDriverComponents)
+            {
+                displayComponent.Keep = keep;
+            }
+        }
+
         public void ModifyInstaller()
         {
             try
