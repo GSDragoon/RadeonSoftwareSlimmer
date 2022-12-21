@@ -13,7 +13,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string filePath = @"C:\Some\path\To\A\file.xml";
             MockFileSystem fileSystem = new MockFileSystem();
             fileSystem.AddFile(filePath, new MockFileData(string.Empty));
-            IFileInfo originalFile = fileSystem.FileInfo.FromFileName(filePath);
+            IFileInfo originalFile = fileSystem.FileInfo.New(filePath);
             ScheduledTaskXmlModel scheduledTask = new ScheduledTaskXmlModel(originalFile);
 
             IFileInfo returnFile = scheduledTask.GetFile();

@@ -49,12 +49,12 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
         private IEnumerable<DisplayComponentModel> GetDisplayComponentFolders(string installerRoot)
         {
-            IDirectoryInfo installerRootDirectory = _fileSystem.DirectoryInfo.FromDirectoryName(installerRoot);
+            IDirectoryInfo installerRootDirectory = _fileSystem.DirectoryInfo.New(installerRoot);
             if (!installerRootDirectory.Exists)
                 throw new DirectoryNotFoundException("Installer folder does not exist or cannot access.");
 
             _displayDriverFolders[0] = installerRoot;
-            IDirectoryInfo displayDriverFolder = _fileSystem.DirectoryInfo.FromDirectoryName(_fileSystem.Path.Combine(_displayDriverFolders));
+            IDirectoryInfo displayDriverFolder = _fileSystem.DirectoryInfo.New(_fileSystem.Path.Combine(_displayDriverFolders));
             if (displayDriverFolder.Exists)
             {
                 foreach (IDirectoryInfo componentDirectory in displayDriverFolder.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))

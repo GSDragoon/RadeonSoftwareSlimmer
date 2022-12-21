@@ -16,7 +16,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string filePath = @"C:\Some\Path\To\A\File\foobar.json";
             _fileSystem = new MockFileSystem();
             _fileSystem.AddFile(filePath, new MockFileData(string.Empty));
-            _dummyFile = _fileSystem.FileInfo.FromFileName(filePath);
+            _dummyFile = _fileSystem.FileInfo.New(filePath);
         }
 
 
@@ -54,7 +54,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string filePath = @"C:\Some\Path\To\A\File\foobar.json";
             MockFileSystem fileSystem = new MockFileSystem();
             fileSystem.AddFile(filePath, new MockFileData(string.Empty));
-            IFileInfo dummyFile = _fileSystem.FileInfo.FromFileName(filePath);
+            IFileInfo dummyFile = _fileSystem.FileInfo.New(filePath);
             PackageModel duplicatePackageModel = new PackageModel(dummyFile);
             duplicatePackageModel.Keep = false;
             duplicatePackageModel.ProductName = "Test Product Name";
@@ -81,7 +81,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string filePath = @"C:\Some\Path\To\A\File\Differentfoobar.json";
             MockFileSystem fileSystem = new MockFileSystem();
             fileSystem.AddFile(filePath, new MockFileData(string.Empty));
-            IFileInfo dummyFile = _fileSystem.FileInfo.FromFileName(filePath);
+            IFileInfo dummyFile = _fileSystem.FileInfo.New(filePath);
             PackageModel duplicatePackageModel = new PackageModel(dummyFile);
             duplicatePackageModel.Keep = false;
             duplicatePackageModel.ProductName = "Different Test Product Name";

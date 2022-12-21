@@ -131,18 +131,18 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
                     if (string.IsNullOrWhiteSpace(installDir))
                     {
-                        _cnDir = _fileSystem.DirectoryInfo.FromDirectoryName(INSTALL_FOLDER_DEFAULT_PATH);
+                        _cnDir = _fileSystem.DirectoryInfo.New(INSTALL_FOLDER_DEFAULT_PATH);
                         StaticViewModel.AddDebugMessage($"Unable to read {INSTALL_FOLDER_REGISTRY_VALUE_NAME} from {INSTALL_FOLDER_REGISTRY_KEY}. Defaulting to {INSTALL_FOLDER_DEFAULT_PATH}.");
                     }
                     else
                     {
-                        _cnDir = _fileSystem.DirectoryInfo.FromDirectoryName(installDir);
+                        _cnDir = _fileSystem.DirectoryInfo.New(installDir);
                         StaticViewModel.AddDebugMessage($"Found {installDir} from {INSTALL_FOLDER_REGISTRY_KEY}.");
                     }
                 }
                 else
                 {
-                    _cnDir = _fileSystem.DirectoryInfo.FromDirectoryName(INSTALL_FOLDER_DEFAULT_PATH);
+                    _cnDir = _fileSystem.DirectoryInfo.New(INSTALL_FOLDER_DEFAULT_PATH);
                     StaticViewModel.AddDebugMessage($"Unable to read from {INSTALL_FOLDER_REGISTRY_KEY}. Defaulting to {INSTALL_FOLDER_DEFAULT_PATH}.");
                 }
             }

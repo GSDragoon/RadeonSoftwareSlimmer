@@ -33,7 +33,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string installRoot = @"Parent\Child\InstallerFolder";
             _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
             _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
-            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.FromDirectoryName(installRoot);
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
 
             packageList.LoadOrRefresh(installerDir);
 
@@ -64,9 +64,9 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string installRoot = @"Parent\Child\InstallerFolder";
             _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
             _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
-            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.FromDirectoryName(installRoot);
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
 
-            PackageModel packageToRemove = new PackageModel(_fileSystem.FileInfo.FromFileName(installerDir + @"\Bin64\cccmanifest_64.json"))
+            PackageModel packageToRemove = new PackageModel(_fileSystem.FileInfo.New(installerDir + @"\Bin64\cccmanifest_64.json"))
             {
                 Description = "Test Description DOES NOT EXIST",
                 ProductName = "Test productName DOES NOT EXIST",
@@ -98,9 +98,9 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string installRoot = @"Parent\Child\InstallerFolder";
             _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
             _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
-            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.FromDirectoryName(installRoot);
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
 
-            PackageModel packageToRemove = new PackageModel(_fileSystem.FileInfo.FromFileName(installerDir + @"\Bin64\cccmanifest_64.json"))
+            PackageModel packageToRemove = new PackageModel(_fileSystem.FileInfo.New(installerDir + @"\Bin64\cccmanifest_64.json"))
             {
                 Description = "Test Description",
                 ProductName = "Test productName",
@@ -129,7 +129,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         {
             return new List<PackageModel>()
             {
-                new PackageModel(_fileSystem.FileInfo.FromFileName(installerRoot + @"\Config\InstallManifest.json"))
+                new PackageModel(_fileSystem.FileInfo.New(installerRoot + @"\Config\InstallManifest.json"))
                 {
                 Description = "Test2 Description",
                 ProductName = "ATest2 productName",
@@ -137,7 +137,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 Type = "Test2 ptype",
                 Keep = true
                 },
-                new PackageModel(_fileSystem.FileInfo.FromFileName(installerRoot + @"\Bin64\cccmanifest_64.json"))
+                new PackageModel(_fileSystem.FileInfo.New(installerRoot + @"\Bin64\cccmanifest_64.json"))
                 {
                 Description = "Test Description",
                 ProductName = "Test productName",
@@ -145,7 +145,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 Type = "Test ptype",
                 Keep = true
                 },
-                new PackageModel(_fileSystem.FileInfo.FromFileName(installerRoot + @"\Bin64\cccmanifest_64.json"))
+                new PackageModel(_fileSystem.FileInfo.New(installerRoot + @"\Bin64\cccmanifest_64.json"))
                 {
                     Description = "Test2 Description",
                     ProductName = "Test2 productName",
@@ -153,7 +153,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     Type = "Test2 ptype",
                     Keep = true
                 },
-                new PackageModel(_fileSystem.FileInfo.FromFileName(installerRoot + @"\Config\InstallManifest.json"))
+                new PackageModel(_fileSystem.FileInfo.New(installerRoot + @"\Config\InstallManifest.json"))
                 {
                     Description = "Test Description",
                     ProductName = "ZTest productName",
@@ -168,7 +168,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         {
             return new List<PackageModel>()
             {
-                new PackageModel(_fileSystem.FileInfo.FromFileName(installerRoot + @"\Config\InstallManifest.json"))
+                new PackageModel(_fileSystem.FileInfo.New(installerRoot + @"\Config\InstallManifest.json"))
                 {
                 Description = "Test2 Description",
                 ProductName = "ATest2 productName",
@@ -176,7 +176,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 Type = "Test2 ptype",
                 Keep = true
                 },
-                new PackageModel(_fileSystem.FileInfo.FromFileName(installerRoot + @"\Bin64\cccmanifest_64.json"))
+                new PackageModel(_fileSystem.FileInfo.New(installerRoot + @"\Bin64\cccmanifest_64.json"))
                 {
                     Description = "Test2 Description",
                     ProductName = "Test2 productName",
@@ -184,7 +184,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     Type = "Test2 ptype",
                     Keep = true
                 },
-                new PackageModel(_fileSystem.FileInfo.FromFileName(installerRoot + @"\Config\InstallManifest.json"))
+                new PackageModel(_fileSystem.FileInfo.New(installerRoot + @"\Config\InstallManifest.json"))
                 {
                     Description = "Test Description",
                     ProductName = "ZTest productName",

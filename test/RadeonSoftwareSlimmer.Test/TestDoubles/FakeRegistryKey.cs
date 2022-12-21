@@ -72,8 +72,8 @@ namespace RadeonSoftwareSlimmer.Test.TestDoubles
         {
             if (string.IsNullOrWhiteSpace(name))
                 return defaultValue;
-            if (Values.ContainsKey(name))
-                return Values[name].Value;
+            else if (Values.TryGetValue(name, out RegistryValue registryValue))
+                return registryValue.Value;
             else
                 return defaultValue;
         }
@@ -83,8 +83,8 @@ namespace RadeonSoftwareSlimmer.Test.TestDoubles
         {
             if (string.IsNullOrWhiteSpace(name))
                 return null;
-            else if (SubKeys.ContainsKey(name))
-                return SubKeys[name];
+            else if (SubKeys.TryGetValue(name, out FakeRegistryKey fakeRegistryKey))
+                return fakeRegistryKey;
             else
                 return null;
         }

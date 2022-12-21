@@ -92,7 +92,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 return false;
             }
 
-            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(_extractedInstallerDirectory);
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.New(_extractedInstallerDirectory);
 
             if (directoryInfo.Exists && (directoryInfo.GetDirectories().Length > 0 || directoryInfo.GetFiles().Length > 0))
             {
@@ -111,7 +111,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 return false;
             }
 
-            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(_extractedInstallerDirectory);
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.New(_extractedInstallerDirectory);
 
             if (directoryInfo.Exists)
             {

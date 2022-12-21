@@ -18,8 +18,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
@@ -41,8 +41,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     string.Format("dummyline{0}dummyline2{0}[Strings]{0}ExtendedGraphics\"test{0}", Environment.NewLine)) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
@@ -64,8 +64,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     string.Format("dummyline{0}dummyline2{0}[Strings]{0}\"test{0}", Environment.NewLine)) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
@@ -86,8 +86,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
@@ -109,8 +109,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     string.Format("dummyline{0}dummyline2{0}desc\"test{0}", Environment.NewLine)) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
@@ -132,8 +132,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     string.Format("dummyline{0}dummyline2{0}[Strings]{0}\"test{0}", Environment.NewLine)) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
@@ -155,8 +155,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                     string.Format("dummyline{0}dummyline2{0}[Strings]", Environment.NewLine)) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
 
@@ -177,8 +177,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             componentDir.Delete(true);
             rootDir.Refresh();
@@ -200,8 +200,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             displayComponentModel.Keep = true;
             rootDir.Refresh();
@@ -227,8 +227,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             displayComponentModel.Keep = false;
             componentDir.GetFiles()[0].IsReadOnly = true;
@@ -254,8 +254,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
             });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.FromDirectoryName(@"C:\driver\path1\path2\display\component1");
+            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
+            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
             displayComponentModel.Keep = false;
             rootDir.Refresh();

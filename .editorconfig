@@ -37,6 +37,9 @@ dotnet_diagnostic.S1066.severity = none
 # IDE0016: Use 'throw' expression
 dotnet_diagnostic.IDE0016.severity = none
 
+# IDE0031: Use null propagation
+dotnet_diagnostic.IDE0031.severity = none
+
 # *******************************************************************************************
 # SonarAnalyzer Rules
 # S3897: Classes that provide "Equals(<T>)" should implement "IEquatable<T>"

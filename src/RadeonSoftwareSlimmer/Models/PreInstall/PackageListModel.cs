@@ -87,8 +87,8 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             IFileInfo[] packageFiles =
             {
-                _fileSystem.FileInfo.FromFileName($@"{installDirectory.FullName}\Bin64\cccmanifest_64.json"),
-                _fileSystem.FileInfo.FromFileName($@"{installDirectory.FullName}\Config\InstallManifest.json"),
+                _fileSystem.FileInfo.New($@"{installDirectory.FullName}\Bin64\cccmanifest_64.json"),
+                _fileSystem.FileInfo.New($@"{installDirectory.FullName}\Config\InstallManifest.json"),
             };
 
             foreach (IFileInfo file in packageFiles)

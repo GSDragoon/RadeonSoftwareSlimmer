@@ -54,7 +54,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             long bytes = 0;
             int files = 0;
-            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(Folder);
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.New(Folder);
 
             foreach (IFileInfo fileInfo in directoryInfo.EnumerateFiles("*", SearchOption.AllDirectories))
             {
@@ -91,7 +91,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         private void ClearFolder(string folder)
         {
-            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.FromDirectoryName(folder);
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.New(folder);
 
             foreach (IFileInfo fileInfo in directoryInfo.EnumerateFiles())
             {

@@ -19,7 +19,7 @@ namespace RadeonSoftwareSlimmer.Services
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentNullException($"{fileName} is null or empty");
 
-            _file = fileSystem.FileInfo.FromFileName(fileName);
+            _file = fileSystem.FileInfo.New(fileName);
             _fileNameWithoutExtension = _file.Name.Substring(0, _file.Name.Length - _file.Extension.Length);
         }
 

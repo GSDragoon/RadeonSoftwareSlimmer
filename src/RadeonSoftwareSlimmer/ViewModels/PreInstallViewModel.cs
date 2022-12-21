@@ -73,7 +73,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
             if (result == true)
             {
-                IFileInfo file = _fileSystem.FileInfo.FromFileName(openFileDialog.FileName);
+                IFileInfo file = _fileSystem.FileInfo.New(openFileDialog.FileName);
                 InstallerFiles.InstallerFile = openFileDialog.FileName;
                 InstallerFiles.ExtractedInstallerDirectory = $@"{file.Directory}\{file.Name.Substring(0, file.Name.Length - file.Extension.Length)}";
             }
@@ -154,7 +154,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 StaticViewModel.IsLoading = true;
                 StaticViewModel.AddLogMessage("Loading installer information");
 
-                IDirectoryInfo extractedDirectory = _fileSystem.DirectoryInfo.FromDirectoryName(InstallerFiles.ExtractedInstallerDirectory);
+                IDirectoryInfo extractedDirectory = _fileSystem.DirectoryInfo.New(InstallerFiles.ExtractedInstallerDirectory);
                 PackageList.LoadOrRefresh(extractedDirectory);
                 ScheduledTaskList.LoadOrRefresh(extractedDirectory);
                 DisplayComponentList.LoadOrRefresh(extractedDirectory.FullName);
