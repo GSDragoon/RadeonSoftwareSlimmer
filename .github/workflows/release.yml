@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
+    # https://github.com/actions/runner-images
+    # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
     runs-on: windows-2022
     steps:
 

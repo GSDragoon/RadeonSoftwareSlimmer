@@ -32,8 +32,9 @@ Requirements:
 * Administrator rights
 * Windows 10 64-bit or Windows 11 (Latest version recommended)
 * .NET (Either __one__ of the following)
+  * [.NET Desktop Runtime 7.0 x64](https://dotnet.microsoft.com/download/dotnet/7.0) (latest version recommended)
   * [.NET Desktop Runtime 6.0 x64](https://dotnet.microsoft.com/download/dotnet/6.0) (latest version recommended)
-  * [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48) (Included with Windows 10 1903 [May 2019 update] and later)  
+  * [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48) (Included with Windows 10 1903 [May 2019 update] and later)  
 
 Installation:
 1. Download the version you want on the [Releases page](https://github.com/GSDragoon/RadeonSoftwareSlimmer/releases).
