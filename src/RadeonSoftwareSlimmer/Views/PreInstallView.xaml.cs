@@ -80,7 +80,12 @@ namespace RadeonSoftwareSlimmer.Views
         private void btnRunInstaller_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.RunRadeonSoftwareSetup();
+            Window.GetWindow(this).Close();
+        }
 
+        private void btnRunCleanup_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.RunAmdCleanupUtility();
             Window.GetWindow(this).Close();
         }
 

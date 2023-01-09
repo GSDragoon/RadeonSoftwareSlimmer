@@ -7,8 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
     Title="Radeon Software Slimmer"
-    Width="800"
-    Height="600"
     BorderThickness="2"
     Icon="/icon.ico"
     WindowStartupLocation="CenterScreen"

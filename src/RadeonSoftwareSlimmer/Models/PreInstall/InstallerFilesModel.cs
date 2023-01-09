@@ -67,6 +67,17 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
         }
 
+        public void RunAmdCleanupUtility()
+        {
+            using (Process process = new Process())
+            {
+                process.StartInfo.FileName = $@"{ExtractedInstallerDirectory}\Bin64\AMDCleanupUtility.exe";
+                process.StartInfo.UseShellExecute = true;
+                process.StartInfo.CreateNoWindow = false;
+                process.Start();
+            }
+        }
+
         public bool ValidateInstallerFile()
         {
             if (string.IsNullOrWhiteSpace(_installerFile))
@@ -113,18 +124,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
             IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.New(_extractedInstallerDirectory);
 
-            if (directoryInfo.Exists)
-            {
-                if (directoryInfo.GetFiles("Setup.exe", SearchOption.TopDirectoryOnly).Length != 1 ||
-                    directoryInfo.GetDirectories("Bin64", SearchOption.TopDirectoryOnly).Length != 1 ||
-                    directoryInfo.GetDirectories("Config", SearchOption.TopDirectoryOnly).Length != 1)
-                {
-                    StaticViewModel.AddLogMessage($"Installer files not found in {_extractedInstallerDirectory}");
-                    return false;
-                }
-
+            if (directoryInfo.Exists &&
+                _fileSystem.Directory.Exists($"{_extractedInstallerDirectory}\\Bin64") &&
+                _fileSystem.Directory.Exists($"{_extractedInstallerDirectory}\\Config") &&
+                _fileSystem.File.Exists($"{_extractedInstallerDirectory}\\Setup.exe") &&
+                _fileSystem.File.Exists($"{_extractedInstallerDirectory}\\Bin64\\AMDCleanupUtility.exe")
+                )
                 return true;
-            }
             else
             {
                 StaticViewModel.AddLogMessage($"Installer files not found in {_extractedInstallerDirectory}");

@@ -233,5 +233,10 @@ namespace RadeonSoftwareSlimmer.ViewModels
         {
             InstallerFiles.RunRadeonSoftwareSetup();
         }
+
+        public void RunAmdCleanupUtility()
+        {
+            InstallerFiles.RunAmdCleanupUtility();
+        }
     }
 }
