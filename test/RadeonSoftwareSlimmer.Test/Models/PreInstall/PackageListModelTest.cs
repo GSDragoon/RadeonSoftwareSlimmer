@@ -103,23 +103,6 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             });
         }
 
-        private static bool MockFileDataIsEqual(MockFileData actual, MockFileData expected)
-        {
-            if (actual == null || expected == null)
-                return false;
-
-            if (!actual.CreationTime.Equals(expected.CreationTime))
-                return false;
-
-            if (!actual.LastWriteTime.Equals(expected.LastWriteTime))
-                return false;
-
-            if (!string.Equals(actual.TextContents, expected.TextContents))
-                return false;
-
-            return true;
-        }
-
 
         [Test]
         public void RemovePackage_PackageIsNull_ThrowsArgumentNullException()
@@ -192,6 +175,56 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
                 Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
             });
+        }
+
+
+        [Test]
+        public void RestoreToDefault_RestoresPackageFilesFromBackup()
+        {
+            PackageListModel packageList = new PackageListModel(_fileSystem);
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
+            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
+            _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json").TextContents = "Different data to simulate modifying the file";
+            _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json").TextContents = "Different data to simulate modifying the file";
+            packageList.LoadOrRefresh(installerDir);
+
+            packageList.RestoreToDefault();
+
+            MockFileData ccmanifest = _fileSystem.GetFile(installRoot + @"\Bin64\cccmanifest_64.json");
+            MockFileData installmanifest = _fileSystem.GetFile(installRoot + @"\Config\InstallManifest.json");
+            MockFileData ccmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json");
+            MockFileData installmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json");
+            Assert.Multiple(() =>
+            {
+                Assert.That(ccmanifestBak, Is.Not.Null);
+                Assert.That(installmanifestBak, Is.Not.Null);
+                Assert.That(ccmanifest, Is.Not.Null);
+                Assert.That(installmanifest, Is.Not.Null);
+                Assert.That(ccmanifest.TextContents, Is.EqualTo(ccmanifestBak.TextContents));
+                Assert.That(installmanifest.TextContents, Is.EqualTo(installmanifestBak.TextContents));
+            });
+        }
+
+
+        private static bool MockFileDataIsEqual(MockFileData actual, MockFileData expected)
+        {
+            if (actual == null || expected == null)
+                return false;
+
+            if (!actual.CreationTime.Equals(expected.CreationTime))
+                return false;
+
+            if (!actual.LastWriteTime.Equals(expected.LastWriteTime))
+                return false;
+
+            if (!string.Equals(actual.TextContents, expected.TextContents))
+                return false;
+
+            return true;
         }
 
         private IList<PackageModel> ExpectedLoadedPackageModel(string installerRoot)
