@@ -61,6 +61,19 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
         }
 
+        public void RestoreToDefault()
+        {
+            if (_scheduledTasks != null)
+            {
+                foreach (ScheduledTaskXmlModel scheduledTask in _scheduledTasks)
+                {
+                    // Assume they are all enabled by default
+                    scheduledTask.Enabled = true;
+                    SetScheduledTaskStatusAndUnhide(scheduledTask);
+                }
+            }
+        }
+
 
         private IEnumerable<ScheduledTaskXmlModel> GetInstallerScheduledTasks(IDirectoryInfo installDirectory)
         {

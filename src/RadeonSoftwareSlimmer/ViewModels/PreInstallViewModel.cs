@@ -236,6 +236,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 StaticViewModel.AddLogMessage("Resetting installer to defaults");
 
                 PackageList.RestoreToDefault();
+                ScheduledTaskList.RestoreToDefault();
 
                 ReadFromExtractedInstaller();
 

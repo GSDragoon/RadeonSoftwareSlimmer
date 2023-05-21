@@ -139,6 +139,26 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             Assert.That(modifiedXml, Is.EqualTo(expectedXml));
         }
 
+        [Test]
+        public void RestoreToDefault_SetsAllScheduledTasksToEnabled()
+        {
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
+            _fileSystem.AddFile(installRoot + @"\Config\TaskVista.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task7.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_Task7.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task10.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_Task10.xml")));
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
+            ScheduledTaskXmlListModel scheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem);
+            scheduledTaskList.LoadOrRefresh(installerDir);
+
+            scheduledTaskList.RestoreToDefault();
+
+            scheduledTaskList.LoadOrRefresh(installerDir);
+            foreach (ScheduledTaskXmlModel scheduledTask in scheduledTaskList.ScheduledTasks)
+            {
+                Assert.That(scheduledTask.Enabled, Is.True);
+            }
+        }
+
 
         private IList<ScheduledTaskXmlModel> ExpectedLoadedScheduledTaskListModel(string installerRoot)
         {
