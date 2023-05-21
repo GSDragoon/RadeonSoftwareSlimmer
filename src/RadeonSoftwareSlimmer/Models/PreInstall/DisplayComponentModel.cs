@@ -72,8 +72,9 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
         }
 
-
+        #if NET5_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2249:Consider using 'string.Contains' instead of 'string.IndexOf'", Justification = "Cannot do case-insensitive Contains in .NET 4.8")]
+        #endif
         private void LoadInfFileInformation(IFileInfo infFile)
         {
             StaticViewModel.AddDebugMessage($"Processing inf file {infFile.FullName}");
