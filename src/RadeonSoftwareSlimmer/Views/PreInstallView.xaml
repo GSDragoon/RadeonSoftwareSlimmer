@@ -203,6 +203,7 @@
                     <DockPanel Grid.Row="1" Margin="0,16,0,0">
                         <Button x:Name="btnNewInstaller" Click="btnNewInstaller_Click" Content="Select New Installer" DockPanel.Dock="Left" Padding="8,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                         <Button x:Name="btnRunCleanup" Click="btnRunCleanup_Click"  Content="Run Cleanup Utility" DockPanel.Dock="Left" Margin="0,0,16,0" Padding="8,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnResetToDefault" Click="btnResetToDefault_Click" Content="Reset Installer to Defaults" Padding="32,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                         <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Content="Modify Installer" Padding="32,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                         <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" Content="Run Installer" DockPanel.Dock="Right" Margin="16,0" Padding="16,0,16,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
                     </DockPanel>

@@ -77,6 +77,11 @@ namespace RadeonSoftwareSlimmer.Views
             _viewModel.ModifyInstaller();
         }
 
+        private void btnResetToDefault_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ResetInstallerToDefaults();
+        }
+
         private void btnRunInstaller_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.RunRadeonSoftwareSetup();

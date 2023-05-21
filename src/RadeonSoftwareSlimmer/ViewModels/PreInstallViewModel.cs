@@ -228,6 +228,29 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
+        public void ResetInstallerToDefaults()
+        {
+            try
+            {
+                StaticViewModel.IsLoading = true;
+                StaticViewModel.AddLogMessage("Resetting installer to defaults");
+
+                PackageList.RestoreToDefault();
+
+                ReadFromExtractedInstaller();
+
+                StaticViewModel.AddLogMessage("Finished resetting installer to defaults");
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex, "Resetting installer to defaults failed");
+            }
+            finally
+            {
+                StaticViewModel.IsLoading = false;
+            }
+        }
+
 
         public void RunRadeonSoftwareSetup()
         {
