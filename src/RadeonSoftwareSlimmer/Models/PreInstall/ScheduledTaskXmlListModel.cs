@@ -65,6 +65,8 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             if (_scheduledTasks != null)
             {
+                StaticViewModel.AddDebugMessage("Restoring scheduled tasks to enabled");
+
                 foreach (ScheduledTaskXmlModel scheduledTask in _scheduledTasks)
                 {
                     // Assume they are all enabled by default
