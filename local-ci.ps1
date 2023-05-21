@@ -16,9 +16,8 @@ $coveragerDir = "${localCiDir}\CoverageReports"
 $publishDir = "${localCiDir}\Publish"
 
 # Install Report Generator
-$reportGeneratorPath = "${localCiDir}\ReportGeneratorTool"
-$reportGeneratorExe = "${reportGeneratorPath}\reportgenerator.exe"
-dotnet tool install dotnet-reportgenerator-globaltool --tool-path "${reportGeneratorPath}"
+$reportGeneratorExe = "${localCiDir}\reportgenerator.exe"
+dotnet tool install dotnet-reportgenerator-globaltool --tool-path "${localCiDir}"
 
 # Clean
 dotnet clean --configuration Release --framework net7.0-windows
