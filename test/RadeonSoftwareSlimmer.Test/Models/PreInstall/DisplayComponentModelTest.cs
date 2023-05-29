@@ -57,23 +57,6 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
         [Test]
-        public void Ctor_NoInf_InfFileIsNull()
-        {
-            _fileSystem.AddFile(@"C:\driver\path1\path2\display\component1\driver.somethingelse", new MockFileData(
-                string.Format("dummyline{0}dummyline2{0}[Strings]{0}\"test{0}", Environment.NewLine)));
-
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(displayComponentModel.Description, Is.Null);
-                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-                Assert.That(displayComponentModel.InfFile, Is.Null);
-                Assert.That(displayComponentModel.Keep, Is.True);
-            });
-        }
-
-        [Test]
         public void Ctor_EmptyInf_DiscriptionIsNull()
         {
             _fileSystem.AddEmptyFile(@"C:\driver\path1\path2\display\component1\driver.inf");

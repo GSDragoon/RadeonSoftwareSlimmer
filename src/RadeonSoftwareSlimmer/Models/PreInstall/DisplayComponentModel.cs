@@ -22,12 +22,10 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             _componentDirectory = componentDirectory;
             _backupDirectory = installerRootDirectory.CreateSubdirectory("RSS_Backup").CreateSubdirectory("DisplayComponents");
             Directory = componentDirectory.FullName.Substring(componentDirectory.FullName.IndexOf(installerRootDirectory.FullName) + installerRootDirectory.FullName.Length);
-            IFileInfo[] infFiles = componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly);
-            if (infFiles.Length > 0)
-            {
-                InfFile = infFiles[0].Name;
-                LoadInfFileInformation(infFiles[0]);
-            }
+
+            IFileInfo infFile = componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly)[0];
+            InfFile = infFile.Name;
+            LoadInfFileInformation(infFile);
         }
 
 
