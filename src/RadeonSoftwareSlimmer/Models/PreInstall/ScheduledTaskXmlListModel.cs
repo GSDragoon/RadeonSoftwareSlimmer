@@ -125,7 +125,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 //This happens even with legit exported files from Windows itself
                 //https://stackoverflow.com/questions/29915467/there-is-no-unicode-byte-order-mark-cannot-switch-to-unicode
                 StaticViewModel.AddDebugMessage($"Wrong encoding for {file.FullName}");
-                
+
                 try
                 {
                     xDocument = XDocument.Parse(_fileSystem.File.ReadAllText(file.FullName));

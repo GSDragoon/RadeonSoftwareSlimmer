@@ -50,7 +50,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             packageModel.Url = "Test URL";
             packageModel.Type = "Test Type";
             packageModel.Description = "Test Description";
-            
+
             string filePath = @"C:\Some\Path\To\A\File\foobar.json";
             MockFileSystem fileSystem = new MockFileSystem();
             fileSystem.AddFile(filePath, new MockFileData(string.Empty));
@@ -64,7 +64,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
 
             bool equals = packageModel.Equals(duplicatePackageModel);
-            
+
             Assert.That(equals, Is.True);
         }
 

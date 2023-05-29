@@ -18,7 +18,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
                 .AddTestValue("WindowsInstaller", 0);
 
             InstalledModel installedModel = new InstalledModel(installKey, "Test");
-            
+
             Assert.Multiple(() =>
             {
                 Assert.That(installedModel, Is.Not.Null);

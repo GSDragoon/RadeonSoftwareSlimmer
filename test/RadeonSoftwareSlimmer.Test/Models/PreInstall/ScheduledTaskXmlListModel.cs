@@ -47,7 +47,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             {
                 Assert.That(actualTasks, Is.Not.Null);
                 Assert.That(actualTasks, Has.Count.EqualTo(3));
-            
+
                 for (int i = 0; i < 3; i++)
                 {
                     Assert.That(actualTasks[i], Is.Not.Null);

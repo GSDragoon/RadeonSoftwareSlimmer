@@ -14,13 +14,16 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         private IDirectoryInfo _backupBaseDir;
         private IEnumerable<DisplayComponentModel> _components;
 
+
         public DisplayComponentListModel(IFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
 
         public IEnumerable<DisplayComponentModel> DisplayDriverComponents
         {

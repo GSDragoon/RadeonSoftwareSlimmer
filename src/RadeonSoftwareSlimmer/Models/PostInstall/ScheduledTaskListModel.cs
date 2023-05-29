@@ -35,7 +35,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         }
 
         public void ApplyChanges()
-        { 
+        {
             foreach (ScheduledTaskModel scheduledTask in _scheduledTasks)
             {
                 if (scheduledTask.Enabled)

@@ -42,9 +42,9 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\inf.NotIt", new MockFileData(
                     string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test3{0}", Environment.NewLine)));
             DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
-            
+
             displayComponentListModel.LoadOrRefresh(_installerDir);
-            
+
             List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
             Assert.That(displayComponentModels, Is.Empty);
         }
@@ -75,7 +75,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
 
             displayComponentListModel.LoadOrRefresh(_installerDir);
-            
+
             List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
             Assert.That(displayComponentModels, Has.Count.EqualTo(1));
         }
