@@ -49,7 +49,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             if (installDirectory != null)
             {
                 _installDir = installDirectory;
-                _backupDir = _fileSystem.DirectoryInfo.New(_fileSystem.Path.Combine(_installDir.FullName, "RSS_Backup", "Packages"));
+                _backupDir = installDirectory.CreateSubdirectory("RSS_Backup").CreateSubdirectory("Packages");
                 BackupIfNotAlready();
 
                 InstallerPackages = new List<PackageModel>(GetAllInstallerPackages().OrderBy(p => p.ProductName));

@@ -157,7 +157,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 IDirectoryInfo extractedDirectory = _fileSystem.DirectoryInfo.New(InstallerFiles.ExtractedInstallerDirectory);
                 PackageList.LoadOrRefresh(extractedDirectory);
                 ScheduledTaskList.LoadOrRefresh(extractedDirectory);
-                DisplayComponentList.LoadOrRefresh(extractedDirectory.FullName);
+                DisplayComponentList.LoadOrRefresh(extractedDirectory);
 
                 StaticViewModel.AddLogMessage("Finished loading installer information");
             }
@@ -237,6 +237,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
                 PackageList.RestoreToDefault();
                 ScheduledTaskList.RestoreToDefault();
+                DisplayComponentList.RestoreToDefault();
 
                 ReadFromExtractedInstaller();
 

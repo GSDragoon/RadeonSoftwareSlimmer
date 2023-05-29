@@ -9,6 +9,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
     public class DisplayComponentModel : INotifyPropertyChanged
     {
         private readonly IDirectoryInfo _componentDirectory;
+        private readonly IDirectoryInfo _backupDirectory;
         private bool _keep;
 
 
@@ -19,6 +20,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             Keep = true;
 
             _componentDirectory = componentDirectory;
+            _backupDirectory = installerRootDirectory.CreateSubdirectory("RSS_Backup").CreateSubdirectory("DisplayComponents");
             Directory = componentDirectory.FullName.Substring(componentDirectory.FullName.IndexOf(installerRootDirectory.FullName) + installerRootDirectory.FullName.Length);
             IFileInfo[] infFiles = componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly);
             if (infFiles.Length > 0)
@@ -52,25 +54,21 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             if (Keep || !_componentDirectory.Exists)
                 return;
 
-            try
-            {
-                StaticViewModel.AddDebugMessage($"Removing {_componentDirectory.FullName}");
+            StaticViewModel.AddDebugMessage($"Removing {_componentDirectory.FullName}");
 
-                foreach (IFileInfo file in _componentDirectory.EnumerateFiles("*", SearchOption.AllDirectories))
+            foreach (IFileInfo file in _componentDirectory.EnumerateFiles("*", SearchOption.AllDirectories))
+            {
+                if (file.IsReadOnly)
                 {
-                    if (file.IsReadOnly)
-                    {
-                        file.IsReadOnly = false;
-                    }
+                    file.IsReadOnly = false;
                 }
+            }
 
-                _componentDirectory.Delete(true);
-            }
-            catch (Exception ex)
-            {
-                StaticViewModel.AddDebugMessage(ex, $"Unable to delete {_componentDirectory.FullName}");
-            }
+            string componentBackupDir = _backupDirectory.FileSystem.Path.Combine(_backupDirectory.FullName, _componentDirectory.Name);
+            StaticViewModel.AddDebugMessage($"Moving display component {_componentDirectory.Name} to backup path {componentBackupDir}");
+            _componentDirectory.MoveTo(componentBackupDir);
         }
+
 
         #if NET5_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2249:Consider using 'string.Contains' instead of 'string.IndexOf'", Justification = "Cannot do case-insensitive Contains in .NET 4.8")]
