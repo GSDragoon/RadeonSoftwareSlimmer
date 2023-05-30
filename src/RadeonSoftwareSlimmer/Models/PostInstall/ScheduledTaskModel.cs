@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using Microsoft.Win32.TaskScheduler;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -24,7 +23,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             Name = scheduledTask.Name;
             Active = scheduledTask.IsActive;
             State = scheduledTask.State;
-            Command = scheduledTask.Definition.Actions.First().ToString(CultureInfo.CurrentCulture);
+            Command = scheduledTask.Definition.Actions[0].ToString(CultureInfo.CurrentCulture);
             LastRun = scheduledTask.LastRunTime;
         }
 

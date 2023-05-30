@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
@@ -36,7 +35,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             Process[] processes = Process.GetProcessesByName(Name);
             if (processes.Length > 0)
             {
-                using (Process p = processes.First())
+                using (Process p = processes[0])
                 {
                     ProcessId = p.Id;
                     IsRunning = true;
