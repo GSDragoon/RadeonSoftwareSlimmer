@@ -5,6 +5,7 @@ using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using NUnit.Framework;
 using RadeonSoftwareSlimmer.Models.PreInstall;
 
@@ -30,7 +31,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         public void LoadOrRefresh_LoadsManifest()
         {
             PackageListModel packageList = new PackageListModel(_fileSystem);
-            string installRoot = @"Parent\Child\InstallerFolder";
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
             _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
             _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
             IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
@@ -51,6 +52,57 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             });
         }
 
+        [Test]
+        public void LoadOrRefresh_CreatesBackupFiles()
+        {
+            PackageListModel packageList = new PackageListModel(_fileSystem);
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
+            MockFileData ccmanifesData = new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json"));
+            MockFileData installmanifestData = new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json"));
+            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", ccmanifesData);
+            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", installmanifestData);
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
+
+            packageList.LoadOrRefresh(installerDir);
+
+            MockFileData ccmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json");
+            MockFileData installmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json");
+            Assert.Multiple(() =>
+            {
+                Assert.That(ccmanifestBak, Is.Not.Null);
+                Assert.That(installmanifestBak, Is.Not.Null);
+                Assert.That(ccmanifestBak.TextContents.Equals(ccmanifesData.TextContents));
+                Assert.That(installmanifestBak.TextContents.Equals(installmanifestData.TextContents));
+            });
+        }
+
+        [Test]
+        public void LoadOrRefresh_DoesNotReplaceExistingBackupFiles()
+        {
+            PackageListModel packageList = new PackageListModel(_fileSystem);
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
+            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
+            MockFileData ccmanifestOrig = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json");
+            MockFileData installmanifestOrig = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json");
+
+            Thread.Sleep(200); // Just to make sure the timestamps don't match (if it fails and replaces the existing backup files)
+            packageList.LoadOrRefresh(installerDir);
+
+            MockFileData ccmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json");
+            MockFileData installmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json");
+            Assert.Multiple(() =>
+            {
+                Assert.That(ccmanifestBak, Is.Not.Null);
+                Assert.That(installmanifestBak, Is.Not.Null);
+                Assert.That(MockFileDataIsEqual(ccmanifestBak, ccmanifestOrig));
+                Assert.That(MockFileDataIsEqual(installmanifestBak, installmanifestOrig));
+            });
+        }
+
 
         [Test]
         public void RemovePackage_PackageIsNull_ThrowsArgumentNullException()
@@ -61,7 +113,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         [Test]
         public void RemovePackage_PackageDoesNotExist_DoesNotRemove()
         {
-            string installRoot = @"Parent\Child\InstallerFolder";
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
             _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
             _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
             IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
@@ -84,7 +136,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             Assert.Multiple(() =>
             {
                 Assert.That(actualPackages, Is.Not.Null);
-                Assert.That(actualPackages, Has.Count.EqualTo(4));            
+                Assert.That(actualPackages, Has.Count.EqualTo(4));
                 Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
                 Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
                 Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
@@ -95,7 +147,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         [Test]
         public void RemovePackage_PackageExists_IsRemoved()
         {
-            string installRoot = @"Parent\Child\InstallerFolder";
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
             _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
             _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
             IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
@@ -123,6 +175,56 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
                 Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
                 Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
             });
+        }
+
+
+        [Test]
+        public void RestoreToDefault_RestoresPackageFilesFromBackup()
+        {
+            PackageListModel packageList = new PackageListModel(_fileSystem);
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
+            _fileSystem.AddFile(installRoot + @"\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_cccmanifest.json")));
+            _fileSystem.AddFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\PackageModel_installmanifest.json")));
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
+            _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json").TextContents = "Different data to simulate modifying the file";
+            _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json").TextContents = "Different data to simulate modifying the file";
+            packageList.LoadOrRefresh(installerDir);
+
+            packageList.RestoreToDefault();
+
+            MockFileData ccmanifest = _fileSystem.GetFile(installRoot + @"\Bin64\cccmanifest_64.json");
+            MockFileData installmanifest = _fileSystem.GetFile(installRoot + @"\Config\InstallManifest.json");
+            MockFileData ccmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Bin64\cccmanifest_64.json");
+            MockFileData installmanifestBak = _fileSystem.GetFile(installRoot + @"\RSS_Backup\Packages\Config\InstallManifest.json");
+            Assert.Multiple(() =>
+            {
+                Assert.That(ccmanifestBak, Is.Not.Null);
+                Assert.That(installmanifestBak, Is.Not.Null);
+                Assert.That(ccmanifest, Is.Not.Null);
+                Assert.That(installmanifest, Is.Not.Null);
+                Assert.That(ccmanifest.TextContents, Is.EqualTo(ccmanifestBak.TextContents));
+                Assert.That(installmanifest.TextContents, Is.EqualTo(installmanifestBak.TextContents));
+            });
+        }
+
+
+        private static bool MockFileDataIsEqual(MockFileData actual, MockFileData expected)
+        {
+            if (actual == null || expected == null)
+                return false;
+
+            if (!actual.CreationTime.Equals(expected.CreationTime))
+                return false;
+
+            if (!actual.LastWriteTime.Equals(expected.LastWriteTime))
+                return false;
+
+            if (!string.Equals(actual.TextContents, expected.TextContents))
+                return false;
+
+            return true;
         }
 
         private IList<PackageModel> ExpectedLoadedPackageModel(string installerRoot)

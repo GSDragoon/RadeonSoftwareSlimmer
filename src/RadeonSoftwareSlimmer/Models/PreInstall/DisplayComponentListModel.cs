@@ -2,22 +2,28 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
+using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Models.PreInstall
 {
     public class DisplayComponentListModel : INotifyPropertyChanged
     {
         private readonly IFileSystem _fileSystem;
+        private IDirectoryInfo _installDir;
+        private IDirectoryInfo _componentBaseDir;
+        private IDirectoryInfo _backupBaseDir;
         private IEnumerable<DisplayComponentModel> _components;
-        private readonly string[] _displayDriverFolders = new string[5]{string.Empty, "Packages", "Drivers", "Display", "WT6A_INF" };
+
 
         public DisplayComponentListModel(IFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
         }
 
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
 
         public IEnumerable<DisplayComponentModel> DisplayDriverComponents
         {
@@ -30,9 +36,17 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         }
 
 
-        public void LoadOrRefresh(string installDirectory)
+        public void LoadOrRefresh(IDirectoryInfo installDirectory)
         {
-            DisplayDriverComponents = new List<DisplayComponentModel>(GetDisplayComponentFolders(installDirectory));
+            _installDir = installDirectory;
+
+            if (!_installDir.Exists)
+                throw new DirectoryNotFoundException("Installer folder does not exist or cannot access.");
+
+            _componentBaseDir = _fileSystem.DirectoryInfo.New(_fileSystem.Path.Combine(_installDir.FullName, "Packages", "Drivers", "Display", "WT6A_INF"));
+            _backupBaseDir = _installDir.CreateSubdirectory("RSS_Backup").CreateSubdirectory("DisplayComponents");
+
+            DisplayDriverComponents = new List<DisplayComponentModel>(GetDisplayComponents());
         }
 
         public void RemoveComponentsNotKeeping()
@@ -46,21 +60,26 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
         }
 
-
-        private IEnumerable<DisplayComponentModel> GetDisplayComponentFolders(string installerRoot)
+        public void RestoreToDefault()
         {
-            IDirectoryInfo installerRootDirectory = _fileSystem.DirectoryInfo.New(installerRoot);
-            if (!installerRootDirectory.Exists)
-                throw new DirectoryNotFoundException("Installer folder does not exist or cannot access.");
-
-            _displayDriverFolders[0] = installerRoot;
-            IDirectoryInfo displayDriverFolder = _fileSystem.DirectoryInfo.New(_fileSystem.Path.Combine(_displayDriverFolders));
-            if (displayDriverFolder.Exists)
+            foreach (IDirectoryInfo backedUpComponentDir in _backupBaseDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
             {
-                foreach (IDirectoryInfo componentDirectory in displayDriverFolder.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+                // If loading from another instance of the application, it won't have the old component information
+                // Move also changes the original directory object's path
+                StaticViewModel.AddDebugMessage($"Restoring display component {backedUpComponentDir.Name} to {_componentBaseDir.FullName}");
+                backedUpComponentDir.MoveTo(_fileSystem.Path.Combine(_componentBaseDir.FullName, backedUpComponentDir.Name));
+            }
+        }
+
+
+        private IEnumerable<DisplayComponentModel> GetDisplayComponents()
+        {
+            if (_componentBaseDir.Exists)
+            {
+                foreach (IDirectoryInfo componentDirectory in _componentBaseDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
                 {
                     if (componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly).Length == 1)
-                        yield return new DisplayComponentModel(installerRootDirectory, componentDirectory);
+                        yield return new DisplayComponentModel(_installDir, componentDirectory);
                 }
             }
         }

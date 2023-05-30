@@ -125,7 +125,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     {
                         serviceController.Start();
                         serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
-                        
+
                         Status = serviceController.Status;
                         StaticViewModel.AddLogMessage("Restarted " + Name);
                     }
@@ -140,7 +140,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 StaticViewModel.IsLoading = false;
             }
         }
-        
+
         public void TryStop()
         {
             if (_serviceType.HasFlag(ServiceType.KernelDriver))
@@ -171,7 +171,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                         Status = serviceController.Status;
                     }
                 }
-                
+
                 StaticViewModel.AddLogMessage("Stopped " + Name);
             }
             catch (Exception ex)
@@ -192,7 +192,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             {
                 ProcessHandler processHandler = new ProcessHandler(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\sc.exe");
                 processHandler.RunProcess($"delete \"{Name}\"");
-                    
+
                 //Should delete the driver from the driver store and uninstall using pnputil
 
                 serviceController.Refresh();
@@ -245,7 +245,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             SetStartMode(serviceStartMode);
         }
 
-        
+
         private void SetStartMode(ServiceStartMode startMode)
         {
             using (ServiceController serviceController = LoadFreshService())

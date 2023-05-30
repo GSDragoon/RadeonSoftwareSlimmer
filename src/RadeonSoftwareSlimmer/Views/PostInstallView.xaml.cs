@@ -28,7 +28,7 @@ namespace RadeonSoftwareSlimmer.Views
             await _viewModel.ApplyChangesAsync();
         }
 
-        
+
         private async void btnHostServicesRestart_Click(object sender, RoutedEventArgs e)
         {
             await _viewModel.HostServices_RestartAsync();
@@ -80,6 +80,6 @@ namespace RadeonSoftwareSlimmer.Views
         private void btnTempFilesSelectNone_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.TempFilesSetAll(false);
-        }       
+        }
     }
 }

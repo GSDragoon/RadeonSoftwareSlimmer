@@ -14,6 +14,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
     {
         private readonly IFileSystem _fileSystem;
         private IEnumerable<PackageModel> _packages;
+        private IDirectoryInfo _installDir;
+        private IDirectoryInfo _backupDir;
+        private readonly string[] _packageFiles = new string[]
+        {
+            @"Bin64\cccmanifest_64.json",
+            @"Config\InstallManifest.json"
+        };
 
 
         public PackageListModel(IFileSystem fileSystem)
@@ -40,7 +47,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public void LoadOrRefresh(IDirectoryInfo installDirectory)
         {
             if (installDirectory != null)
-                InstallerPackages = new List<PackageModel>(GetAllInstallerPackages(installDirectory).OrderBy(p => p.ProductName));
+            {
+                _installDir = installDirectory;
+                _backupDir = installDirectory.CreateSubdirectory("RSS_Backup").CreateSubdirectory("Packages");
+                BackupIfNotAlready();
+
+                InstallerPackages = new List<PackageModel>(GetAllInstallerPackages().OrderBy(p => p.ProductName));
+            }
         }
 
         public static void RemovePackage(PackageModel packageToRemove)
@@ -51,7 +64,6 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             JObject fullJson;
 
             StaticViewModel.AddDebugMessage($"Removing package {packageToRemove.ProductName} from {packageToRemove.GetFile().FullName}");
-
 
             using (StreamReader streamReader = new StreamReader(packageToRemove.GetFile().OpenRead()))
             using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
@@ -82,17 +94,36 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
         }
 
-
-        private IEnumerable<PackageModel> GetAllInstallerPackages(IDirectoryInfo installDirectory)
+        public void RestoreToDefault()
         {
-            IFileInfo[] packageFiles =
+            if (_backupDir.Exists)
             {
-                _fileSystem.FileInfo.New($@"{installDirectory.FullName}\Bin64\cccmanifest_64.json"),
-                _fileSystem.FileInfo.New($@"{installDirectory.FullName}\Config\InstallManifest.json"),
-            };
+                foreach (string packageFile in _packageFiles)
+                {
+                    IFileInfo backupFile = _fileSystem.FileInfo.New(_fileSystem.Path.Combine(_backupDir.FullName, packageFile));
+                    if (backupFile.Exists)
+                    {
+                        IFileInfo destinationFile = _fileSystem.FileInfo.New(_fileSystem.Path.Combine(_installDir.FullName, packageFile));
+                        _fileSystem.File.Copy(backupFile.FullName, destinationFile.FullName, true);
+                    }
+                    else
+                    {
+                        StaticViewModel.AddDebugMessage($"Attempted to restore package file {backupFile.FullName} from default, but no backup directory found.");
+                    }
+                }
+            }
+            else
+            {
+                StaticViewModel.AddDebugMessage("Attempted to restore packages from default, but no backup directory found.");
+            }
+        }
 
-            foreach (IFileInfo file in packageFiles)
+
+        private IEnumerable<PackageModel> GetAllInstallerPackages()
+        {
+            foreach (string packageFile in _packageFiles)
             {
+                IFileInfo file = _fileSystem.FileInfo.New(_fileSystem.Path.Combine(_installDir.FullName, packageFile));
                 if (file.Exists)
                 {
                     using (StreamReader streamReader = new StreamReader(file.OpenRead()))
@@ -112,6 +143,23 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                             yield return package;
                         }
                     }
+                }
+            }
+        }
+
+        private void BackupIfNotAlready()
+        {
+            foreach (string packageFile in _packageFiles)
+            {
+                IFileInfo backupFile = _fileSystem.FileInfo.New(_fileSystem.Path.Combine(_backupDir.FullName, packageFile));
+                if (!backupFile.Exists)
+                {
+                    if (!_fileSystem.Directory.Exists(backupFile.DirectoryName))
+                        _fileSystem.Directory.CreateDirectory(backupFile.DirectoryName);
+
+                    IFileInfo sourceFile = _fileSystem.FileInfo.New(_fileSystem.Path.Combine(_installDir.FullName, packageFile));
+                    StaticViewModel.AddDebugMessage($"Backing up {sourceFile.FullName} to {backupFile.FullName}");
+                    _fileSystem.File.Copy(sourceFile.FullName, backupFile.FullName);
                 }
             }
         }

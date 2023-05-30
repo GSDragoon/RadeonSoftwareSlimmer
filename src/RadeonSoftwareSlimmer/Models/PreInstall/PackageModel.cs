@@ -8,7 +8,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         private readonly IFileInfo _file;
         private bool _keep;
 
-        
+
         public PackageModel(IFileInfo file)
         {
             _file = file;

@@ -18,10 +18,6 @@ dotnet_diagnostic.IDE1006.severity = none
 # CA1707: Identifiers should not contain underscores
 dotnet_diagnostic.CA1707.severity = none
 
-# CA1307: Specify StringComparison
-# Not available with .NET Framework
-dotnet_diagnostic.CA1307.severity = none
-
 # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = none
 

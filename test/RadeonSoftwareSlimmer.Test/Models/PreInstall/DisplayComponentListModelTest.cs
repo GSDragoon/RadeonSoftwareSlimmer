@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using NUnit.Framework;
@@ -10,94 +11,86 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 {
     public class DisplayComponentListModelTest
     {
-        [Test]
-        public void LoadOrRefresh_Directory_Does_Not_Exist_Throws_DirectoryNotFoundException()
+        private MockFileSystem _mockFileSystem;
+        private IDirectoryInfo _installerDir;
+
+        [SetUp]
+        public void SetUp()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\test.txt", new MockFileData(string.Empty) }
-            });
-
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-
-            Assert.That(() => { displayComponentListModel.LoadOrRefresh(@"C:\driver"); }, Throws.TypeOf<DirectoryNotFoundException>());
+            _mockFileSystem = new MockFileSystem();
+            _installerDir = _mockFileSystem.DirectoryInfo.New(@"C:\driver");
+            _mockFileSystem.AddDirectory(_installerDir);
         }
 
         [Test]
-        public void LoadOrRefresh_Missing_Files_List_Is_Empty()
+        public void LoadOrRefresh_DirectoryDoesNotExist_ThrowsDirectoryNotFoundException()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.in_", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver2.in", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test2{0}", Environment.NewLine)) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\inf.NotIt", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test3{0}", Environment.NewLine)) },
-            });
+            IDirectoryInfo missingDirectory = _mockFileSystem.DirectoryInfo.New(@"C:\Directory\Does\Not\Exist");
 
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-            
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
-            
-            List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
-            Assert.That(displayComponentModels, Is.Empty);
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
+
+            Assert.That(() => { displayComponentListModel.LoadOrRefresh(missingDirectory); }, Throws.TypeOf<DirectoryNotFoundException>());
         }
 
         [Test]
-        public void LoadOrRefresh_Missing_Directory_List_Is_Empty()
+        public void LoadOrRefresh_MissingFiles_ListIsEmpty()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\W116A_INF\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)) },
-                {@"C:\driver\Packages\Drivers\Audio\WT6A_INF\component1\driver2.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test2{0}", Environment.NewLine)) },
-                {@"C:\driver\Packages\Apps\Display\WT6A_INF\component1\driver3.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test3{0}", Environment.NewLine)) },
-            });
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.in_", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver2.in", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test2{0}", Environment.NewLine)));
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\inf.NotIt", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test3{0}", Environment.NewLine)));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
 
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
+            displayComponentListModel.LoadOrRefresh(_installerDir);
 
             List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
             Assert.That(displayComponentModels, Is.Empty);
         }
 
         [Test]
-        public void LoadOrRefresh_Single_Component_Returns_One_Component()
+        public void LoadOrRefresh_MissingDirectory_ListIsEmpty()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)) }
-            });
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\W116A_INF\component1\driver.inf", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Audio\WT6A_INF\component1\driver2.inf", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test2{0}", Environment.NewLine)));
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Apps\Display\WT6A_INF\component1\driver3.inf", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test3{0}", Environment.NewLine)));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
 
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
 
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
-            
+            List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
+            Assert.That(displayComponentModels, Is.Empty);
+        }
+
+        [Test]
+        public void LoadOrRefresh_SingleComponent_ReturnsOneComponent()
+        {
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe");
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
+
+            displayComponentListModel.LoadOrRefresh(_installerDir);
+
             List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
             Assert.That(displayComponentModels, Has.Count.EqualTo(1));
         }
 
         [Test]
-        public void LoadOrRefresh_Double_Component_Returns_Two_Components()
+        public void LoadOrRefresh_TwoComponents_ReturnsTwoComponents()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)) }
-            });
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe");
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            _mockFileSystem.AddFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\driver.inf", new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
 
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
+            displayComponentListModel.LoadOrRefresh(_installerDir);
 
             List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
             Assert.That(displayComponentModels, Has.Count.EqualTo(2));
@@ -105,53 +98,49 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
 
         [Test]
-        public void RemoveComponentsNotKeeping_Keep_True_Does_Not_Remove()
+        public void RemoveComponentsNotKeeping_KeepIsTrue_DoesNotRemoveComponent()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf");
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
             displayComponentListModel.DisplayDriverComponents.First().Keep = true;
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.That(fileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.True);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1\"), Is.False);
+            });
         }
 
         [Test]
-        public void RemoveComponentsNotKeeping_Keep_False_Does_Remove()
+        public void RemoveComponentsNotKeeping_KeepIsFalse_RemovesComponent()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf");
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
             displayComponentListModel.DisplayDriverComponents.First().Keep = false;
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.That(fileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.False);
+            Assert.Multiple(() =>
+            {
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1\"), Is.True);
+            });
         }
 
         [Test]
-        public void RemoveComponentsNotKeeping_Can_Remove_Multiple_Components()
+        public void RemoveComponentsNotKeeping_CanRemoveMultipleComponents()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\driver.inf");
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
             foreach (DisplayComponentModel displayComponentModel in displayComponentListModel.DisplayDriverComponents)
             {
                 displayComponentModel.Keep = false;
@@ -161,31 +150,55 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 
             Assert.Multiple(() =>
             {
-                Assert.That(fileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.False);
-                Assert.That(fileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1\"), Is.True);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component2\"), Is.True);
             });
         }
 
         [Test]
-        public void RemoveComponentsNotKeeping_Multple_Remove_Only_Not_Kept()
+        public void RemoveComponentsNotKeeping_MultpleComponents_RemovesOnlyNotKept()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf", new MockFileData(string.Empty) },
-                {@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(fileSystem);
-            displayComponentListModel.LoadOrRefresh(@"C:\driver");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\driver.inf");
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
             displayComponentListModel.DisplayDriverComponents.Last().Keep = false;
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
             Assert.Multiple(() =>
             {
-                Assert.That(fileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.True);
-                Assert.That(fileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\"), Is.True);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1\"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component2\"), Is.True);
+            });
+        }
+
+
+        [Test]
+        public void RestoreToDefault_RestoresBackedUpComponents()
+        {
+            _mockFileSystem.AddDirectory(@"C:\driver\Packages\Drivers\Display\WT6A_INF");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\RSS_Backup\DisplayComponents\component1\ccc2_install.exe");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\RSS_Backup\DisplayComponents\component1\driver.inf");
+            _mockFileSystem.AddEmptyFile(@"C:\driver\RSS_Backup\DisplayComponents\component2\driver.inf");
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
+
+            displayComponentListModel.RestoreToDefault();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component2"), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1"), Is.True);
+                Assert.That(_mockFileSystem.File.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\ccc2_install.exe"), Is.True);
+                Assert.That(_mockFileSystem.File.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component1\driver.inf"), Is.True);
+                Assert.That(_mockFileSystem.File.Exists(@"C:\driver\Packages\Drivers\Display\WT6A_INF\component2\driver.inf"), Is.True);
             });
         }
     }

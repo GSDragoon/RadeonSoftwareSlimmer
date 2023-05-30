@@ -61,6 +61,21 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
         }
 
+        public void RestoreToDefault()
+        {
+            if (_scheduledTasks != null)
+            {
+                StaticViewModel.AddDebugMessage("Restoring scheduled tasks to enabled");
+
+                foreach (ScheduledTaskXmlModel scheduledTask in _scheduledTasks)
+                {
+                    // Assume they are all enabled by default
+                    scheduledTask.Enabled = true;
+                    SetScheduledTaskStatusAndUnhide(scheduledTask);
+                }
+            }
+        }
+
 
         private IEnumerable<ScheduledTaskXmlModel> GetInstallerScheduledTasks(IDirectoryInfo installDirectory)
         {
@@ -110,7 +125,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 //This happens even with legit exported files from Windows itself
                 //https://stackoverflow.com/questions/29915467/there-is-no-unicode-byte-order-mark-cannot-switch-to-unicode
                 StaticViewModel.AddDebugMessage($"Wrong encoding for {file.FullName}");
-                
+
                 try
                 {
                     xDocument = XDocument.Parse(_fileSystem.File.ReadAllText(file.FullName));

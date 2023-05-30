@@ -41,7 +41,7 @@ namespace RadeonSoftwareSlimmer.Services
         public IRegistryKey OpenSubKey(string name, bool writable)
         {
             RegistryKey openKey = _regKey.OpenSubKey(name, writable);
-            
+
             if (openKey == null)
                 return null;
             else

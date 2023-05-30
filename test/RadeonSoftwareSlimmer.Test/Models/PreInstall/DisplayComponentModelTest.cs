@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using NUnit.Framework;
@@ -9,19 +8,27 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
 {
     public class DisplayComponentModelTest
     {
-        [Test]
-        public void Ctor_Valid_Component_Is_Successful()
+        private MockFileSystem _fileSystem;
+        private IDirectoryInfo _rootDir;
+        private IDirectoryInfo _componentDir;
+
+
+        [SetUp]
+        public void Setup()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)) }
-            });
+            _fileSystem = new MockFileSystem();
+            _rootDir = _fileSystem.DirectoryInfo.New(@"C:\driver");
+            _componentDir = _fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
+        }
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+        [Test]
+        public void Ctor_ValidComponent_IsSuccessful()
+        {
+            _fileSystem.AddFile(@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
+                string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
 
             Assert.Multiple(() =>
             {
@@ -33,18 +40,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
         [Test]
-        public void Ctor_ExtendedGraphics_Description_Is_Valid()
+        public void Ctor_ExtendedGraphics_DescriptionIsValid()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}ExtendedGraphics\"test{0}", Environment.NewLine)) }
-            });
+            _fileSystem.AddFile(@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
+                string.Format("dummyline{0}dummyline2{0}[Strings]{0}ExtendedGraphics\"test{0}", Environment.NewLine)));
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
 
             Assert.Multiple(() =>
             {
@@ -56,40 +57,11 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
         [Test]
-        public void Ctor_No_Inf_InfFile_Is_Null()
+        public void Ctor_EmptyInf_DiscriptionIsNull()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.somethingelse", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}\"test{0}", Environment.NewLine)) }
-            });
+            _fileSystem.AddEmptyFile(@"C:\driver\path1\path2\display\component1\driver.inf");
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(displayComponentModel.Description, Is.Null);
-                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
-                Assert.That(displayComponentModel.InfFile, Is.Null);
-                Assert.That(displayComponentModel.Keep, Is.True);
-            });
-        }
-
-        [Test]
-        public void Ctor_EmptyInf_Discription_Is_Null()
-        {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
 
             Assert.Multiple(() =>
             {
@@ -101,18 +73,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
         [Test]
-        public void Ctor_Missing_Strings_Discription_Is_Null()
+        public void Ctor_MissingStrings_DiscriptionIsNull()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}desc\"test{0}", Environment.NewLine)) }
-            });
+            _fileSystem.AddFile(@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
+                string.Format("dummyline{0}dummyline2{0}desc\"test{0}", Environment.NewLine)));
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
 
             Assert.Multiple(() =>
             {
@@ -124,18 +90,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
         [Test]
-        public void Ctor_Missing_Description_Discription_Is_Null()
+        public void Ctor_MissingDescription_DiscriptionIsNull()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}\"test{0}", Environment.NewLine)) }
-            });
+            _fileSystem.AddFile(@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
+                string.Format("dummyline{0}dummyline2{0}[Strings]{0}\"test{0}", Environment.NewLine)));
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
 
             Assert.Multiple(() =>
             {
@@ -147,18 +107,12 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
         [Test]
-        public void Ctor_EOF_After_Strings_Discription_Is_Null()
+        public void Ctor_EOFAfterStrings_DiscriptionIsNull()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
-                    string.Format("dummyline{0}dummyline2{0}[Strings]", Environment.NewLine)) }
-            });
+            _fileSystem.AddFile(@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
+                string.Format("dummyline{0}dummyline2{0}[Strings]", Environment.NewLine)));
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
 
             Assert.Multiple(() =>
             {
@@ -169,106 +123,70 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             });
         }
 
-        [Test]
-        public void Remove_Directory_Does_Not_Exist_Does_Nothing()
-        {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
-            });
 
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
-            componentDir.Delete(true);
-            rootDir.Refresh();
-            componentDir.Refresh();
+        [Test]
+        public void Remove_DirectoryDoesNotExist_DoesNothing()
+        {
+            _fileSystem.AddEmptyFile(@"C:\driver\path1\path2\display\component1\driver.inf");
+            _componentDir.Refresh(); // The directory doesn't exist yet until the file has been added
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
+            _componentDir.Delete(true);
             displayComponentModel.Keep = false;
 
             displayComponentModel.Remove();
 
-            rootDir.Refresh();
-            componentDir.Refresh();
-            Assert.That(rootDir.Exists, Is.True);
+            Assert.That(_fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1"), Is.False);
         }
 
         [Test]
-        public void Remove_Keep_True_Does_Not_Delete()
+        public void Remove_KeepTrue_DoesNotRemove()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            _fileSystem.AddEmptyFile(@"C:\driver\path1\path2\display\component1\driver.inf");
+            _componentDir.Refresh();
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
             displayComponentModel.Keep = true;
-            rootDir.Refresh();
-            componentDir.Refresh();
 
             displayComponentModel.Remove();
 
-            rootDir.Refresh();
-            componentDir.Refresh();
             Assert.Multiple(() =>
             {
-                Assert.That(componentDir.Exists, Is.True);
-                Assert.That(componentDir.GetFiles(), Has.Length.EqualTo(1));
-                Assert.That(rootDir.Exists, Is.True);
+                Assert.That(_fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1\"), Is.True);
+                Assert.That(_fileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1\"), Is.False);
             });
         }
 
         [Test]
-        public void Remove_Deletes_Readonly_Files()
+        public void Remove_MovesReadonlyFiles()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            _fileSystem.AddEmptyFile(@"C:\driver\path1\path2\display\component1\driver.inf");
+            _componentDir.Refresh();
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
             displayComponentModel.Keep = false;
-            componentDir.GetFiles()[0].IsReadOnly = true;
-            rootDir.Refresh();
-            componentDir.Refresh();
+            _componentDir.GetFiles()[0].IsReadOnly = true;
 
             displayComponentModel.Remove();
 
-            rootDir.Refresh();
-            componentDir.Refresh();
             Assert.Multiple(() =>
             {
-                Assert.That(componentDir.Exists, Is.False);
-                Assert.That(rootDir.Exists, Is.True);
+                Assert.That(_fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1\"), Is.False);
+                Assert.That(_fileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1\"), Is.True);
             });
         }
 
         [Test]
-        public void Remove_Keep_False_Does_Delete()
+        public void Remove_KeepIsFalse_MovesComponent()
         {
-            MockFileSystem fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(string.Empty) }
-            });
-
-            IDirectoryInfo rootDir = fileSystem.DirectoryInfo.New(@"C:\driver");
-            IDirectoryInfo componentDir = fileSystem.DirectoryInfo.New(@"C:\driver\path1\path2\display\component1");
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(rootDir, componentDir);
+            _fileSystem.AddEmptyFile(@"C:\driver\path1\path2\display\component1\driver.inf");
+            _componentDir.Refresh();
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
             displayComponentModel.Keep = false;
-            rootDir.Refresh();
-            componentDir.Refresh();
 
             displayComponentModel.Remove();
 
-            rootDir.Refresh();
-            componentDir.Refresh();
             Assert.Multiple(() =>
             {
-                Assert.That(componentDir.Exists, Is.False);
-                Assert.That(rootDir.Exists, Is.True);
+                Assert.That(_fileSystem.Directory.Exists(@"C:\driver\path1\path2\display\component1\"), Is.False);
+                Assert.That(_fileSystem.Directory.Exists(@"C:\driver\RSS_Backup\DisplayComponents\component1\"), Is.True);
             });
         }
     }

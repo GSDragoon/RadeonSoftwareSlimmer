@@ -157,7 +157,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 IDirectoryInfo extractedDirectory = _fileSystem.DirectoryInfo.New(InstallerFiles.ExtractedInstallerDirectory);
                 PackageList.LoadOrRefresh(extractedDirectory);
                 ScheduledTaskList.LoadOrRefresh(extractedDirectory);
-                DisplayComponentList.LoadOrRefresh(extractedDirectory.FullName);
+                DisplayComponentList.LoadOrRefresh(extractedDirectory);
 
                 StaticViewModel.AddLogMessage("Finished loading installer information");
             }
@@ -221,6 +221,31 @@ namespace RadeonSoftwareSlimmer.ViewModels
             catch (Exception ex)
             {
                 StaticViewModel.AddLogMessage(ex, "Modifying installer failed");
+            }
+            finally
+            {
+                StaticViewModel.IsLoading = false;
+            }
+        }
+
+        public void ResetInstallerToDefaults()
+        {
+            try
+            {
+                StaticViewModel.IsLoading = true;
+                StaticViewModel.AddLogMessage("Resetting installer to defaults");
+
+                PackageList.RestoreToDefault();
+                ScheduledTaskList.RestoreToDefault();
+                DisplayComponentList.RestoreToDefault();
+
+                ReadFromExtractedInstaller();
+
+                StaticViewModel.AddLogMessage("Finished resetting installer to defaults");
+            }
+            catch (Exception ex)
+            {
+                StaticViewModel.AddLogMessage(ex, "Resetting installer to defaults failed");
             }
             finally
             {

@@ -47,7 +47,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             {
                 Assert.That(actualTasks, Is.Not.Null);
                 Assert.That(actualTasks, Has.Count.EqualTo(3));
-            
+
                 for (int i = 0; i < 3; i++)
                 {
                     Assert.That(actualTasks[i], Is.Not.Null);
@@ -137,6 +137,26 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             string modifiedXml = _fileSystem.GetFile(installRoot + @"\Config\Task.xml").TextContents;
             string expectedXml = File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskDisabled.xml");
             Assert.That(modifiedXml, Is.EqualTo(expectedXml));
+        }
+
+        [Test]
+        public void RestoreToDefault_SetsAllScheduledTasksToEnabled()
+        {
+            string installRoot = @"C:\Parent\Child\InstallerFolder";
+            _fileSystem.AddFile(installRoot + @"\Config\TaskVista.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_TaskVista.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task7.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_Task7.xml")));
+            _fileSystem.AddFile(installRoot + @"\Config\Task10.xml", new MockFileData(File.ReadAllText(_currentDirectory + @"\TestData\ScheduledTaskXmlListModel_Task10.xml")));
+            IDirectoryInfo installerDir = _fileSystem.DirectoryInfo.New(installRoot);
+            ScheduledTaskXmlListModel scheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem);
+            scheduledTaskList.LoadOrRefresh(installerDir);
+
+            scheduledTaskList.RestoreToDefault();
+
+            scheduledTaskList.LoadOrRefresh(installerDir);
+            foreach (ScheduledTaskXmlModel scheduledTask in scheduledTaskList.ScheduledTasks)
+            {
+                Assert.That(scheduledTask.Enabled, Is.True);
+            }
         }
 
 
