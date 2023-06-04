@@ -56,6 +56,25 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             });
         }
 
+        [TestCase("AMDFDANSName")]
+        [TestCase("AMDOCLName")]
+        [TestCase("AMDWINName")]
+        public void Ctor_DescriptionName_DescriptionIsValid(string description)
+        {
+            _fileSystem.AddFile(@"C:\driver\path1\path2\display\component1\driver.inf", new MockFileData(
+                string.Format("dummyline{0}[Strings]{0}dummyline2{0}{1} = \"Test Name\"{0}dummyline3{0}", Environment.NewLine, description)));
+
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(displayComponentModel.Description, Is.EqualTo("Test Name"));
+                Assert.That(displayComponentModel.Directory, Is.EqualTo(@"\path1\path2\display\component1"));
+                Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
+                Assert.That(displayComponentModel.Keep, Is.True);
+            });
+        }
+
         [Test]
         public void Ctor_EmptyInf_DiscriptionIsNull()
         {
