@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -95,8 +94,6 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S6605:Collection-specific \"Exists\" method should be used instead of the \"Any\" extension",
-            Justification = "It's checking for a partial match on the strings in the list.")]
         private bool IsRadeonUninstall(IRegistryKey uninstallKey)
         {
             object publisher = uninstallKey.GetValue("Publisher");
@@ -104,7 +101,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
             if (publisher != null && displayName != null
                 && publisher.ToString().Equals("Advanced Micro Devices, Inc.", StringComparison.OrdinalIgnoreCase)
-                && !AMD_CHIPSET_NAMES.Any(name => displayName.ToString().Contains(name)))
+                && !Array.Exists(AMD_CHIPSET_NAMES, name => displayName.ToString().Contains(name)))
             {
                 StaticViewModel.AddDebugMessage($"Found uninstall item {displayName} under {uninstallKey.Name}");
                 return true;

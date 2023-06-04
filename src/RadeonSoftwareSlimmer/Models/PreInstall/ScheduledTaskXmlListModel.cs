@@ -79,7 +79,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
         private IEnumerable<ScheduledTaskXmlModel> GetInstallerScheduledTasks(IDirectoryInfo installDirectory)
         {
-            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.New(installDirectory + "\\Config");
+            IDirectoryInfo directoryInfo = _fileSystem.DirectoryInfo.New(_fileSystem.Path.Combine(installDirectory.FullName, "Config"));
             foreach (IFileInfo file in directoryInfo.EnumerateFiles("*.xml", SearchOption.TopDirectoryOnly).Where(f => !f.Name.StartsWith("Monet", StringComparison.CurrentCulture)))
             {
                 if (TryGetScheduledTaskXDocument(file, FileAccess.Read, out XDocument xDoc))

@@ -47,6 +47,15 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             Assert.That(_installerFiles.ValidateInstallerFile(), Is.True);
         }
 
+        [TestCase(@"C:\Path\ValidPath\Invalid;name.exe")]
+        [TestCase(@"C:\Path\Invalid|Name\ValidName.exe")]
+        public void ValidateInstallerFile_PathContainsInvalidCharacters_ReturnsFalse(string installerFile)
+        {
+            _installerFiles.InstallerFile = installerFile;
+
+            Assert.That(_installerFiles.ValidateInstallerFile(), Is.False);
+        }
+
 
         [Test]
         public void ValidatePreExtractLocation_LocationIsNullOrEmpty_ReturnsFalse()
@@ -91,6 +100,16 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             _installerFiles.ExtractedInstallerDirectory = @"C:\Does\Exist";
 
             Assert.That(_installerFiles.ValidatePreExtractLocation(), Is.True);
+        }
+
+        [TestCase(@"C:\Path\In>InvalidName\")]
+        [TestCase(@"C:\Path\Invalid|Name\")]
+        [TestCase("C:\\Path\\In\"valid|Name")]
+        public void ValidatePreExtractLocation_PathContainsInvalidCharacters_ReturnsFalse(string directory)
+        {
+            _installerFiles.ExtractedInstallerDirectory = directory;
+
+            Assert.That(_installerFiles.ValidatePreExtractLocation(), Is.False);
         }
 
 
@@ -183,6 +202,16 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             _installerFiles.ExtractedInstallerDirectory = @"C:\Does\Exist";
 
             Assert.That(_installerFiles.ValidateExtractedLocation(), Is.True);
+        }
+
+        [TestCase(@"C:\Path\In;InvalidName\")]
+        [TestCase(@"C:\Path\Invalid|Name\")]
+        [TestCase(@"C:\Path\In&valid|Name")]
+        public void ValidateExtractedLocation_PathContainsInvalidCharacters_ReturnsFalse(string directory)
+        {
+            _installerFiles.ExtractedInstallerDirectory = directory;
+
+            Assert.That(_installerFiles.ValidateExtractedLocation(), Is.False);
         }
     }
 }
