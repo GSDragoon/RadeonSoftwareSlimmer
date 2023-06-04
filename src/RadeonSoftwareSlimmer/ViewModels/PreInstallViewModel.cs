@@ -65,7 +65,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
         public void BrowseForInstallerFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Radeon Software Installers (*radeon*.exe;*adrenalin*.exe)|*radeon*.exe;*adrenalin*.exe|Executables (*.exe)|*.exe|All Files (*.*)|*.*";
+            openFileDialog.Filter = "Radeon Software Installers|*radeon*.exe;*adrenalin*.exe;*amd-software-pro-edition*.exe;*vanguard*.exe|Executables (*.exe)|*.exe|All Files (*.*)|*.*";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Multiselect = false;
 
@@ -73,9 +73,9 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
             if (result == true)
             {
-                IFileInfo file = _fileSystem.FileInfo.New(openFileDialog.FileName);
                 InstallerFiles.InstallerFile = openFileDialog.FileName;
-                InstallerFiles.ExtractedInstallerDirectory = $@"{file.Directory}\{file.Name.Substring(0, file.Name.Length - file.Extension.Length)}";
+                IFileInfo file = _fileSystem.FileInfo.New(openFileDialog.FileName);
+                InstallerFiles.ExtractedInstallerDirectory = _fileSystem.Path.Combine(file.DirectoryName, file.Name.Substring(0, file.Name.Length - file.Extension.Length));
             }
         }
 
