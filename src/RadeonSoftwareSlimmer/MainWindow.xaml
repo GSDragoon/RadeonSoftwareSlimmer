@@ -28,24 +28,24 @@
 
         <mah:MetroTabControl Grid.Row="0" mah:HeaderedControlHelper.HeaderFontWeight="DemiBold" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
-            <mah:MetroTabItem Padding="32,4" Header="About">
+            <mah:MetroTabItem Padding="32,0" Header="About">
                 <uc:AboutView />
             </mah:MetroTabItem>
 
-            <mah:MetroTabItem Padding="32,4" Header="Pre Install">
+            <mah:MetroTabItem Padding="32,0" Header="Pre Install">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <uc:PreInstallView />
+                    <uc:PreInstallView Padding="1" />
                 </ScrollViewer>
             </mah:MetroTabItem>
 
-            <mah:MetroTabItem Padding="32,4" Header="Post Install">
+            <mah:MetroTabItem Padding="32,0" Header="Post Install">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <uc:PostInstallView />
+                    <uc:PostInstallView Padding="1" />
                 </ScrollViewer>
             </mah:MetroTabItem>
 
-            <mah:MetroTabItem x:Name="tabLogging" Padding="32,4" Header="Logging">
-                <uc:LoggingView />
+            <mah:MetroTabItem x:Name="tabLogging" Padding="32,0" Header="Logging">
+                <uc:LoggingView Padding="1" />
             </mah:MetroTabItem>
 
         </mah:MetroTabControl>

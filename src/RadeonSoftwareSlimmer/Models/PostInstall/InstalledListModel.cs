@@ -95,7 +95,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S6605:Collection-specific \"Exists\" method should be used instead of the \"Any\" extension", 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S6605:Collection-specific \"Exists\" method should be used instead of the \"Any\" extension",
             Justification = "It's checking for a partial match on the strings in the list.")]
         private bool IsRadeonUninstall(IRegistryKey uninstallKey)
         {

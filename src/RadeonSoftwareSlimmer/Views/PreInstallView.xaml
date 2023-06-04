@@ -7,12 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     d:DataContext="{d:DesignInstance vm:PreInstallViewModel}"
     mc:Ignorable="d">
     <Grid>
         <mah:FlipView
             x:Name="flpWizard"
-            Margin="0,16"
+            Margin="0,4"
             FontSize="14"
             IsBannerEnabled="False"
             IsNavigationEnabled="False"
@@ -43,12 +44,38 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Click="btnInstallerFileBrowse_Click"
-                        Content="Browse"
-                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="FolderOpenSolid"
+                                    Margin="4,0" />
+                            <TextBlock Text="Browse..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
                     <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <Button x:Name="btnSkip0" Click="btnSkip0_Click" Content="Skip" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        <Button x:Name="btnNext0" Click="btnNext0_Click" Content="Next" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnSkip0" Click="btnSkip0_Click" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="AngleDoubleRightSolid"
+                                    Margin="4,0" />
+                                <TextBlock Text="Skip" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnNext0" Click="btnNext0_Click" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="AngleRightSolid"
+                                    Margin="4,0" />
+                                <TextBlock Text="Next" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
                 </Grid>
@@ -77,12 +104,38 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Click="btnExtractLocatonBrowse_Click"
-                        Content="Browse"
-                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="FolderOpenSolid"
+                                    Margin="4,0" />
+                            <TextBlock Text="Browse..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
                     <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <Button x:Name="btnBack1" Click="btnBack1_Click" Content="Back" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        <Button x:Name="btnNext1" Click="btnNext1_Click" Content="Next" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnBack1" Click="btnBack1_Click" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="AngleLeftSolid"
+                                    Margin="4,0" />
+                                <TextBlock Text="Back" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnNext1" Click="btnNext1_Click" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="AngleRightSolid"
+                                    Margin="4,0" />
+                                <TextBlock Text="Next" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
 
@@ -103,25 +156,40 @@
                     </Grid.RowDefinitions>
                     <mah:MetroTabControl Grid.Row="0" mah:HeaderedControlHelper.HeaderFontWeight="Thin" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
-                        <mah:MetroTabItem Padding="8,4" Header="Packages">
+                        <mah:MetroTabItem Padding="8,0,8,8" Header="Packages">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Uncheck 'Keep' for packages you want to remove." />
-                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" />
-                                </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                         x:Name="btnPackageSelectAll"
                                         HorizontalAlignment="Center"
+                                        Margin="0,0,2,0"
                                         Click="btnPackageSelectAll_Click"
-                                        Content="Select All"
-                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconFontAwesome
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Kind="PlusSolid"
+                                                Margin="4,0"/>
+                                            <TextBlock Text="Select All" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
                                     <Button
                                         x:Name="btnPackageSelectNone"
                                         HorizontalAlignment="Center"
                                         Click="btnPackageSelectNone_Click"
-                                        Content="Select None"
-                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconFontAwesome
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Kind="MinusSolid"
+                                                Margin="4,0"/>
+                                            <TextBlock Text="Select None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock Text="Uncheck 'Keep' for packages you want to remove." VerticalAlignment="Center" Padding="8,0"/>
+                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <DataGrid
                                     Margin="0,8"
@@ -135,28 +203,44 @@
                             </StackPanel>
                         </mah:MetroTabItem>
 
-                        <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
+                        <mah:MetroTabItem Padding="8,0,8,8" Header="Scheduled Tasks">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Uncheck 'Enabled' to disable the scheduled task." />
-                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
-                                </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                         x:Name="btnScheduledTaskSelectAll"
                                         HorizontalAlignment="Center"
+                                        Margin="0,0,2,0"
                                         Click="btnScheduledTaskSelectAll_Click"
-                                        Content="Select All"
-                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconFontAwesome
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Kind="PlusSolid"
+                                                Margin="4,0"/>
+                                            <TextBlock Text="Select All" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
                                     <Button
                                         x:Name="btnScheduledTaskSelectNone"
                                         HorizontalAlignment="Center"
                                         Click="btnScheduledTaskSelectNone_Click"
-                                        Content="Select None"
-                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconFontAwesome
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Kind="MinusSolid"
+                                                Margin="4,0"/>
+                                            <TextBlock Text="Select None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock Text="Uncheck 'Enabled' to disable the scheduled task." VerticalAlignment="Center" Padding="8,0" />
+                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <DataGrid
                                     mah:DataGridHelper.EnableCellEditAssist="True"
+                                    Margin="0,8"
                                     CanUserAddRows="False"
                                     CanUserDeleteRows="False"
                                     GridLinesVisibility="Horizontal"
@@ -166,25 +250,40 @@
                             </StackPanel>
                         </mah:MetroTabItem>
 
-                        <mah:MetroTabItem Padding="8,4" Header="Display Driver Components">
+                        <mah:MetroTabItem Padding="8,0,8,8" Header="Display Driver Components">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Uncheck 'Keep' for components you want to remove." />
-                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" />
-                                </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                         x:Name="btnDisplayComponentsSelectAll"
                                         HorizontalAlignment="Center"
+                                        Margin="0,0,2,0"
                                         Click="btnDisplayComponentsSelectAll_Click"
-                                        Content="Select All"
-                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconFontAwesome
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Kind="PlusSolid"
+                                                Margin="4,0"/>
+                                            <TextBlock Text="Select All" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
                                     <Button
                                         x:Name="btnDisplayComponentsSelectNone"
                                         HorizontalAlignment="Center"
                                         Click="btnDisplayComponentsSelectNone_Click"
-                                        Content="Select None"
-                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                        Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconFontAwesome
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Kind="MinusSolid"
+                                                Margin="4,0"/>
+                                            <TextBlock Text="Select None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock Text="Uncheck 'Keep' for components you want to remove." VerticalAlignment="Center" Padding="8,0" />
+                                    <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <DataGrid
                                     Margin="0,8"
@@ -201,11 +300,56 @@
                     </mah:MetroTabControl>
 
                     <DockPanel Grid.Row="1" Margin="0,16,0,0">
-                        <Button x:Name="btnNewInstaller" Click="btnNewInstaller_Click" Content="Select New Installer" DockPanel.Dock="Left" Padding="8,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        <Button x:Name="btnRunCleanup" Click="btnRunCleanup_Click"  Content="Run Cleanup Utility" DockPanel.Dock="Left" Margin="0,0,16,0" Padding="8,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        <Button x:Name="btnResetToDefault" Click="btnResetToDefault_Click" Content="Reset Installer to Defaults" Padding="32,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Content="Modify Installer" Padding="32,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" Content="Run Installer" DockPanel.Dock="Right" Margin="16,0" Padding="16,0,16,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnNewInstaller" Click="btnNewInstaller_Click" DockPanel.Dock="Left" Padding="8,0" Margin="0,0,2,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" >
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="FileSolid"
+                                    Margin="8" />
+                                <TextBlock Text="Select New Installer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnRunCleanup" Click="btnRunCleanup_Click" DockPanel.Dock="Left" Margin="0,0,16,0" Padding="8,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="BroomSolid"
+                                    Margin="8" />
+                                <TextBlock Text="Run Cleanup Utility" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnResetToDefault" Click="btnResetToDefault_Click" Padding="32,0" Margin="0,0,2,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="UndoSolid"
+                                    Margin="8" />
+                                <TextBlock Text="Reset Installer to Defaults" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnModifyInstallerFiles" Click="btnModifyInstallerFiles_Click" Padding="32,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="SaveSolid"
+                                    Margin="8" />
+                                <TextBlock Text="Modify Installer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnRunInstaller" Click="btnRunInstaller_Click" DockPanel.Dock="Right" Margin="16,0" Padding="16,0,16,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="PlaySolid"
+                                    Margin="8" />
+                                <TextBlock Text="Run Installer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </DockPanel>
                 </Grid>
 

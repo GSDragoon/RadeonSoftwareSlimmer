@@ -9,8 +9,11 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     d:DataContext="{d:DesignInstance vm:PostInstallViewModel}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Initialized="UserControl_Initialized"
+    >
 
     <UserControl.Resources>
         <ObjectDataProvider x:Key="ServiceStartModeEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -28,17 +31,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Margin="0,16,0,32" Text="Modify and/or remove components on installed on the system after Radeon Software is installed. No changes are made until you click 'Apply Changes', which applies changes for all sections. A system restart is HIGHLY recommended for all changes to take effect." TextWrapping="Wrap" />
-
-        <Button
-            x:Name="btnLoadOrRefresh"
-            Grid.Row="1"
-            Margin="0,0,0,32"
-            Click="btnLoadOrRefresh_Click"
-            Content="Load/Refresh Radeon Software Installed Components"
-            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-
-        <mah:MetroTabControl Grid.Row="2" mah:HeaderedControlHelper.HeaderFontWeight="Thin" IsEnabled="{Binding LoadedPanelEnabled}" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
+        <mah:MetroTabControl x:Name="tabMain" Grid.Row="2" mah:HeaderedControlHelper.HeaderFontWeight="Thin" IsEnabled="{Binding LoadedPanelEnabled}" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
             <mah:MetroTabItem Padding="8,4" Header="Host Services">
                 <StackPanel>
@@ -59,18 +52,36 @@
                         <Button
                             x:Name="btnHostServicesRestart"
                             HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Left"
                             Click="btnHostServicesRestart_Click"
-                            Content="Start/Restart"
-                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Kind="PlaySolid"
+                                    Margin="4,0" />
+                                <TextBlock Text="Start/Restart" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                         <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Start (if not running) or restart (if running) Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
                     </StackPanel>
                     <StackPanel Margin="4" Orientation="Horizontal">
                         <Button
                             x:Name="btnHostServicesStop"
                             HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Left"
                             Click="btnHostServicesStop_Click"
-                            Content="Stop"
-                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Kind="StopSolid"
+                                    Margin="4,0" />
+                                <TextBlock Text="Stop" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                         <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Stop Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
                     </StackPanel>
 
@@ -100,15 +111,32 @@
                         <Button
                             x:Name="btnScheduledTaskEnableAll"
                             HorizontalAlignment="Center"
+                            Margin="0,0,2,0"
                             Click="btnScheduledTaskEnableAll_Click"
-                            Content="Enable All"
-                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="PlusSolid"
+                                    Margin="4,0"/>
+                                <TextBlock Text="Enable All" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                         <Button
                             x:Name="btnScheduledTaskDisableAll"
                             HorizontalAlignment="Center"
                             Click="btnScheduledTaskDisableAll_Click"
-                            Content="Disable All"
-                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="MinusSolid"
+                                    Margin="4,0"/>
+                                <TextBlock Text="Disable All" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
                     <DataGrid
@@ -144,22 +172,40 @@
                         Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
 
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="4">
                             <Button
                                 x:Name="btnServiceStart"
                                 HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Left"
                                 Click="btnServiceStart_Click"
-                                Content="Start/Restart"
-                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Kind="PlaySolid"
+                                    Margin="4,0" />
+                                    <TextBlock Text="Start/Restart" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
                             <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Start or restart selected service. Only works for Win32OwnProcess type, not KernelDriver." />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="4">
                             <Button
                                 x:Name="btnServiceStop"
                                 HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Left"
                                 Click="btnServiceStop_Click"
-                                Content="Stop"
-                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Kind="StopSolid"
+                                    Margin="4,0" />
+                                    <TextBlock Text="Stop" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
                             <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Stop selected Serice. Only works for Win32OwnProcess type, not KernelDriver." />
                         </StackPanel>
                     </StackPanel>
@@ -170,7 +216,16 @@
                             <StackPanel Margin="0,8" Orientation="Horizontal">
                                 <TextBlock Margin="0,0,8,0" VerticalAlignment="Center" Text="Service Start Mode" />
                                 <ComboBox x:Name="cbxServiceStartMode" ItemsSource="{Binding Source={StaticResource ServiceStartModeEnum}}" />
-                                <Button x:Name="btnServiceChangeStartMode" Click="btnServiceChangeStartMode_Click" Content="Change" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                                <Button x:Name="btnServiceChangeStartMode" Click="btnServiceChangeStartMode_Click" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconFontAwesome
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="ExchangeAltSolid"
+                                            Margin="4,0"/>
+                                        <TextBlock Text="Change" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                             <Button
                                 x:Name="btnServiceDelete"
@@ -213,8 +268,26 @@
                     <TextBlock Text="Check the folder to clear all files and sub directories in it. Does not delete the root folder itself." TextWrapping="Wrap" />
 
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="btnTempFilesSelectAll" Click="btnTempFilesSelectAll_Click" Content="Select All" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
-                        <Button x:Name="btnTempFilesSelectNone" Click="btnTempFilesSelectNone_Click" Content="Select None" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                        <Button x:Name="btnTempFilesSelectAll" Click="btnTempFilesSelectAll_Click" Margin="0,0,2,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="PlusSolid"
+                                    Margin="4,0"/>
+                                <TextBlock Text="Select All" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnTempFilesSelectNone" Click="btnTempFilesSelectNone_Click" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="MinusSolid"
+                                    Margin="4,0"/>
+                                <TextBlock Text="Select None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
                     <DataGrid
@@ -230,14 +303,44 @@
 
         </mah:MetroTabControl>
 
-        <Button
-            x:Name="btnApply"
-            Grid.Row="3"
-            Padding="64,0"
-            HorizontalAlignment="Center"
-            Click="btnApply_Click"
-            Content="Apply Changes"
-            IsEnabled="{Binding LoadedPanelEnabled}"
-            Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="3">
+            <TextBlock Margin="0,16,0,8" Text="Modify and/or remove components on installed on the system after Radeon Software is installed. No changes are made until you click 'Apply Changes', which applies changes for all sections. A system restart is HIGHLY recommended for all changes to take effect." TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button
+                    x:Name="btnLoadOrRefresh"
+                    Margin="16,0"
+                    Padding="16,0"
+                    Click="btnLoadOrRefresh_Click"
+                    IsEnabled="{Binding LoadedPanelEnabled}"
+                    Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Kind="RedoSolid"
+                            Margin="8,0" />
+                        <TextBlock Text="Load/Refresh Radeon Software Installed Components" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="btnApply"
+                    Grid.Row="3"
+                    Margin="16,0"
+                    Padding="32,0"
+                    HorizontalAlignment="Center"
+                    Click="btnApply_Click"
+                    IsEnabled="{Binding LoadedPanelEnabled}"
+                    Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Kind="CheckSolid"
+                            Margin="8,0" />
+                        <TextBlock Text="Apply Changes" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     d:DataContext="{d:DesignInstance vm:StaticViewModel}"
     d:DesignHeight="200"
     d:DesignWidth="800"
@@ -26,15 +27,31 @@
                 Grid.Column="0"
                 Margin="0,0,8,0"
                 Click="btnSaveLogs_Click"
-                Content="Save Logging"
-                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Kind="FileDownloadSolid"
+                        Margin="8,0" />
+                    <TextBlock Text="Save Logging" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
             <Button
                 x:Name="btnClearLogs"
                 Grid.Column="1"
                 Margin="8,0,0,0"
                 Click="btnClearLogs_Click"
-                Content="Clear Logging"
-                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" />
+                Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Kind="BroomSolid"
+                        Margin="8,0" />
+                    <TextBlock Text="Clear Logging" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

@@ -17,10 +17,15 @@ namespace RadeonSoftwareSlimmer.Views
             DataContext = _viewModel;
         }
 
-
-        private void btnLoadOrRefresh_Click(object sender, RoutedEventArgs e)
+        private async void UserControl_Initialized(object sender, System.EventArgs e)
         {
-            _viewModel.LoadOrRefresh();
+            await _viewModel.LoadOrRefreshAsync(false);
+        }
+
+
+        private async void btnLoadOrRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.LoadOrRefreshAsync(true);
         }
 
         private async void btnApply_Click(object sender, RoutedEventArgs e)

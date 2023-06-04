@@ -44,12 +44,17 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
         }
 
-
-        public void LoadOrRefresh()
+        public async Task LoadOrRefreshAsync(bool logMessage)
+        {
+            await Task.Run(() => LoadOrRefresh(logMessage));
+        }
+        private void LoadOrRefresh(bool logMessage)
         {
             try
             {
-                StaticViewModel.AddLogMessage("Loading post install");
+                if (logMessage)
+                    StaticViewModel.AddLogMessage("Loading post install");
+
                 StaticViewModel.IsLoading = true;
                 LoadedPanelEnabled = false;
 
@@ -60,7 +65,9 @@ namespace RadeonSoftwareSlimmer.ViewModels
                 InstalledList.LoadOrRefresh();
                 TempFileList.LoadOrRefresh();
 
-                StaticViewModel.AddLogMessage("Loading post install complete ");
+                if (logMessage)
+                    StaticViewModel.AddLogMessage("Loading post install complete ");
+
                 LoadedPanelEnabled = true;
             }
             catch (Exception ex)
@@ -77,7 +84,6 @@ namespace RadeonSoftwareSlimmer.ViewModels
         {
             await Task.Run(() => ApplyChanges());
         }
-
         private void ApplyChanges()
         {
             try
@@ -102,7 +108,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
             }
             finally
             {
-                LoadOrRefresh();
+                LoadOrRefresh(false);
                 StaticViewModel.IsLoading = false;
             }
         }
