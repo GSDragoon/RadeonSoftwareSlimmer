@@ -204,9 +204,9 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             Assert.That(_installerFiles.ValidateExtractedLocation(), Is.True);
         }
 
-        [TestCase(@"C:\Path\In;InvalidName\")]
+        [TestCase(@"C:\Path\In>InvalidName\")]
         [TestCase(@"C:\Path\Invalid|Name\")]
-        [TestCase(@"C:\Path\In&valid|Name")]
+        [TestCase("C:\\Path\\In\"valid|Name")]
         public void ValidateExtractedLocation_PathContainsInvalidCharacters_ReturnsFalse(string directory)
         {
             _installerFiles.ExtractedInstallerDirectory = directory;

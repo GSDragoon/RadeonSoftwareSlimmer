@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
+#if NET48
 using System.Linq;
+#endif
 using System.Reflection;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
@@ -15,6 +17,12 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         private readonly IFileSystem _fileSystem;
         private string _installerFile;
         private string _extractedInstallerDirectory;
+#if NET6_0_OR_GREATER
+        // .NET 6+ removed certain characters for reasons I don't like
+        // https://github.com/dotnet/runtime/issues/63383
+        // https://github.com/dotnet/corefx/pull/8669/files#r63910570
+        private readonly char[] extraInvalidDirChars = { '\"', '<', '>', };
+#endif
 
 
         public InstallerFilesModel(IFileSystem fileSystem)
@@ -135,6 +143,14 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                     StaticViewModel.AddLogMessage("Directory contains invalid characters");
                     return false;
                 }
+#if NET6_0_OR_GREATER
+
+                if (Array.Exists(extraInvalidDirChars, c => directoryInfo.FullName.Contains(c)))
+                {
+                    StaticViewModel.AddLogMessage("Directory contains invalid characters");
+                    return false;
+                }
+#endif
 
                 if (directoryInfo.Exists && (directoryInfo.GetDirectories().Length > 0 || directoryInfo.GetFiles().Length > 0))
                 {
@@ -169,6 +185,14 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                     StaticViewModel.AddLogMessage("Directory contains invalid characters");
                     return false;
                 }
+#if NET6_0_OR_GREATER
+
+                if (Array.Exists(extraInvalidDirChars, c => directoryInfo.FullName.Contains(c)))
+                {
+                    StaticViewModel.AddLogMessage("Directory contains invalid characters");
+                    return false;
+                }
+#endif
 
                 if (directoryInfo.Exists &&
                     _fileSystem.Directory.Exists(_fileSystem.Path.Combine(_extractedInstallerDirectory, "Bin64")) &&
