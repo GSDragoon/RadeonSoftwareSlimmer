@@ -33,7 +33,7 @@ Requirements:
 * Windows 10 64-bit or Windows 11 (Latest version recommended)
 * .NET (Either ***one*** of the following)
   * [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48) (Included with Windows 10 1903 [May 2019 update] and later)
-  * [.NET Framework 4.8.1 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481) (Included with Windows 11 22H2 and later)
+  * [.NET Framework 4.8.1 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net481) (Included with Windows 11 22H2 and later)
   * [.NET Desktop Runtime 6.0 x64](https://dotnet.microsoft.com/download/dotnet/6.0) (latest release recommended)
   * [.NET Desktop Runtime 7.0 x64](https://dotnet.microsoft.com/download/dotnet/7.0) (latest release recommended)
 
