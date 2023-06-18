@@ -54,6 +54,7 @@
                             HorizontalAlignment="Left"
                             HorizontalContentAlignment="Left"
                             Click="btnHostServicesRestart_Click"
+                            IsEnabled="{Binding HostService.Installed}"
                             Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconFontAwesome
@@ -72,6 +73,7 @@
                             HorizontalAlignment="Left"
                             HorizontalContentAlignment="Left"
                             Click="btnHostServicesStop_Click"
+                            IsEnabled="{Binding HostService.Installed}"
                             Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconFontAwesome
