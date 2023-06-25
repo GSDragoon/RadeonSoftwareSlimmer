@@ -77,6 +77,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
         [Test]
+        [SuppressMessage("Major Code Smell", "S2925:\"Thread.Sleep\" should not be used in tests", Justification = "Used to ensure timestamps don't match")]
         public void LoadOrRefresh_DoesNotReplaceExistingBackupFiles()
         {
             PackageListModel packageList = new PackageListModel(_fileSystem);
