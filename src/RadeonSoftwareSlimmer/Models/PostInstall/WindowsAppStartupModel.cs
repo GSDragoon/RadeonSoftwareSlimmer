@@ -7,7 +7,12 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 {
     public class WindowsAppStartupModel : INotifyPropertyChanged
     {
+#if NET6_0_OR_GREATER
+        private static readonly DateTime UNIX_EPOCH = DateTime.UnixEpoch;
+#endif
+#if NET48
         private static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+#endif
         private static readonly string RSX_LAUNCHER_REG_PATH = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\AdvancedMicroDevicesInc-RSXCM_fhmx3h6dzfmvj\launcherrsxruntimeTask";
         private static readonly string RSX_LAUNCHER_REG_STATUS_NAME = "State";
         private static readonly string RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME = "LastDisabledTime";
