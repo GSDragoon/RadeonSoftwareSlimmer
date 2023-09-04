@@ -35,7 +35,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="19.2.69" />
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="19.2.67" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="19.2.69" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.1" />
   </ItemGroup>
 
