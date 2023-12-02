@@ -160,7 +160,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
         }
 
 
-        private IList<ScheduledTaskXmlModel> ExpectedLoadedScheduledTaskListModel(string installerRoot)
+        private List<ScheduledTaskXmlModel> ExpectedLoadedScheduledTaskListModel(string installerRoot)
         {
             return new List<ScheduledTaskXmlModel>()
             {

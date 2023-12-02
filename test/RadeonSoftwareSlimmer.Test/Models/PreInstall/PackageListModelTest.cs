@@ -228,7 +228,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             return true;
         }
 
-        private IList<PackageModel> ExpectedLoadedPackageModel(string installerRoot)
+        private List<PackageModel> ExpectedLoadedPackageModel(string installerRoot)
         {
             return new List<PackageModel>()
             {
@@ -267,7 +267,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PreInstall
             };
         }
 
-        private IList<PackageModel> ExpectedRemovePackageModel(string installerRoot)
+        private List<PackageModel> ExpectedRemovePackageModel(string installerRoot)
         {
             return new List<PackageModel>()
             {

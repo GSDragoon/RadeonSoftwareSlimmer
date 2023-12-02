@@ -36,6 +36,10 @@ dotnet_diagnostic.IDE0016.severity = none
 # IDE0031: Use null propagation
 dotnet_diagnostic.IDE0031.severity = none
 
+# CA1510: Use ArgumentNullException throw helper
+# Not available in .NET 4.8
+dotnet_diagnostic.CA1510.severity = none
+
 # *******************************************************************************************
 # SonarAnalyzer Rules
 # S3897: Classes that provide "Equals(<T>)" should implement "IEquatable<T>"
