@@ -9,8 +9,18 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      actions-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
 
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      nuget-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
