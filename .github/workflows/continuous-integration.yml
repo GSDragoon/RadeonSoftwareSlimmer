@@ -24,14 +24,14 @@ jobs:
 
     # https://github.com/marketplace/actions/gittools
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v1
+      uses: gittools/actions/gitversion/setup@v2
       with:
         versionSpec: '5.x'
         preferLatestVersion: true
 
     - name: Use GitVersion
       id: gitversion # step id used as reference for output values
-      uses: gittools/actions/gitversion/execute@v1
+      uses: gittools/actions/gitversion/execute@v2
 
     - name: Test
       run: .\build\test.ps1
