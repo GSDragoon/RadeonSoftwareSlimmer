@@ -100,6 +100,7 @@ namespace RadeonSoftwareSlimmer.Views
             await UpdateWizardIndexAsync();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "WPF event handlers cannot be static.")]
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //Stop these DataGrid SelectionChanged events from triggering the SelectionChanged even on the FlipView
