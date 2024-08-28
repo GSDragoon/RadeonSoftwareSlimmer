@@ -223,7 +223,7 @@
                                         <iconPacks:PackIconFontAwesome
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            Kind="ExchangeAltSolid"
+                                            Kind="RightLeftSolid"
                                             Margin="4,0"/>
                                         <TextBlock Text="Change" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
@@ -319,7 +319,7 @@
                         <iconPacks:PackIconFontAwesome
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Kind="RedoSolid"
+                            Kind="ArrowsRotateSolid"
                             Margin="8,0" />
                         <TextBlock Text="Load/Refresh Radeon Software Installed Components" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </StackPanel>

@@ -61,7 +61,7 @@
                                 <iconPacks:PackIconFontAwesome
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Kind="AngleDoubleRightSolid"
+                                    Kind="AnglesRightSolid"
                                     Margin="4,0" />
                                 <TextBlock Text="Skip" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </StackPanel>
@@ -325,7 +325,7 @@
                                 <iconPacks:PackIconFontAwesome
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Kind="UndoSolid"
+                                    Kind="ArrowRotateLeftSolid"
                                     Margin="8" />
                                 <TextBlock Text="Reset Installer to Defaults" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </StackPanel>
@@ -335,7 +335,7 @@
                                 <iconPacks:PackIconFontAwesome
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Kind="SaveSolid"
+                                    Kind="FloppyDiskSolid"
                                     Margin="8" />
                                 <TextBlock Text="Modify Installer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </StackPanel>

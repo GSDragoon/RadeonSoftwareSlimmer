@@ -32,7 +32,7 @@
                     <iconPacks:PackIconFontAwesome
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Kind="FileDownloadSolid"
+                        Kind="FloppyDiskSolid"
                         Margin="8,0" />
                     <TextBlock Text="Save Logging" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
