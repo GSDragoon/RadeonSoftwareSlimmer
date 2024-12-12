@@ -34,7 +34,9 @@ dotnet build --configuration Release --framework net48
 
 
 Write-Output '***** Testing solution...'
-dotnet test --no-build --configuration Release --results-directory $testResultsDir
+dotnet test --no-build --configuration Release --framework net9.0-windows --results-directory "${testResultsDir}"
+dotnet test --no-build --configuration Release --framework net8.0-windows --results-directory "${testResultsDir}"
+dotnet test --no-build --configuration Release --framework net48 --results-directory "${testResultsDir}"
 
 
 Write-Output '***** Running Report Generator...'
