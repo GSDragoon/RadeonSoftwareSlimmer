@@ -21,14 +21,14 @@ jobs:
 
     # https://github.com/marketplace/actions/gittools
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v2
+      uses: gittools/actions/gitversion/setup@v3
       with:
-        versionSpec: '5.x'
+        versionSpec: '6.x'
         preferLatestVersion: true
 
     - name: Use GitVersion
       id: gitversion # step id used as reference for output values
-      uses: gittools/actions/gitversion/execute@v2
+      uses: gittools/actions/gitversion/execute@v3
 
     - name: Test
       run: .\build\test.ps1
@@ -42,7 +42,7 @@ jobs:
     - name: Create Release
       # You may pin to the exact commit or the version.
       # uses: ncipollo/release-action@4c75f0f2e4ae5f3c807cf0904605408e319dcaac
-      uses: ncipollo/release-action@v1.14.0
+      uses: ncipollo/release-action@v1
       with:
         # An optional flag which indicates if artifact read or upload errors should fail the build.
         artifactErrorsFailBuild: true
