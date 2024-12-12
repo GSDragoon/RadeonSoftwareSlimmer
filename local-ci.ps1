@@ -22,14 +22,14 @@ dotnet tool install dotnet-reportgenerator-globaltool --tool-path "${localCiDir}
 
 
 Write-Output '***** Cleaning solution...'
+dotnet clean --verbosity minimal --configuration Release --framework net9.0-windows
 dotnet clean --verbosity minimal --configuration Release --framework net8.0-windows
-dotnet clean --verbosity minimal --configuration Release --framework net6.0-windows
 dotnet clean --verbosity minimal --configuration Release --framework net48
 
 
 Write-Output '***** Building solution...'
+dotnet build --configuration Release --framework net9.0-windows
 dotnet build --configuration Release --framework net8.0-windows
-dotnet build --configuration Release --framework net6.0-windows
 dotnet build --configuration Release --framework net48
 
 
@@ -51,16 +51,16 @@ Get-Content "${coveragerDir}\TextSummary\Summary.txt"
 
 
 Write-Output '***** Publishing solution...'
+dotnet publish --configuration Release --framework net9.0-windows --force --output "${publishDir}\net90" .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
 dotnet publish --configuration Release --framework net8.0-windows --force --output "${publishDir}\net80" .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
-dotnet publish --configuration Release --framework net6.0-windows --force --output "${publishDir}\net60" .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
 dotnet publish --configuration Release  --framework net48 --force --output "${publishDir}\net48" .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:VersionSuffix=local-ci
 
-$version = (Get-Item -Path "${publishDir}\net80\RadeonSoftwareSlimmer.exe").VersionInfo.ProductVersion
+$version = (Get-Item -Path "${publishDir}\net90\RadeonSoftwareSlimmer.exe").VersionInfo.ProductVersion
 
 
 Write-Output '***** Archiving artifacts...'
+Compress-Archive -Path "${publishDir}\net90\*" -DestinationPath "${publishDir}\RadeonSoftwareSlimmer_${version}_net90.zip"
 Compress-Archive -Path "${publishDir}\net80\*" -DestinationPath "${publishDir}\RadeonSoftwareSlimmer_${version}_net80.zip"
-Compress-Archive -Path "${publishDir}\net60\*" -DestinationPath "${publishDir}\RadeonSoftwareSlimmer_${version}_net60.zip"
 Compress-Archive -Path "${publishDir}\net48\*" -DestinationPath "${publishDir}\RadeonSoftwareSlimmer_${version}_net48.zip"
 
 
