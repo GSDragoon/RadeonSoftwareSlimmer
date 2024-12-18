@@ -2,49 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net9.0-windows;net8.0-windows;net48</TargetFrameworks>
-    <!-- Limiting to 7.3 because of .NET Framework -->
-    <LangVersion>7.3</LangVersion>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <Platforms>x64</Platforms>
-    
-    <!-- Roslyn Analyzers-->
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    
-    <StartupObject>RadeonSoftwareSlimmer.App</StartupObject>
-    <NeutralLanguage>en-US</NeutralLanguage>
 
-    <Product>Radeon Software Slimmer</Product>
-    <!--File Description-->
+    <Product>Radeon Software Slimmer</Product>    
+    <StartupObject>RadeonSoftwareSlimmer.App</StartupObject>
     <AssemblyTitle>Radeon Software Slimmer</AssemblyTitle>
     <Authors>Greg Seaton</Authors>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <PublishSingleFile>false</PublishSingleFile>
-    <PublishSelfContained>false</PublishSelfContained>
-	<SelfContained>false</SelfContained>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)'=='net48' or '$(TargetFramework)'=='net6.0-windows'">
-    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>  
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-windows'">
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
-    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <!--https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1416-->
-    <SupportedPlatform Include="windows" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />

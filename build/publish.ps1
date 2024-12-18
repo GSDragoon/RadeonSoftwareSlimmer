@@ -1,20 +1,23 @@
-﻿# Builds the software and creates release artifacts
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
-$version = $Env:GitVersion_SemVer
-Write-Output "Version: ${version}"
 
-Write-Output '***** Publishing solution...'
-dotnet publish --configuration Release --framework net9.0-windows --force --output .\publish\net90 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=$version
-dotnet publish --configuration Release --framework net8.0-windows --force --output .\publish\net80 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=$version
-dotnet publish --configuration Release  --framework net48 --force --output .\publish\net48 .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj -p:Version=$version
+$version = $Env:BUILD_VERSION
+Write-Output "BUILD_VERSION: ${BUILD_VERSION}"
 
-$productVersion = (Get-Item -Path .\publish\net90\RadeonSoftwareSlimmer.exe).VersionInfo.ProductVersion
 
-Write-Output '***** Archiving artifacts...'
-Compress-Archive -Path '.\publish\net90\*' -DestinationPath ".\publish\RadeonSoftwareSlimmer_${version}_net90.zip"
-Compress-Archive -Path '.\publish\net80\*' -DestinationPath ".\publish\RadeonSoftwareSlimmer_${version}_net80.zip"
-Compress-Archive -Path '.\publish\net48\*' -DestinationPath ".\publish\RadeonSoftwareSlimmer_${version}_net48.zip"
+Write-Output '***** Publishing Application...'
+dotnet publish .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj --force --configuration Release -p:Version=$version --framework net9.0-windows
+dotnet publish .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj --force --configuration Release -p:Version=$version --framework net8.0-windows
+dotnet publish .\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj --force --configuration Release -p:Version=$version --framework net48
+Write-Output '***** Done Publishing Application...'
 
-Write-Output "Published: ${productVersion}"
+
+Write-Output '***** Archiving Application...'
+$publishSrcDir  = '.\artifacts\publish\RadeonSoftwareSlimmer'
+$publishDestDir = '.\artifacts\publish'
+
+Compress-Archive -Path "${publishSrcDir}\release_net9.0-windows_win-x64\*" -DestinationPath "${publishDestDir}\RadeonSoftwareSlimmer_${version}_net90.zip"
+Compress-Archive -Path "${publishSrcDir}\release_net8.0-windows_win-x64\*" -DestinationPath "${publishDestDir}\RadeonSoftwareSlimmer_${version}_net80.zip"
+Compress-Archive -Path "${publishSrcDir}\release_net48_win-x64\*" -DestinationPath "${publishDestDir}\RadeonSoftwareSlimmer_${version}_net48.zip"
+Write-Output '***** Done Archiving Application...'

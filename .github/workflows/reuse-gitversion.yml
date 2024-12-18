@@ -1,0 +1,37 @@
+name: GitVersion
+
+on:
+  workflow_call:
+
+  # https://docs.github.com/en/actions/sharing-automations/reusing-workflows#using-outputs-from-a-reusable-workflow
+  outputs:
+      FullSemVer:
+        description: "The full SemVer from GitVersion"
+        value: ${{ steps.version_step.outputs.fullSemVer }}
+
+jobs:
+  GitVersion:
+    # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
+    # https://github.com/actions/runner-images
+    runs-on: ubuntu-latest
+
+    outputs:
+      FullSemVer: ${{ steps.version_step.outputs.fullSemVer }}
+
+    steps:
+    # https://github.com/marketplace/actions/checkout
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # https://github.com/marketplace/actions/gittools
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v3
+      with:
+        versionSpec: '6.0.x'
+        preferLatestVersion: true
+
+    - name: Determine Version
+      id: version_step
+      uses: gittools/actions/gitversion/execute@v3

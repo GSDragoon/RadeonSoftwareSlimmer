@@ -1,0 +1,60 @@
+name: Code Change
+
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: 
+      - master
+    types: [opened, reopened, synchronize]
+
+jobs:
+  GitVersion:
+    uses: ./.github/workflows/reuse-gitversion.yml
+    outputs:
+      buildVersion: ${{ steps.version_step.outputs.FullSemVer }}
+
+  CI:
+    name: Continuous Integration
+    needs: GitVersion
+    runs-on: windows-latest
+    env:
+      BUILD_VERSION: ${{ needs.GitVersion.outputs.buildVersion }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Build
+      run: ./build/build.ps1 
+
+    - name: Test
+      run: ./build/test.ps1
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+        name: test-results
+        path: ./artifacts/tests/*.trx
+        if-no-files-found: warn
+
+    - name: Publish Test Results
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        artifact: test-results
+        name: Tests
+        path: *.trx
+        reporter: dotnet-trx
+        only-summary: false
+        use-actions-summary: true
+        badge-title: Tests
+        fail-on-error: true
+        fail-on-empty: true
+
+    - name: Publish
+      run: ./build/publish.ps1
