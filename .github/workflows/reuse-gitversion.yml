@@ -2,9 +2,8 @@ name: GitVersion
 
 on:
   workflow_call:
-
-  # https://docs.github.com/en/actions/sharing-automations/reusing-workflows#using-outputs-from-a-reusable-workflow
-  outputs:
+    # https://docs.github.com/en/actions/sharing-automations/reusing-workflows#using-outputs-from-a-reusable-workflow
+    outputs:
       FullSemVer:
         description: "The full SemVer from GitVersion"
         value: ${{ steps.version_step.outputs.fullSemVer }}
