@@ -13,6 +13,7 @@ on:
 
 jobs:
   GitVersion:
+    name: Get Version
     uses: ./.github/workflows/reuse-gitversion.yml
 
   CI:
@@ -21,6 +22,9 @@ jobs:
     runs-on: windows-latest
     env:
       BUILD_VERSION: ${{ needs.GitVersion.outputs.FullSemVer }}
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE: true
+      DOTNET_NOLOGO: true
 
     steps:
     - name: Checkout
@@ -46,12 +50,10 @@ jobs:
       if: success() || failure()
       with:
         artifact: test-results
-        name: Tests
+        name: Test Results
         path: '*.trx'
         reporter: dotnet-trx
         only-summary: false
-        use-actions-summary: true
-        badge-title: Tests
         fail-on-error: true
         fail-on-empty: true
 
