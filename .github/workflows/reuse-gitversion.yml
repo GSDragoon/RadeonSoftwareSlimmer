@@ -6,7 +6,7 @@ on:
     outputs:
       FullSemVer:
         description: "The full SemVer from GitVersion"
-        value: ${{ steps.version_step.outputs.fullSemVer }}
+        value: ${{ jobs.GitVersion.outputs.FullSemVer }}
 
 jobs:
   GitVersion:
