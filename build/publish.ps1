@@ -3,7 +3,7 @@ $ProgressPreference = 'SilentlyContinue'
 
 
 $version = $Env:BUILD_VERSION
-Write-Output "BUILD_VERSION: ${BUILD_VERSION}"
+Write-Output "Version: ${version}"
 
 
 Write-Output '***** Publishing Application...'
@@ -21,3 +21,10 @@ Compress-Archive -Path "${publishSrcDir}\release_net9.0-windows_win-x64\*" -Dest
 Compress-Archive -Path "${publishSrcDir}\release_net8.0-windows_win-x64\*" -DestinationPath "${publishDestDir}\RadeonSoftwareSlimmer_${version}_net80.zip"
 Compress-Archive -Path "${publishSrcDir}\release_net48_win-x64\*" -DestinationPath "${publishDestDir}\RadeonSoftwareSlimmer_${version}_net48.zip"
 Write-Output '***** Done Archiving Application...'
+
+
+Write-Output '***** Archive Hashes (SHA256):'
+Get-Item -Path "${publishDestDir}\RadeonSoftwareSlimmer_*_net*.zip" | ForEach-Object {
+  $hash = Get-FileHash -Path $_
+  Write-Output "$($_.Name): $($hash.hash)"
+}
