@@ -14,15 +14,13 @@ on:
 jobs:
   GitVersion:
     uses: ./.github/workflows/reuse-gitversion.yml
-    outputs:
-      buildVersion: ${{ steps.version_step.outputs.FullSemVer }}
 
   CI:
     name: Continuous Integration
     needs: GitVersion
     runs-on: windows-latest
     env:
-      BUILD_VERSION: ${{ needs.GitVersion.outputs.buildVersion }}
+      BUILD_VERSION: ${{ needs.GitVersion.outputs.FullSemVer }}
 
     steps:
     - name: Checkout
