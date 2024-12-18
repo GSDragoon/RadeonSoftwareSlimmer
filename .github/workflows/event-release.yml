@@ -47,7 +47,7 @@ jobs:
       with:
         artifact: test-results
         name: Tests
-        path: *.trx
+        path: '*.trx'
         reporter: dotnet-trx
         only-summary: false
         use-actions-summary: true
