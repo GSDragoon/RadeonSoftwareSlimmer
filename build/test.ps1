@@ -25,7 +25,6 @@ $reportGenArgs = @(
   "-reports:${resultsPath}\*\coverage.cobertura*.xml",
   "-targetdir:${artifactPath}\CoverageReports",
   '-reporttypes:Badges;Cobertura;Html;HtmlSummary;TextSummary',
-  #'-verbosity:Verbose',
   '--settings:createSubdirectoryForAllReportTypes=true'
 )
 Start-Process -FilePath "${artifactPath}\reportgenerator.exe" -ArgumentList $reportGenArgs  -NoNewWindow -Wait
