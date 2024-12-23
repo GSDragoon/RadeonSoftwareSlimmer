@@ -51,7 +51,7 @@
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="5.1.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.3.0.106239">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.4.0.108396">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
