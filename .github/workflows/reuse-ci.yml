@@ -15,9 +15,8 @@ on:
         type: boolean
 
 jobs:
-  build-test-publish:
+  ci:
     name: Build Test Publish
-    needs: GitVersion
     runs-on: windows-latest
     env:
       BUILD_VERSION: ${{ inputs.build-version }}
