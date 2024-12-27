@@ -12,66 +12,38 @@ jobs:
     name: Get Version
     uses: ./.github/workflows/reuse-gitversion.yml
 
-  # TODO: make CI a reusable workflow, have an input to archive published applications, then make release worlflow download those artifacts and create a release
   CI:
     name: Continuous Integration
     needs: GitVersion
-    runs-on: windows-latest
-    env:
-      BUILD_VERSION: ${{ needs.GitVersion.outputs.FullSemVer }}
-      DOTNET_CLI_TELEMETRY_OPTOUT: true
-      DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE: true
-      DOTNET_NOLOGO: true
-    
+    uses: ./.github/workflows/reuse-ci.yml
+    with:
+      build-version: ${{ needs.GitVersion.outputs.FullSemVer }}
+      archive-publish: true
+
+  Release:
+    name: Create Release
+    needs: [GitVersion, CI]
+    runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Download Published Archives
+      uses: actions/download-artifact@v4
       with:
-        fetch-depth: 0
+        name: published-archives
 
-    - name: Build
-      run: ./build/build.ps1 
+    - name: List Artifacts
+      run: ls -R
 
-    - name: Test
-      run: ./build/test.ps1
-
-    # https://github.com/actions/upload-artifact
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: ./artifacts/tests/*.trx
-        if-no-files-found: warn
-
-    # https://github.com/dorny/test-reporter
-    - name: Publish Test Results
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        artifact: test-results
-        name: Test Results
-        path: '*.trx'
-        reporter: dotnet-trx
-        only-summary: false
-        use-actions-summary: true
-        badge-title: Tests
-        fail-on-error: true
-        fail-on-empty: true
-
-    - name: Publish
-      run: ./build/publish.ps1
-
-
-      # https://github.com/marketplace/actions/create-release
+    # https://github.com/marketplace/actions/create-release
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
         artifactErrorsFailBuild: true
-        artifacts: ./artifacts/publish/RadeonSoftwareSlimmer_*_net*.zip
+        artifacts: ./RadeonSoftwareSlimmer_*_net*.zip
         artifactContentType: application/zip
         bodyFile: ./build/release-notes-template.md
         draft: true
         generateReleaseNotes: false
-        name: Radeon Software Slimmer ${{ steps.gitversion.outputs.semVer }}
+        name: Radeon Software Slimmer ${{ needs.GitVersion.outputs.FullSemVer }}
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}

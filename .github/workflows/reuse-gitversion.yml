@@ -5,7 +5,7 @@ on:
     # https://docs.github.com/en/actions/sharing-automations/reusing-workflows#using-outputs-from-a-reusable-workflow
     outputs:
       FullSemVer:
-        description: "The full SemVer from GitVersion"
+        description: 'The full SemVer from GitVersion'
         value: ${{ jobs.GitVersion.outputs.FullSemVer }}
 
 jobs:
