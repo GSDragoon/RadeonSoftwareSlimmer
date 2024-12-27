@@ -15,7 +15,7 @@ on:
         type: boolean
 
 jobs:
-  CI:
+  build-test-publish:
     name: Build Test Publish
     needs: GitVersion
     runs-on: windows-latest
