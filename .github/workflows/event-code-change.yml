@@ -1,6 +1,7 @@
 name: Code Change
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - '**'
