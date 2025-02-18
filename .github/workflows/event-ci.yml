@@ -1,0 +1,26 @@
+name: Continuous Integration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: 
+      - master
+    types: [opened, reopened, synchronize]
+
+jobs:
+  gitVersion:
+    name: Get Version
+    uses: ./.github/workflows/reuse-gitversion.yml
+
+  buildTest:
+    name: Build and Test
+    needs: gitVersion
+    uses: ./.github/workflows/reuse-build-test.yml
+    with:
+      build-version: ${{ needs.gitVersion.outputs.version }}
+      publish-artifact: false

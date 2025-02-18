@@ -19,19 +19,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "src\Shared\Shared
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadeonSoftwareSlimmer.Test", "test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj", "{16BE9BC0-E55D-47B2-9B57-4F7D5D18220B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{B73937D2-4C0D-4EC0-ACA0-31C448CAB8A2}"
-	ProjectSection(SolutionItems) = preProject
-		build\publish.ps1 = build\publish.ps1
-		build\release-notes-template.md = build\release-notes-template.md
-		build\test.ps1 = build\test.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubWorkflow", "GitHubWorkflow", "{8326CBBC-94B3-4283-9B94-28783CE2D216}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
-		.github\workflows\release.yml = .github\workflows\release.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -49,10 +36,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B73937D2-4C0D-4EC0-ACA0-31C448CAB8A2} = {7785ED3B-B4D4-41C1-AEBF-002B25AB3E38}
-		{8326CBBC-94B3-4283-9B94-28783CE2D216} = {7785ED3B-B4D4-41C1-AEBF-002B25AB3E38}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BACD17E6-3BDC-4AA0-AC9E-54786CEB483D}

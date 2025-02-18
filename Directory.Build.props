@@ -1,0 +1,39 @@
+<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-windows;net8.0-windows;net48</TargetFrameworks>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Platforms>x64</Platforms>
+
+    <!-- Limiting to 7.3 because of .NET Framework -->
+    <LangVersion>7.3</LangVersion>
+
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishSelfContained>false</PublishSelfContained>
+    <SelfContained>false</SelfContained>
+	<IsPackable>false</IsPackable>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1416-->
+    <SupportedPlatform Include="Windows" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <MSBuildTreatWarningsAsErrors>false</MSBuildTreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>

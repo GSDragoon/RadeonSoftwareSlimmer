@@ -1,27 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0-windows;net8.0-windows;net48</TargetFrameworks>
-    <!-- Limiting to 7.3 because of .NET Framework -->
-    <LangVersion>7.3</LangVersion>
-    <Platforms>x64</Platforms>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <IsPackable>false</IsPackable>
     <OutputType>Library</OutputType>
-    <!-- Roslyn Analyzers-->
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <PublishSingleFile>false</PublishSingleFile>
-    <PublishSelfContained>false</PublishSelfContained>
-    <SelfContained>false</SelfContained>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)'=='net48' or '$(TargetFramework)'=='net6.0-windows'">
-    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-windows'">
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
@@ -61,7 +41,7 @@
 
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'!='true'">
     <RunSettingsFilePath>$(MSBuildProjectDirectory)\$(MSBuildProjectName).runsettings</RunSettingsFilePath>
-    <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName)_$(TargetFramework)_$(Platform).trx</VSTestLogger>
+    <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName)_$(TargetFramework).trx</VSTestLogger>
   </PropertyGroup>
 
 </Project>

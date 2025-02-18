@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '[1-9].[0-9]+.[0-9]+'
+# git tag 1.2.3
+# git push --tags
+
+jobs:
+  gitVersion:
+    name: Get Version
+    uses: ./.github/workflows/reuse-gitversion.yml
+
+  buildTest:
+    name: Build, Test and Publish
+    needs: gitVersion
+    uses: ./.github/workflows/reuse-build-test.yml
+    with:
+      build-version: ${{ needs.gitVersion.outputs.version }}
+      archive-publish: true
+ 
+  release:
+    name: Create Release
+    needs: [gitVersion, buildTest]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download Published Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: published-artifact
+
+    - name: List Artifacts
+      run: ls -R
+
+    # https://github.com/marketplace/actions/create-release
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifactErrorsFailBuild: true
+        artifacts: ./RadeonSoftwareSlimmer_*_net*.zip
+        artifactContentType: application/zip
+        bodyFile: ./build/release-notes-template.md
+        draft: true
+        generateReleaseNotes: false
+        name: Radeon Software Slimmer ${{ needs.gitVersion.outputs.version }}
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
