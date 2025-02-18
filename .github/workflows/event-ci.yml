@@ -1,4 +1,4 @@
-name: Code Change
+name: Continuous Integration
 
 on:
   workflow_dispatch:
@@ -13,14 +13,14 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  GitVersion:
+  gitVersion:
     name: Get Version
     uses: ./.github/workflows/reuse-gitversion.yml
 
-  CI:
-    name: Continuous Integration
-    needs: GitVersion
-    uses: ./.github/workflows/reuse-ci.yml
+  buildTest:
+    name: Build and Test
+    needs: gitVersion
+    uses: ./.github/workflows/reuse-build-test.yml
     with:
-      build-version: ${{ needs.GitVersion.outputs.FullSemVer }}
-      archive-publish: false
+      build-version: ${{ needs.gitVersion.outputs.version }}
+      publish-artifact: false

@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Build and Test
 
 on:
   workflow_call:
@@ -8,14 +8,14 @@ on:
         default: 1.0.0
         required: true
         type: string
-      archive-publish:
+      publish-artifact:
         description: 'Archive the published build artifact for releasing'
         default: false
         required: false
         type: boolean
 
 jobs:
-  ci:
+  buildTestPublish:
     name: Build Test Publish
     runs-on: windows-latest
     env:
@@ -36,6 +36,7 @@ jobs:
     - name: Test
       run: ./build/test.ps1
 
+    # https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       with:
@@ -43,6 +44,7 @@ jobs:
         path: ./artifacts/tests/*.trx
         if-no-files-found: warn
 
+    # https://github.com/marketplace/actions/test-reporter
     - name: Publish Test Results
       if: success() || failure()
       uses: dorny/test-reporter@v1
@@ -58,11 +60,11 @@ jobs:
     - name: Publish
       run: ./build/publish.ps1
 
-    - name: Upload Published Archives
-      if: ${{ inputs.archive-publish == 'true' }}
+    - name: Upload Published Artifact
+      if: ${{ inputs.publish-artifact == 'true' }}
       uses: actions/upload-artifact@v4
       with:
-        name: published-archives
+        name: published-artifact
         path: ./artifacts/publish/RadeonSoftwareSlimmer_*_net*.zip
         if-no-files-found: error
         compression-level: 0

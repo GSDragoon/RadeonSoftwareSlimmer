@@ -1,4 +1,6 @@
-﻿$ErrorActionPreference = 'Stop'
+﻿#Requires -RunAsAdministrator
+
+$ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
 

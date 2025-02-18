@@ -9,28 +9,28 @@ on:
 # git push --tags
 
 jobs:
-  GitVersion:
+  gitVersion:
     name: Get Version
     uses: ./.github/workflows/reuse-gitversion.yml
 
-  CI:
-    name: Continuous Integration
-    needs: GitVersion
-    uses: ./.github/workflows/reuse-ci.yml
+  buildTest:
+    name: Build, Test and Publish
+    needs: gitVersion
+    uses: ./.github/workflows/reuse-build-test.yml
     with:
-      build-version: ${{ needs.GitVersion.outputs.FullSemVer }}
+      build-version: ${{ needs.gitVersion.outputs.version }}
       archive-publish: true
-
-  Release:
+ 
+  release:
     name: Create Release
-    needs: [GitVersion, CI]
+    needs: [gitVersion, buildTest]
     runs-on: ubuntu-latest
 
     steps:
-    - name: Download Published Archives
+    - name: Download Published Artifact
       uses: actions/download-artifact@v4
       with:
-        name: published-archives
+        name: published-artifact
 
     - name: List Artifacts
       run: ls -R
@@ -45,6 +45,6 @@ jobs:
         bodyFile: ./build/release-notes-template.md
         draft: true
         generateReleaseNotes: false
-        name: Radeon Software Slimmer ${{ needs.GitVersion.outputs.FullSemVer }}
+        name: Radeon Software Slimmer ${{ needs.gitVersion.outputs.version }}
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
