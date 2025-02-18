@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
 
-    <Product>Radeon Software Slimmer</Product>    
+    <Product>Radeon Software Slimmer</Product>
     <StartupObject>RadeonSoftwareSlimmer.App</StartupObject>
     <AssemblyTitle>Radeon Software Slimmer</AssemblyTitle>
     <Authors>Greg Seaton</Authors>

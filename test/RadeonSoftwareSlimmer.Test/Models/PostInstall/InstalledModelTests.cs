@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using NUnit.Framework;
 using RadeonSoftwareSlimmer.Models.PostInstall;
 using RadeonSoftwareSlimmer.Test.TestDoubles;
@@ -33,6 +34,7 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
         }
 
         [Test]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("System.IO.Abstractions", "IO0006:Replace Path class with IFileSystem.Path for improved testability", Justification = "Just combining a path")]
         public void Ctor_MsiInstaller_GeneratesUninstallCommand()
         {
             string keyName = Guid.NewGuid().ToString("B");
@@ -49,7 +51,8 @@ namespace RadeonSoftwareSlimmer.Test.Models.PostInstall
                 Assert.That(installedModel.Uninstall, Is.False);
 
                 Assert.That(installedModel.ProductCode, Is.EqualTo(keyName));
-                Assert.That(installedModel.UninstallCommand, Is.EqualTo("C:\\Windows\\system32\\msiexec.exe /uninstall " + keyName));
+                string msiexec = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify), "msiexec.exe");
+                Assert.That(installedModel.UninstallCommand, Is.EqualTo($"{msiexec} /uninstall {keyName}"));
             });
         }
     }
