@@ -23,4 +23,3 @@ jobs:
     uses: ./.github/workflows/reuse-build-test.yml
     with:
       build-version: ${{ needs.gitVersion.outputs.version }}
-      publish-artifact: false

@@ -8,11 +8,6 @@ on:
         default: 1.0.0
         required: true
         type: string
-      publish-artifact:
-        description: 'Archive the published build artifact for releasing'
-        default: false
-        required: false
-        type: boolean
 
 jobs:
   buildTestPublish:
@@ -61,7 +56,6 @@ jobs:
       run: ./build/publish.ps1
 
     - name: Upload Published Artifact
-      if: ${{ inputs.publish-artifact == 'true' }}
       uses: actions/upload-artifact@v4
       with:
         name: published-artifact
