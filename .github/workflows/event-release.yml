@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/reuse-build-test.yml
     with:
       build-version: ${{ needs.gitVersion.outputs.version }}
-      archive-publish: true
+      publish-artifact: true
  
   release:
     name: Create Release
