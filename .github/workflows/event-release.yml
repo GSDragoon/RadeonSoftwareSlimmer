@@ -41,7 +41,7 @@ jobs:
         artifactErrorsFailBuild: true
         artifacts: ./RadeonSoftwareSlimmer_*_net*.zip
         artifactContentType: application/zip
-        bodyFile: ./build/release-notes-template.md
+        bodyFile: "build/release-notes-template.md"
         draft: true
         generateReleaseNotes: false
         name: Radeon Software Slimmer ${{ needs.gitVersion.outputs.version }}
