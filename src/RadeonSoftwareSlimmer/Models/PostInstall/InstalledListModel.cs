@@ -21,6 +21,11 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             "PSP",
             "Ryzen",
             "SMBus",
+            "3D V-Cache",
+            "AMD Application Compatibility Database Driver",
+            "PPM Provisioning",
+            "AMD Interface",
+            "I2C"
         };
 
 

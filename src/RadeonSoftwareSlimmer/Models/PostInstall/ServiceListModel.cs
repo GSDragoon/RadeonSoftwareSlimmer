@@ -59,6 +59,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 //Probably no point in showing this. Is there even a reason to remove it?
                 //"amdkmdag",
                 //"amdwddmg",
+                //"amduw23g",
 
                 //AMD PCI Root Bus Lower Filter
                 //Probably shouldn't mess with this one either
