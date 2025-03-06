@@ -26,6 +26,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Download Published Artifact
       uses: actions/download-artifact@v4
       with:
@@ -41,7 +46,7 @@ jobs:
         artifactErrorsFailBuild: true
         artifacts: ./RadeonSoftwareSlimmer_*_net*.zip
         artifactContentType: application/zip
-        bodyFile: "build/release-notes-template.md"
+        bodyFile: ./build/release-notes-template.md
         draft: true
         generateReleaseNotes: false
         name: Radeon Software Slimmer ${{ needs.gitVersion.outputs.version }}
