@@ -16,12 +16,12 @@
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.6.0.109712">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.7.0.110445">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="21.3.1" />
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="21.3.1" />
+    <PackageReference Include="System.IO.Abstractions" Version="22.0.11" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.0.11" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.2" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.Analyzers" Version="2022.0.0">
       <PrivateAssets>all</PrivateAssets>
