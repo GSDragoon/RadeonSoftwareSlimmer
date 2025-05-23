@@ -42,7 +42,7 @@ jobs:
     # https://github.com/marketplace/actions/test-reporter
     - name: Publish Test Results
       if: success() || failure()
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v2
       with:
         artifact: test-results
         name: Test Results
