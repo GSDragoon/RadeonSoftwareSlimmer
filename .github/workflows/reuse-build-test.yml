@@ -33,7 +33,7 @@ jobs:
 
     # https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload Test Results
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: test-results
         path: ./artifacts/tests/*.trx
@@ -56,7 +56,7 @@ jobs:
       run: ./build/publish.ps1
 
     - name: Upload Published Artifact
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: published-artifact
         path: ./artifacts/publish/RadeonSoftwareSlimmer_*_net*.zip

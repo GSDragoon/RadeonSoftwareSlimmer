@@ -32,7 +32,7 @@ jobs:
         fetch-depth: 0
 
     - name: Download Published Artifact
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: published-artifact
 
