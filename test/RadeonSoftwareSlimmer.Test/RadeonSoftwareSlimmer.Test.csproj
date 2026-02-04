@@ -16,7 +16,7 @@
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" Version="6.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.18.0.131500">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.19.0.132793">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
