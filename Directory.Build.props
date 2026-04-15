@@ -1,26 +1,38 @@
 <Project>
   <PropertyGroup>
+    <!-- Common properties for all projects -->
     <TargetFrameworks>net9.0-windows;net8.0-windows;net48</TargetFrameworks>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <Platforms>x64</Platforms>
-
-    <!-- Limiting to 7.3 because of .NET Framework -->
-    <LangVersion>7.3</LangVersion>
-
-    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
-    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-
-    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <IsPackable>false</IsPackable>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <PublishSingleFile>false</PublishSingleFile>
     <PublishSelfContained>false</PublishSelfContained>
     <SelfContained>false</SelfContained>
-	<IsPackable>false</IsPackable>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <!-- Limiting to 7.3 because of .NET Framework -->
+    <LangVersion>7.3</LangVersion>
+
+    <!-- Enable local building on linux -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <!-- Enable analyzers and make sure they run during build and live analysis -->
+    <RunAnalyzers>true</RunAnalyzers>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <WarningLevel>9999</WarningLevel>
+
+    <!-- Place all output files in the artifacts directory-->
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(MSBuildThisFileDirectory)/artifacts</ArtifactsPath>
+
+    <!-- Disable native code coverage instrumentation since we don't have any native code -->
+    <EnableStaticNativeInstrumentation>False</EnableStaticNativeInstrumentation>
+    <EnableDynamicNativeInstrumentation>False</EnableDynamicNativeInstrumentation>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +40,7 @@
     <SupportedPlatform Include="Windows" />
   </ItemGroup>
 
+  <!-- Enable warnings as errors for release builds -->
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Blank = treat all warnings as errors -->
