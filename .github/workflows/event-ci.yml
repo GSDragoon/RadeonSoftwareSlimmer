@@ -3,14 +3,12 @@ name: Continuous Integration
 on:
   workflow_dispatch:
   push:
-    branches:
-      - '**'
+    branches: [main]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: 
-      - master
-    types: [opened, reopened, synchronize]
+    branches: [master]
+    types: [opened, reopened, synchronize, ready_for_review]
 
 jobs:
   gitVersion:
