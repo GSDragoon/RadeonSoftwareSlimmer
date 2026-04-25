@@ -2,20 +2,22 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PreInstall
+namespace RadeonSoftwareSlimmer.Core.PreInstall
 {
     public class DisplayComponentModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
         private readonly IDirectoryInfo _componentDirectory;
         private readonly IDirectoryInfo _backupDirectory;
         private bool _keep;
 
 
-        public DisplayComponentModel(IDirectoryInfo installerRootDirectory, IDirectoryInfo componentDirectory)
+        public DisplayComponentModel(IDirectoryInfo installerRootDirectory, IDirectoryInfo componentDirectory, IAppLogger logger)
         {
-            StaticViewModel.AddDebugMessage($"Found display component in {componentDirectory.FullName}");
+            _logger = logger;
+            _logger.Debug($"Found display component in {componentDirectory.FullName}");
 
             Keep = true;
 
@@ -52,7 +54,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             if (Keep || !_componentDirectory.Exists)
                 return;
 
-            StaticViewModel.AddDebugMessage($"Removing {_componentDirectory.FullName}");
+            _logger.Debug($"Removing {_componentDirectory.FullName}");
 
             foreach (IFileInfo file in _componentDirectory.EnumerateFiles("*", SearchOption.AllDirectories))
             {
@@ -63,7 +65,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
 
             string componentBackupDir = _backupDirectory.FileSystem.Path.Combine(_backupDirectory.FullName, _componentDirectory.Name);
-            StaticViewModel.AddDebugMessage($"Moving display component {_componentDirectory.Name} to backup path {componentBackupDir}");
+            _logger.Debug("Moving display component {_componentDirectory.Name} to backup path {componentBackupDir}");
             _componentDirectory.MoveTo(componentBackupDir);
         }
 
@@ -73,7 +75,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 #endif
         private void LoadInfFileInformation(IFileInfo infFile)
         {
-            StaticViewModel.AddDebugMessage($"Processing inf file {infFile.FullName}");
+            _logger.Debug($"Processing inf file {infFile.FullName}");
 
             using (StreamReader reader = new StreamReader(infFile.OpenRead()))
             {
@@ -94,7 +96,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                                 line.StartsWith("AMDOCLName", StringComparison.OrdinalIgnoreCase) ||
                                 line.StartsWith("AMDWINName", StringComparison.OrdinalIgnoreCase))
                             {
-                                StaticViewModel.AddDebugMessage($"Attempting to obtain inf file description from {line}");
+                                _logger.Debug($"Attempting to obtain inf file description from {line}");
                                 Description = line.Substring(line.IndexOf("\"", StringComparison.OrdinalIgnoreCase)).Trim('\"');
                                 return;
                             }

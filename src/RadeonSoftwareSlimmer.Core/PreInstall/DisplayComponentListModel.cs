@@ -2,12 +2,13 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PreInstall
+namespace RadeonSoftwareSlimmer.Core.PreInstall
 {
     public class DisplayComponentListModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
         private readonly IFileSystem _fileSystem;
         private IDirectoryInfo _installDir;
         private IDirectoryInfo _componentBaseDir;
@@ -15,8 +16,9 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         private IEnumerable<DisplayComponentModel> _components;
 
 
-        public DisplayComponentListModel(IFileSystem fileSystem)
+        public DisplayComponentListModel(IFileSystem fileSystem, IAppLogger logger)
         {
+            _logger = logger;
             _fileSystem = fileSystem;
         }
 
@@ -66,7 +68,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             {
                 // If loading from another instance of the application, it won't have the old component information
                 // Move also changes the original directory object's path
-                StaticViewModel.AddDebugMessage($"Restoring display component {backedUpComponentDir.Name} to {_componentBaseDir.FullName}");
+                _logger.Debug($"Restoring display component {backedUpComponentDir.Name} to {_componentBaseDir.FullName}");
                 backedUpComponentDir.MoveTo(_fileSystem.Path.Combine(_componentBaseDir.FullName, backedUpComponentDir.Name));
             }
         }
@@ -79,7 +81,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 foreach (IDirectoryInfo componentDirectory in _componentBaseDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
                 {
                     if (componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly).Length == 1)
-                        yield return new DisplayComponentModel(_installDir, componentDirectory);
+                        yield return new DisplayComponentModel(_installDir, componentDirectory, _logger);
                 }
             }
         }

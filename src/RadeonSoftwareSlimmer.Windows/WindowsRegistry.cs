@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
-using RadeonSoftwareSlimmer.Intefaces;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Services
+namespace RadeonSoftwareSlimmer.Windows
 {
     public class WindowsRegistry : IRegistry
     {

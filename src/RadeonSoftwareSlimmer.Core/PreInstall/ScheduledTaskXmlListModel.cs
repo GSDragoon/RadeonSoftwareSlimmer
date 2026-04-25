@@ -6,19 +6,21 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PreInstall
+namespace RadeonSoftwareSlimmer.Core.PreInstall
 {
     //So many problems with these files... This is why we can't have nice things.
     public class ScheduledTaskXmlListModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
         private readonly IFileSystem _fileSystem;
         private IEnumerable<ScheduledTaskXmlModel> _scheduledTasks;
 
 
-        public ScheduledTaskXmlListModel(IFileSystem fileSystem)
+        public ScheduledTaskXmlListModel(IFileSystem fileSystem, IAppLogger logger)
         {
+            _logger = logger;
             _fileSystem = fileSystem;
         }
 
@@ -65,7 +67,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             if (_scheduledTasks != null)
             {
-                StaticViewModel.AddDebugMessage("Restoring scheduled tasks to enabled");
+                _logger.Debug("Restoring scheduled tasks to enabled");
 
                 foreach (ScheduledTaskXmlModel scheduledTask in _scheduledTasks)
                 {
@@ -99,7 +101,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                     string arguments = xDoc.Root.Element(xNs + "Actions").Element(xNs + "Exec").Element(xNs + "Arguments").Value;
                     scheduledTask.Command = $"{command} {arguments}";
 
-                    StaticViewModel.AddDebugMessage($"Found scheduled task {scheduledTask.Description} in {file.FullName}");
+                    _logger.Debug($"Found scheduled task {scheduledTask.Description} in {file.FullName}");
                     yield return scheduledTask;
                 }
             }
@@ -124,7 +126,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 //Some files have incorrect encoding :(
                 //This happens even with legit exported files from Windows itself
                 //https://stackoverflow.com/questions/29915467/there-is-no-unicode-byte-order-mark-cannot-switch-to-unicode
-                StaticViewModel.AddDebugMessage($"Wrong encoding for {file.FullName}");
+                _logger.Debug($"Wrong encoding for {file.FullName}");
 
                 try
                 {
@@ -132,7 +134,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 }
                 catch (XmlException ex)
                 {
-                    StaticViewModel.AddDebugMessage(ex);
+                    _logger.Error(ex);
                     return false;
                 }
             }

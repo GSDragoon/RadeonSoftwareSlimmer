@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using RadeonSoftwareSlimmer.Intefaces;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using Microsoft.Win32;
-using RadeonSoftwareSlimmer.Intefaces;
+using RadeonSoftwareSlimmer.Core.Enums;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
 namespace RadeonSoftwareSlimmer.Models.PostInstall
 {

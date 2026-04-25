@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.IO.Abstractions;
 
-namespace RadeonSoftwareSlimmer.Models.PreInstall
+namespace RadeonSoftwareSlimmer.Core.PreInstall
 {
     public class ScheduledTaskXmlModel : INotifyPropertyChanged
     {

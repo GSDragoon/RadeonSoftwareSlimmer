@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using RadeonSoftwareSlimmer.Intefaces;
 using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
 namespace RadeonSoftwareSlimmer.Models.PostInstall
 {

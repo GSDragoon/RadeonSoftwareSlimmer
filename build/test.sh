@@ -15,8 +15,9 @@ echo '***** Testing solution...'
 # https://github.com/dotnet/sdk/issues/44991 - does not support artifact output
 project='./test/RadeonSoftwareSlimmer.Test/RadeonSoftwareSlimmer.Test.csproj'
 
-dotnet test $project --no-build --configuration Release --results-directory $resultsPath --framework net9.0-windows
-dotnet test $project --no-build --configuration Release --results-directory $resultsPath --framework net8.0-windows
+dotnet test $project --no-build --configuration Release --results-directory $resultsPath --framework net10.0
+#dotnet test $project --no-build --configuration Release --results-directory $resultsPath --framework net9.0-windows
+#dotnet test $project --no-build --configuration Release --results-directory $resultsPath --framework net8.0-windows
 #dotnet test $project --no-build --configuration Release --results-directory $resultsPath --framework net48
 echo '***** Done Testing solution...'
 

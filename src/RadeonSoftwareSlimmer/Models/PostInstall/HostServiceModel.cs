@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Abstractions;
-using RadeonSoftwareSlimmer.Intefaces;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -209,10 +209,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     return false;
 
                 string cliFile = _fileSystem.Path.Combine(directory, RADEON_SOFTWARE_CLI_FILE_NAME);
-                if (!_fileSystem.File.Exists(cliFile))
-                    return false;
-
-                return true;
+                return _fileSystem.File.Exists(cliFile);
             }
             catch (Exception ex)
             {

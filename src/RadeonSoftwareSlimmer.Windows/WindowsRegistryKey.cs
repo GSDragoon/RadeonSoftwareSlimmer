@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Win32;
-using RadeonSoftwareSlimmer.Intefaces;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Services
+namespace RadeonSoftwareSlimmer.Windows
 {
     public class WindowsRegistryKey : IRegistryKey
     {
@@ -32,9 +32,9 @@ namespace RadeonSoftwareSlimmer.Services
             return _regKey.GetValue(name, defaultValue);
         }
 
-        public void SetValue(string name, object value, RegistryValueKind valueKind)
+        public void SetValue(string name, object value, RadeonSoftwareSlimmer.Core.Enums.RegistryValueKind valueKind)
         {
-            _regKey.SetValue(name, value, valueKind);
+            _regKey.SetValue(name, value, (Microsoft.Win32.RegistryValueKind)valueKind);
         }
 
 

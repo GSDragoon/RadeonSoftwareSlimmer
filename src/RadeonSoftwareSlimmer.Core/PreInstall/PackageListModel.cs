@@ -6,12 +6,13 @@ using System.IO.Abstractions;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PreInstall
+namespace RadeonSoftwareSlimmer.Core.PreInstall
 {
     public class PackageListModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
         private readonly IFileSystem _fileSystem;
         private IEnumerable<PackageModel> _packages;
         private IDirectoryInfo _installDir;
@@ -23,8 +24,9 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         };
 
 
-        public PackageListModel(IFileSystem fileSystem)
+        public PackageListModel(IFileSystem fileSystem, IAppLogger logger)
         {
+            _logger = logger;
             _fileSystem = fileSystem;
         }
 
@@ -56,14 +58,14 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
             }
         }
 
-        public static void RemovePackage(PackageModel packageToRemove)
+        public void RemovePackage(PackageModel packageToRemove)
         {
             if (packageToRemove == null)
                 throw new ArgumentNullException(nameof(packageToRemove));
 
             JObject fullJson;
 
-            StaticViewModel.AddDebugMessage($"Removing package {packageToRemove.ProductName} from {packageToRemove.GetFile().FullName}");
+            _logger.Debug($"Removing package {packageToRemove.ProductName} from {packageToRemove.GetFile().FullName}");
 
             using (StreamReader streamReader = new StreamReader(packageToRemove.GetFile().OpenRead()))
             using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
@@ -108,13 +110,13 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                     }
                     else
                     {
-                        StaticViewModel.AddDebugMessage($"Attempted to restore package file {backupFile.FullName} from default, but no backup directory found.");
+                        _logger.Debug($"Attempted to restore package file {backupFile.FullName} from default, but no backup directory found.");
                     }
                 }
             }
             else
             {
-                StaticViewModel.AddDebugMessage("Attempted to restore packages from default, but no backup directory found.");
+                _logger.Debug("Attempted to restore packages from default, but no backup directory found.");
             }
         }
 
@@ -139,7 +141,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                             package.Url = token.SelectToken("Info.url").ToString();
                             package.Type = token.SelectToken("Info.ptype").ToString();
 
-                            StaticViewModel.AddDebugMessage($"Found package {package.ProductName} in {package.GetFile().FullName}");
+                            _logger.Debug($"Found package {package.ProductName} in {package.GetFile().FullName}");
                             yield return package;
                         }
                     }
@@ -158,7 +160,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                         _fileSystem.Directory.CreateDirectory(backupFile.DirectoryName);
 
                     IFileInfo sourceFile = _fileSystem.FileInfo.New(_fileSystem.Path.Combine(_installDir.FullName, packageFile));
-                    StaticViewModel.AddDebugMessage($"Backing up {sourceFile.FullName} to {backupFile.FullName}");
+                    _logger.Debug($"Backing up {sourceFile.FullName} to {backupFile.FullName}");
                     _fileSystem.File.Copy(sourceFile.FullName, backupFile.FullName);
                 }
             }

@@ -3,18 +3,17 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
-#if NET48
 using System.Linq;
-#endif
 using System.Reflection;
-using RadeonSoftwareSlimmer.Services;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PreInstall
+namespace RadeonSoftwareSlimmer.Core.PreInstall
 {
     public class InstallerFilesModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
         private readonly IFileSystem _fileSystem;
+        private readonly IProcessRunner _processRunner;
         private string _installerFile;
         private string _extractedInstallerDirectory;
 #if NET6_0_OR_GREATER
@@ -25,9 +24,11 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 #endif
 
 
-        public InstallerFilesModel(IFileSystem fileSystem)
+        public InstallerFilesModel(IFileSystem fileSystem, IProcessRunner processRunner, IAppLogger logger)
         {
+            _logger = logger;
             _fileSystem = fileSystem;
+            _processRunner = processRunner;
         }
 
 
@@ -58,8 +59,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         public void ExtractInstallerFiles()
         {
             string sevenZipExe = _fileSystem.Path.Combine(_fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "7-Zip", "7z.exe");
-            ProcessHandler processHandler = new ProcessHandler(sevenZipExe);
-            int exitCode = processHandler.RunProcess($"x \"{InstallerFile}\" -o\"{ExtractedInstallerDirectory}\"");
+            int exitCode = _processRunner.RunProcess(sevenZipExe, $"x \"{InstallerFile}\" -o\"{ExtractedInstallerDirectory}\"");
 
             //https://sevenzip.osdn.jp/chm/cmdline/exit_codes.htm
             //Add messages for each possibility?
@@ -93,7 +93,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             if (string.IsNullOrWhiteSpace(_installerFile))
             {
-                StaticViewModel.AddLogMessage("Please provide an installer file");
+                _logger.Info("Please provide an installer file");
                 return false;
             }
 
@@ -103,24 +103,24 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
                 if (Array.Exists(_fileSystem.Path.GetInvalidPathChars(), c => fileInfo.DirectoryName.Contains(c)))
                 {
-                    StaticViewModel.AddLogMessage("File directory contains invalid characters");
+                    _logger.Info("File directory contains invalid characters");
                     return false;
                 }
                 if (Array.Exists(_fileSystem.Path.GetInvalidFileNameChars(), (c => fileInfo.Name.Contains(c))))
                 {
-                    StaticViewModel.AddLogMessage("File name contains invalid characters");
+                    _logger.Info("File name contains invalid characters");
                     return false;
                 }
                 if (!fileInfo.Exists)
                 {
-                    StaticViewModel.AddLogMessage($"Installer file {_installerFile} does not exist or cannot be accessed");
+                    _logger.Info($"Installer file {_installerFile} does not exist or cannot be accessed");
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 // FileInfo.New validates the directory path
-                StaticViewModel.AddLogMessage(ex);
+                _logger.Info(ex);
                 return false;
             }
 
@@ -131,7 +131,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             if (string.IsNullOrWhiteSpace(_extractedInstallerDirectory))
             {
-                StaticViewModel.AddLogMessage($"Please enter an extraction path");
+                _logger.Info("Please enter an extraction path");
                 return false;
             }
             try
@@ -140,28 +140,28 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
                 if (Array.Exists(_fileSystem.Path.GetInvalidPathChars(), c => directoryInfo.FullName.Contains(c)))
                 {
-                    StaticViewModel.AddLogMessage("Directory contains invalid characters");
+                    _logger.Info("Directory contains invalid characters");
                     return false;
                 }
 #if NET6_0_OR_GREATER
 
                 if (Array.Exists(extraInvalidDirChars, c => directoryInfo.FullName.Contains(c)))
                 {
-                    StaticViewModel.AddLogMessage("Directory contains invalid characters");
+                    _logger.Info("Directory contains invalid characters");
                     return false;
                 }
 #endif
 
                 if (directoryInfo.Exists && (directoryInfo.GetDirectories().Length > 0 || directoryInfo.GetFiles().Length > 0))
                 {
-                    StaticViewModel.AddLogMessage($"Extraction folder {_extractedInstallerDirectory} is not empty");
+                    _logger.Info($"Extraction folder {_extractedInstallerDirectory} is not empty");
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 // DirectoryInfo.New validates the path
-                StaticViewModel.AddLogMessage(ex);
+                _logger.Info(ex);
                 return false;
             }
 
@@ -172,7 +172,7 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
         {
             if (string.IsNullOrWhiteSpace(_extractedInstallerDirectory))
             {
-                StaticViewModel.AddLogMessage($"Please enter an extraction path");
+                _logger.Info("Please enter an extraction path");
                 return false;
             }
 
@@ -182,14 +182,14 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
 
                 if (Array.Exists(_fileSystem.Path.GetInvalidPathChars(), c => directoryInfo.FullName.Contains(c)))
                 {
-                    StaticViewModel.AddLogMessage("Directory contains invalid characters");
+                    _logger.Info("Directory contains invalid characters");
                     return false;
                 }
 #if NET6_0_OR_GREATER
 
                 if (Array.Exists(extraInvalidDirChars, c => directoryInfo.FullName.Contains(c)))
                 {
-                    StaticViewModel.AddLogMessage("Directory contains invalid characters");
+                    _logger.Info("Directory contains invalid characters");
                     return false;
                 }
 #endif
@@ -204,14 +204,14 @@ namespace RadeonSoftwareSlimmer.Models.PreInstall
                 }
                 else
                 {
-                    StaticViewModel.AddLogMessage($"Expected installer files not found in {_extractedInstallerDirectory}");
+                    _logger.Info($"Expected installer files not found in {_extractedInstallerDirectory}");
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 // DirectoryInfo.New validates the path
-                StaticViewModel.AddLogMessage(ex);
+                _logger.Info(ex);
                 return false;
             }
         }

@@ -1,7 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.ServiceProcess;
-using RadeonSoftwareSlimmer.Intefaces;
+using RadeonSoftwareSlimmer.Core.Enums;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
@@ -319,7 +320,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             using (IRegistryKey serviceKey = _registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name, true))
             {
                 object currentStartMode = serviceKey.GetValue(SERVICE_START_VALUE_NAME);
-                serviceKey.SetValue(SERVICE_ORIGINAL_START_VALUE_NAME, currentStartMode, Microsoft.Win32.RegistryValueKind.DWord);
+                serviceKey.SetValue(SERVICE_ORIGINAL_START_VALUE_NAME, currentStartMode, RegistryValueKind.DWord);
             }
         }
     }

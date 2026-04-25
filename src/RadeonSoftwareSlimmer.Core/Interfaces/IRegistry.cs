@@ -1,4 +1,4 @@
-﻿namespace RadeonSoftwareSlimmer.Intefaces
+namespace RadeonSoftwareSlimmer.Core.Interfaces
 {
     public interface IRegistry
     {

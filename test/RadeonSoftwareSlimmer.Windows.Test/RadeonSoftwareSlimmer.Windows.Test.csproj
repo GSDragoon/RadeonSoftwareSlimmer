@@ -28,7 +28,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RadeonSoftwareSlimmer\RadeonSoftwareSlimmer.csproj" />
+    <ProjectReference Include="..\..\src\RadeonSoftwareSlimmer.Windows\RadeonSoftwareSlimmer.Windows.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TestData\*.*">

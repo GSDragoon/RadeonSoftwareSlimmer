@@ -1,8 +1,6 @@
 <Project>
   <PropertyGroup>
     <!-- Common properties for all projects -->
-    <TargetFrameworks>net9.0-windows;net8.0-windows;net48</TargetFrameworks>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <Platforms>x64</Platforms>
     <IsPackable>false</IsPackable>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
@@ -13,10 +11,11 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <!-- Limiting to 7.3 because of .NET Framework -->
     <LangVersion>7.3</LangVersion>
-
+    <Product>Radeon Software Slimmer</Product>
+    <AssemblyTitle>Radeon Software Slimmer</AssemblyTitle>
+    <Authors>Greg Seaton</Authors>
     <!-- Enable local building on linux -->
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
-
     <!-- Enable analyzers and make sure they run during build and live analysis -->
     <RunAnalyzers>true</RunAnalyzers>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
@@ -25,30 +24,25 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
     <WarningLevel>9999</WarningLevel>
-
     <!-- Place all output files in the artifacts directory-->
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <ArtifactsPath>$(MSBuildThisFileDirectory)/artifacts</ArtifactsPath>
-
     <!-- Disable native code coverage instrumentation since we don't have any native code -->
     <EnableStaticNativeInstrumentation>False</EnableStaticNativeInstrumentation>
     <EnableDynamicNativeInstrumentation>False</EnableDynamicNativeInstrumentation>
   </PropertyGroup>
-
   <ItemGroup>
     <!--https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1416-->
     <SupportedPlatform Include="Windows" />
   </ItemGroup>
-
   <!-- Enable warnings as errors for release builds -->
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Blank = treat all warnings as errors -->
-    <WarningsAsErrors></WarningsAsErrors>
+    <WarningsAsErrors />
     <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
   </PropertyGroup>
-
   <!-- Allow warnings for local dev/testing in debug mode -->
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>

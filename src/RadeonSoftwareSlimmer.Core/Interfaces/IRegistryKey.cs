@@ -1,7 +1,7 @@
 ﻿using System;
-using Microsoft.Win32;
+using RadeonSoftwareSlimmer.Core.Enums;
 
-namespace RadeonSoftwareSlimmer.Intefaces
+namespace RadeonSoftwareSlimmer.Core.Interfaces
 {
     public interface IRegistryKey : IDisposable
     {
