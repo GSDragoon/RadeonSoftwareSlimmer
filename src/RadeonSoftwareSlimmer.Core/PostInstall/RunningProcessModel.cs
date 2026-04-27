@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class RunningProcessModel
     {

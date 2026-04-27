@@ -2,10 +2,10 @@
 {
     public interface IProcessHandler
     {
-        bool IsProcessRunning();
+        bool IsProcessRunning(string processName);
 
-        void WaitForProcessToEnd(int maxWaitSeconds);
+        void WaitForProcessToEnd(string processName, int maxWaitSeconds);
 
-        void WaitForProcessToStart(int maxWaitSeconds);
+        void WaitForProcessToStart(string processName, int maxWaitSeconds);
     }
 }

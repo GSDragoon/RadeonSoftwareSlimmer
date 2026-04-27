@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Abstractions;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class TempFileListModel : INotifyPropertyChanged
     {
         private readonly IFileSystem _fileSystem;
+        private readonly IAppLogger _logger;
         private IEnumerable<TempFileModel> _tempFiles;
 
 
-        public TempFileListModel(IFileSystem fileSystem)
+        public TempFileListModel(IFileSystem fileSystem, IAppLogger logger)
         {
+            _logger = logger;
             _fileSystem = fileSystem;
         }
 
@@ -96,12 +98,12 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             {
                 if (_fileSystem.Directory.Exists(tempFolder))
                 {
-                    StaticViewModel.AddDebugMessage($"Found temp folder {tempFolder}");
-                    yield return new TempFileModel(tempFolder, _fileSystem);
+                    _logger.Debug($"Found temp folder {tempFolder}");
+                    yield return new TempFileModel(tempFolder, _fileSystem, _logger);
                 }
                 else
                 {
-                    StaticViewModel.AddDebugMessage($"Folder {tempFolder} does not exist or cannot be accessed");
+                    _logger.Debug($"Folder {tempFolder} does not exist or cannot be accessed");
                 }
             }
         }

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using RadeonSoftwareSlimmer.Core.Enums;
 using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class WindowsAppStartupModel : INotifyPropertyChanged
     {
@@ -13,12 +13,12 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 #if NET48
         private static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #endif
-        private static readonly string RSX_LAUNCHER_REG_PATH = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\AdvancedMicroDevicesInc-RSXCM_fhmx3h6dzfmvj\launcherrsxruntimeTask";
-        private static readonly string RSX_LAUNCHER_REG_STATUS_NAME = "State";
-        private static readonly string RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME = "LastDisabledTime";
+        private const string RSX_LAUNCHER_REG_PATH = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\AdvancedMicroDevicesInc-RSXCM_fhmx3h6dzfmvj\launcherrsxruntimeTask";
+        private const string RSX_LAUNCHER_REG_STATUS_NAME = "State";
+        private const string RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME = "LastDisabledTime";
         private static readonly object STATE_ENABLED_VALUE = 2;
         private static readonly object STATE_DISABLED_VALUE = 1;
-        private static readonly string RSX_LAUNCHER_REG_STARTUPONCE_NAME = "UserEnabledStartupOnce";
+        private const string RSX_LAUNCHER_REG_STARTUPONCE_NAME = "UserEnabledStartupOnce";
         private static readonly object STATE_STARTUPONCE_YES = 1;
 
         private readonly IRegistry _registry;
@@ -71,15 +71,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 object state = launcherKey.GetValue(RSX_LAUNCHER_REG_STATUS_NAME);
 
 
-                if (state != null && state.Equals(STATE_ENABLED_VALUE))
+                if (state?.Equals(STATE_ENABLED_VALUE) == true)
                     Enabled = true;
-                if (state == null || state.Equals(STATE_DISABLED_VALUE))
+                if (state?.Equals(STATE_DISABLED_VALUE) != false)
                 {
                     // Any other value besides enabled (2) is treated as disabled (1)
                     // If the flag that the user has enabled statup once isn't set (0 or missing), then it will be re-enabled next logon/reboot
                     object startupOnce = launcherKey.GetValue(RSX_LAUNCHER_REG_STARTUPONCE_NAME);
 
-                    if (startupOnce != null && startupOnce.Equals(STATE_STARTUPONCE_YES))
+                    if (startupOnce?.Equals(STATE_STARTUPONCE_YES) == true)
                         Enabled = false;
                     else
                         Enabled = true;

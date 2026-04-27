@@ -2,21 +2,23 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class TempFileModel : INotifyPropertyChanged
     {
         private readonly IFileSystem _fileSystem;
+        private readonly IAppLogger _logger;
 
         //1024 instead of 1000, since this isn't a disk drive manufacturer...
         private const float DIV = 1024.0F;
         private bool _delete;
 
 
-        public TempFileModel(string folder, IFileSystem fileSystem)
+        public TempFileModel(string folder, IFileSystem fileSystem, IAppLogger logger)
         {
+            _logger = logger;
             _fileSystem = fileSystem;
             Clear = false;
             Folder = folder;
@@ -45,7 +47,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void ClearFolder()
         {
-            StaticViewModel.AddLogMessage($"Clearing folder {Folder}");
+            _logger.Info($"Clearing folder {Folder}");
             ClearFolder(Folder);
         }
 
@@ -66,7 +68,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 }
                 catch (Exception ex)
                 {
-                    StaticViewModel.AddDebugMessage(ex, $"Unable to determine file size of {fileInfo.FullName}");
+                    _logger.Debug(ex, $"Unable to determine file size of {fileInfo.FullName}");
                 }
             }
 
@@ -101,7 +103,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 }
                 catch (Exception ex)
                 {
-                    StaticViewModel.AddDebugMessage(ex, $"Unable to delete {fileInfo.FullName}");
+                    _logger.Debug(ex, $"Unable to delete {fileInfo.FullName}");
                 }
             }
 
@@ -115,7 +117,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 }
                 catch (Exception ex)
                 {
-                    StaticViewModel.AddDebugMessage(ex, $"Unable to delete {subDirectoryInfo.FullName}");
+                    _logger.Debug(ex, $"Unable to delete {subDirectoryInfo.FullName}");
                 }
             }
         }

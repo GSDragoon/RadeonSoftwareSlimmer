@@ -1,30 +1,34 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
-using Microsoft.Win32.TaskScheduler;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
+using RadeonSoftwareSlimmer.Core.Enums;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class ScheduledTaskModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
+        private readonly IScheduledTaskService _taskService;
         private bool _enabled;
         private bool _active;
         private TaskState _state;
 
 
-        public ScheduledTaskModel(Task scheduledTask)
+        public ScheduledTaskModel(IScheduledTask task, IAppLogger logger, IScheduledTaskService taskService)
         {
-            if (scheduledTask == null)
-                throw new ArgumentNullException(nameof(scheduledTask), "Scheduled Task is null");
+            _logger = logger;
+            _taskService = taskService;
 
-            Description = scheduledTask.Definition.RegistrationInfo.Description;
-            Enabled = scheduledTask.Enabled;
-            Name = scheduledTask.Name;
-            Active = scheduledTask.IsActive;
-            State = scheduledTask.State;
-            Command = scheduledTask.Definition.Actions[0].ToString(CultureInfo.CurrentCulture);
-            LastRun = scheduledTask.LastRunTime;
+            if (task == null)
+                throw new ArgumentNullException(nameof(task), "Scheduled Task is null");
+
+            Description = task.Description;
+            Enabled = task.Enabled;
+            Name = task.Name;
+            Active = task.IsActive;
+            State = task.State;
+            Command = task.Command;
+            LastRun = task.LastRunTime;
         }
 
 
@@ -67,12 +71,12 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void Enable()
         {
-            using (Task task = TaskService.Instance.GetTask(Name))
+            using (IScheduledTask task = _taskService.GetTask(Name))
             {
-                if (!task.Definition.Settings.Enabled)
+                if (!task.Enabled)
                 {
-                    StaticViewModel.AddDebugMessage($"Enabling scheduled task {Name}");
-                    task.Definition.Settings.Enabled = true;
+                    _logger.Debug($"Enabling scheduled task {Name}");
+                    task.Enabled = true;
 
                     task.RegisterChanges();
 
@@ -85,15 +89,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void Disable()
         {
-            using (Task task = TaskService.Instance.GetTask(Name))
+            using (IScheduledTask task = _taskService.GetTask(Name))
             {
-                if (task.Definition.Settings.Enabled)
+                if (task.Enabled)
                 {
-                    StaticViewModel.AddDebugMessage($"Stopping scheduled task {Name}");
+                    _logger.Debug($"Stopping scheduled task {Name}");
                     task.Stop();
 
-                    StaticViewModel.AddDebugMessage($"Disabling scheduled task {Name}");
-                    task.Definition.Settings.Enabled = false;
+                    _logger.Debug($"Disabling scheduled task {Name}");
+                    task.Enabled = false;
 
                     task.RegisterChanges();
 

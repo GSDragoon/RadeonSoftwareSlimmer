@@ -40,6 +40,9 @@ dotnet_diagnostic.IDE0031.severity = none
 # Not available in .NET 4.8
 dotnet_diagnostic.CA1510.severity = none
 
+# IDE0011: Add braces
+dotnet_diagnostic.IDE0011.severity = none
+
 # *******************************************************************************************
 # SonarAnalyzer Rules
 # S3897: Classes that provide "Equals(<T>)" should implement "IEquatable<T>"

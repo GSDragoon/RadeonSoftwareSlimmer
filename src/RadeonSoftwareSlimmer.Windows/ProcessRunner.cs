@@ -2,7 +2,7 @@
 using System.IO.Abstractions;
 using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Core.Services
+namespace RadeonSoftwareSlimmer.Windows
 {
     public class ProcessRunner : IProcessRunner
     {

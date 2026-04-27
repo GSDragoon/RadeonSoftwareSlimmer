@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using RadeonSoftwareSlimmer.Core.Interfaces;
-using RadeonSoftwareSlimmer.ViewModels;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class ServiceListModel : INotifyPropertyChanged
     {
         private readonly IRegistry _registry;
+        private readonly IAppLogger _logger;
         private IEnumerable<ServiceModel> _services;
 
 
-        public ServiceListModel(IRegistry registry)
+        public ServiceListModel(IRegistry registry, IAppLogger logger)
         {
+            _logger = logger;
             _registry = registry;
         }
 
@@ -97,11 +98,11 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
             foreach (string service in serviceNames)
             {
-                ServiceModel serviceModel = new ServiceModel(service, _registry);
+                ServiceModel serviceModel = new ServiceModel(service, _registry, _logger);
 
                 if (serviceModel.Exists())
                 {
-                    StaticViewModel.AddDebugMessage($"Found service {service}");
+                    _logger.Debug($"Found service {service}");
                     yield return serviceModel;
                 }
             }

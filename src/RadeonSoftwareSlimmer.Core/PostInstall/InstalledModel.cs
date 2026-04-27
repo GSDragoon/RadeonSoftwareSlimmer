@@ -2,20 +2,22 @@
 using System.ComponentModel;
 using System.Globalization;
 using RadeonSoftwareSlimmer.Core.Interfaces;
-using RadeonSoftwareSlimmer.Services;
-using RadeonSoftwareSlimmer.ViewModels;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class InstalledModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
+        private readonly IProcessRunner _processRunner;
         private bool _uninstall;
         private readonly bool _windowsInstaller;
         private string _uninstallExe;
         private string _uninstallArguments;
 
-        public InstalledModel(IRegistryKey uninstallKey, string keyShortName)
+        public InstalledModel(IRegistryKey uninstallKey, string keyShortName, IAppLogger logger, IProcessRunner processRunner)
         {
+            _logger = logger;
+            _processRunner = processRunner;
             Uninstall = false;
 
             //Again... no consistency or all the information filled out with this from AMD...
@@ -57,20 +59,14 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
         public void RunUninstaller()
         {
-            if (!string.IsNullOrWhiteSpace(UninstallCommand))
-            {
-                if (_windowsInstaller)
-                {
-                    ProcessHandler processHandler = new ProcessHandler(_uninstallExe);
-                    processHandler.RunProcess($"{_uninstallArguments} /quiet /norestart REBOOT=ReallySuppress");
-                }
-                else
-                {
-                    StaticViewModel.AddDebugMessage($"Non-Windows uninstaller for {DisplayName} not supported");
-                }
-            }
+            if (string.IsNullOrWhiteSpace(UninstallCommand))
+                _logger.Debug($"No uninstaller command for {DisplayName}");
+
+
+            if (_windowsInstaller)
+                _processRunner.RunProcess(_uninstallExe, _uninstallArguments + "/quiet /norestart REBOOT=ReallySuppress");
             else
-                StaticViewModel.AddDebugMessage($"No uninstaller command for {DisplayName}");
+                _logger.Debug($"Non-Windows uninstaller for {DisplayName} not supported");
         }
 
 
@@ -95,20 +91,20 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 {
                     _uninstallArguments = $"/uninstall {productGuid:B}";
                     UninstallCommand = $"{_uninstallExe} {_uninstallArguments}";
-                    StaticViewModel.AddDebugMessage($"Detected GUID {productGuid} from {ProductCode} for {DisplayName}");
+                    _logger.Debug($"Detected GUID {productGuid} from {ProductCode} for {DisplayName}");
                 }
                 else
                 {
-                    StaticViewModel.AddDebugMessage($"Unable to determine windows installer GUID from {ProductCode} for {DisplayName}");
+                    _logger.Debug($"Unable to determine windows installer GUID from {ProductCode} for {DisplayName}");
                 }
             }
             else if (!string.IsNullOrWhiteSpace(UninstallCommand))
             {
-                StaticViewModel.AddDebugMessage($"Keeping default uninstall command {UninstallCommand} for {DisplayName}");
+                _logger.Debug($"Keeping default uninstall command {UninstallCommand} for {DisplayName}");
             }
             else
             {
-                StaticViewModel.AddDebugMessage($"Unable to determine uninstall command for {DisplayName}");
+                _logger.Debug($"Unable to determine uninstall command for {DisplayName}");
             }
         }
     }

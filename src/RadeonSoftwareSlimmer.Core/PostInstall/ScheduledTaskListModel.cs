@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Microsoft.Win32.TaskScheduler;
-using RadeonSoftwareSlimmer.ViewModels;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class ScheduledTaskListModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
+        private readonly IScheduledTaskService _taskService;
         private IEnumerable<ScheduledTaskModel> _scheduledTasks;
 
 
-        public ScheduledTaskListModel() { }
+        public ScheduledTaskListModel(IAppLogger logger, IScheduledTaskService taskService)
+        {
+            _logger = logger;
+            _taskService = taskService;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,17 +51,17 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         }
 
 
-        private static IEnumerable<ScheduledTaskModel> GetAllRadeonScheduledTasks()
+        private IEnumerable<ScheduledTaskModel> GetAllRadeonScheduledTasks()
         {
-            foreach (Task task in TaskService.Instance.FindAllTasks(t => IsRadeonTask(t), false))
+            foreach (IScheduledTask task in _taskService.FindAllTasks(t => IsRadeonTask(t), false))
             {
-                yield return new ScheduledTaskModel(task);
+                yield return new ScheduledTaskModel(task, _logger, _taskService);
             }
         }
 
-        private static bool IsRadeonTask(Task scheduledTask)
+        private bool IsRadeonTask(IScheduledTask scheduledTask)
         {
-            string author = scheduledTask.Definition.RegistrationInfo.Author;
+            string author = scheduledTask.Author;
             if (!string.IsNullOrWhiteSpace(author)
                 && author.Equals("Advanced Micro Devices", StringComparison.OrdinalIgnoreCase))
             {
@@ -73,7 +78,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 || name.Equals("StartCNBM", StringComparison.OrdinalIgnoreCase)
                 || name.Equals("StartDVR", StringComparison.OrdinalIgnoreCase))
             {
-                StaticViewModel.AddDebugMessage($"Found scheduled task {name}");
+                _logger.Debug($"Found scheduled task {name}");
                 return true;
             }
 

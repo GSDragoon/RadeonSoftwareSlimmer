@@ -1,4 +1,4 @@
-﻿namespace RadeonSoftwareSlimmer.Models.PostInstall
+﻿namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class RunningHostServiceModel : RunningProcessModel
     {

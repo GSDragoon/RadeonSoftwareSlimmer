@@ -3,39 +3,37 @@ using System.Diagnostics;
 using System.Threading;
 using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Core.Services
+namespace RadeonSoftwareSlimmer.Windows
 {
     public class ProcessHandler : IProcessHandler
     {
         private readonly IAppLogger _logger;
-        private readonly string _processName;
 
 
-        public ProcessHandler(string processName, IAppLogger logger)
+        public ProcessHandler(IAppLogger logger)
         {
             _logger = logger;
-            _processName = processName;
         }
 
 
-        public bool IsProcessRunning()
+        public bool IsProcessRunning(string processName)
         {
-            if (string.IsNullOrWhiteSpace(_processName))
+            if (string.IsNullOrWhiteSpace(processName))
                 return false;
 
-            return Process.GetProcessesByName(_processName).Length > 0;
+            return Process.GetProcessesByName(processName).Length > 0;
         }
 
-        public void WaitForProcessToEnd(int maxWaitSeconds)
+        public void WaitForProcessToEnd(string processName, int maxWaitSeconds)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            while (IsProcessRunning())
+            while (IsProcessRunning(processName))
             {
                 if (sw.ElapsedMilliseconds >= maxWaitSeconds * 1000)
                 {
-                    foreach (Process process in Process.GetProcessesByName(_processName))
+                    foreach (Process process in Process.GetProcessesByName(processName))
                     {
                         try
                         {
@@ -52,16 +50,16 @@ namespace RadeonSoftwareSlimmer.Core.Services
             }
         }
 
-        public void WaitForProcessToStart(int maxWaitSeconds)
+        public void WaitForProcessToStart(string processName, int maxWaitSeconds)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            while (!IsProcessRunning())
+            while (!IsProcessRunning(processName))
             {
                 if (sw.ElapsedMilliseconds >= maxWaitSeconds * 1000)
                 {
-                    _logger.Debug($"Process {_processName} did not start");
+                    _logger.Debug($"Process {processName} did not start");
                     return;
                 }
 

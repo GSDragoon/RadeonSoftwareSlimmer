@@ -1,16 +1,15 @@
 using System;
 using System.ComponentModel;
-using System.ServiceProcess;
 using RadeonSoftwareSlimmer.Core.Enums;
 using RadeonSoftwareSlimmer.Core.Interfaces;
-using RadeonSoftwareSlimmer.Services;
-using RadeonSoftwareSlimmer.ViewModels;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class ServiceModel : INotifyPropertyChanged
     {
         private readonly IRegistry _registry;
+        private readonly IAppLogger _logger;
+        private readonly IProcessRunner _processRunner;
         private readonly bool _exists;
         private bool _enabled;
         private ServiceStartMode _startMode;
@@ -18,13 +17,17 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         private ServiceControllerStatus _status;
         private readonly ServiceType _serviceType;
 
+        private readonly string _scExe;
+
         private const string SERVICES_REG_KEY = @"SYSTEM\CurrentControlSet\Services\";
         private const string SERVICE_START_VALUE_NAME = "Start";
         private const string SERVICE_ORIGINAL_START_VALUE_NAME = "RadeonSoftwareSlimmerOriginalStart";
 
-        public ServiceModel(string serviceName, IRegistry registry)
+        public ServiceModel(string serviceName, IRegistry registry, IAppLogger logger, IProcessRunner processRunner)
         {
+            _logger = logger;
             _registry = registry;
+            _processRunner = processRunner;
 
             using (ServiceController serviceController = new ServiceController(serviceName))
             {
@@ -46,6 +49,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     _exists = false;
                 }
             }
+
+            _scExe = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "sc.exe");
         }
 
 
@@ -103,20 +108,20 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             if (_startMode == ServiceStartMode.Disabled)
             {
-                StaticViewModel.AddLogMessage($"Cannot start {Name} because it is disabled");
+                _logger.Info($"Cannot start {Name} because it is disabled");
                 return;
             }
 
             if (_serviceType.HasFlag(ServiceType.KernelDriver))
             {
-                StaticViewModel.AddLogMessage($"Cannot start {Name} because it is a kernel driver");
+                _logger.Info($"Cannot start {Name} because it is a kernel driver");
                 return;
             }
 
             try
             {
-                StaticViewModel.AddLogMessage("Restarting " + Name);
-                StaticViewModel.IsLoading = true;
+                _logger.Info("Restarting " + Name);
+                _logger.IsLoading = true;
 
                 TryStop();
 
@@ -128,17 +133,17 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                         serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
 
                         Status = serviceController.Status;
-                        StaticViewModel.AddLogMessage("Restarted " + Name);
+                        _logger.Info("Restarted " + Name);
                     }
                 }
             }
             catch (Exception ex)
             {
-                StaticViewModel.AddLogMessage(ex, "Failed to restart " + Name);
+                _logger.Info(ex, "Failed to restart " + Name);
             }
             finally
             {
-                StaticViewModel.IsLoading = false;
+                _logger.IsLoading = false;
             }
         }
 
@@ -146,14 +151,14 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         {
             if (_serviceType.HasFlag(ServiceType.KernelDriver))
             {
-                StaticViewModel.AddLogMessage($"Cannot stop {Name} because it is a kernel driver");
+                _logger.Info($"Cannot stop {Name} because it is a kernel driver");
                 return;
             }
 
             try
             {
-                StaticViewModel.AddLogMessage("Stopping " + Name);
-                StaticViewModel.IsLoading = true;
+                _logger.Info("Stopping " + Name);
+                _logger.IsLoading = true;
 
                 using (ServiceController serviceController = LoadFreshService())
                 {
@@ -166,22 +171,22 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                         }
                         catch (InvalidOperationException ex)
                         {
-                            StaticViewModel.AddDebugMessage(ex);
+                            _logger.Debug(ex);
                         }
 
                         Status = serviceController.Status;
                     }
                 }
 
-                StaticViewModel.AddLogMessage("Stopped " + Name);
+                _logger.Info("Stopped " + Name);
             }
             catch (Exception ex)
             {
-                StaticViewModel.AddLogMessage(ex, "Failed to stop " + Name);
+                _logger.Info(ex, "Failed to stop " + Name);
             }
             finally
             {
-                StaticViewModel.IsLoading = false;
+                _logger.IsLoading = false;
             }
         }
 
@@ -191,11 +196,8 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
 
             using (ServiceController serviceController = LoadFreshService())
             {
-                ProcessHandler processHandler = new ProcessHandler(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\sc.exe");
-                processHandler.RunProcess($"delete \"{Name}\"");
-
+                _processRunner.RunProcess(_scExe, $"delete \"{Name}\"");
                 //Should delete the driver from the driver store and uninstall using pnputil
-
                 serviceController.Refresh();
             }
         }
@@ -207,8 +209,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 if (StartMode == ServiceStartMode.Disabled && OriginalStartMode != ServiceStartMode.Disabled)
                 {
                     //It's this or WMI...
-                    ProcessHandler processHandler = new ProcessHandler(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\sc.exe");
-                    processHandler.RunProcess($"config \"{Name}\" start= {GetStartModeCommandString(OriginalStartMode)}");
+                    _processRunner.RunProcess(_scExe, $"config \"{Name}\" start= {GetStartModeCommandString(OriginalStartMode)}");
 
                     if (_serviceType == ServiceType.Win32OwnProcess)
                         TryStart();
@@ -230,8 +231,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                         TryStop();
 
                     //It's this or WMI...
-                    ProcessHandler processHandler = new ProcessHandler(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\sc.exe");
-                    processHandler.RunProcess($"config \"{Name}\" start= {GetStartModeCommandString(ServiceStartMode.Disabled)}");
+                    _processRunner.RunProcess(_scExe, $"config \"{Name}\" start= {GetStartModeCommandString(ServiceStartMode.Disabled)}");
 
                     serviceController.Refresh();
                     StartMode = serviceController.StartType;
@@ -252,14 +252,13 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             using (ServiceController serviceController = LoadFreshService())
             {
                 //It's this or WMI...
-                ProcessHandler processHandler = new ProcessHandler(Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\sc.exe");
-                processHandler.RunProcess($"config \"{Name}\" start= {GetStartModeCommandString(startMode)}");
+                _processRunner.RunProcess(_scExe, $"config \"{Name}\" start= {GetStartModeCommandString(startMode)}");
 
                 serviceController.Refresh();
                 StartMode = serviceController.StartType;
                 Enabled = serviceController.StartType != ServiceStartMode.Disabled;
 
-                StaticViewModel.AddLogMessage($"Changed start mode for {Name} to {StartMode}");
+                _logger.Info($"Changed start mode for {Name} to {StartMode}");
             }
         }
 
@@ -310,7 +309,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 if (original != null)
                     OriginalStartMode = (ServiceStartMode)original;
                 else
-                    StaticViewModel.AddDebugMessage("Unable to determin original start mode");
+                    _logger.Debug("Unable to determin original start mode");
 
             }
         }

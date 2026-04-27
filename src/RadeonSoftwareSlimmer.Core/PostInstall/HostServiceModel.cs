@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Abstractions;
 using RadeonSoftwareSlimmer.Core.Interfaces;
-using RadeonSoftwareSlimmer.Services;
-using RadeonSoftwareSlimmer.ViewModels;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class HostServiceModel : INotifyPropertyChanged
     {
+        private readonly IAppLogger _logger;
         private readonly IFileSystem _fileSystem;
         private readonly IRegistry _registry;
+        private readonly IProcessHandler _processHandler;
+        private readonly IProcessRunner _processRunner;
         private IDirectoryInfo _cnDir;
         private bool _installed;
         private IList<RunningHostServiceModel> _hostServices;
@@ -26,10 +27,13 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         public const string CNCMD_RESTART = "restart";
 
 
-        public HostServiceModel(IFileSystem fileSystem, IRegistry registry)
+        public HostServiceModel(IFileSystem fileSystem, IRegistry registry, IAppLogger logger, IProcessHandler processHandler, IProcessRunner processRunner)
         {
+            _logger = logger;
             _fileSystem = fileSystem;
             _registry = registry;
+            _processHandler = processHandler;
+            _processRunner = processRunner;
             Installed = false;
         }
 
@@ -71,27 +75,25 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             {
                 try
                 {
-                    StaticViewModel.AddLogMessage("Stopping Radeon Software Host Services");
-                    StaticViewModel.IsLoading = true;
+                    _logger.Info("Stopping Radeon Software Host Services");
+                    _logger.IsLoading = true;
 
                     RadeonSoftwareCli(CNCMD_EXIT);
 
                     //The command to stop the services does not wait for them to fully end
-                    ProcessHandler hostProcess = new ProcessHandler(_fileSystem.Path.Combine(_cnDir.FullName, "AMDRSServ.exe"));
-                    hostProcess.WaitForProcessToEnd(30);
-                    ProcessHandler radeonSoftwareProcess = new ProcessHandler(_fileSystem.Path.Combine(_cnDir.FullName, "RadeonSoftware.exe"));
-                    radeonSoftwareProcess.WaitForProcessToEnd(30);
+                    _processHandler.WaitForProcessToEnd("AMDRSServ", 30);
+                    _processHandler.WaitForProcessToEnd("RadeonSoftware", 30);
 
-                    StaticViewModel.AddLogMessage("Stopped Radeon Software Host Services");
+                    _logger.Info("Stopped Radeon Software Host Services");
                 }
                 catch (Exception ex)
                 {
-                    StaticViewModel.AddLogMessage(ex, "Failed to stop Radeon Software Host Services");
+                    _logger.Info(ex, "Failed to stop Radeon Software Host Services");
                 }
                 finally
                 {
                     LoadOrRefresh();
-                    StaticViewModel.IsLoading = false;
+                    _logger.IsLoading = false;
                 }
             }
         }
@@ -102,26 +104,25 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             {
                 try
                 {
-                    StaticViewModel.AddLogMessage("Restarting Radeon Software Host Services");
-                    StaticViewModel.IsLoading = true;
+                    _logger.Info("Restarting Radeon Software Host Services");
+                    _logger.IsLoading = true;
 
                     RadeonSoftwareCli(CNCMD_RESTART);
 
                     //Wait for services to start back up
-                    ProcessHandler radeonSoftwareProcess = new ProcessHandler(_fileSystem.Path.Combine(_cnDir.FullName, "RadeonSoftware.exe"));
-                    radeonSoftwareProcess.WaitForProcessToStart(30);
+                    _processHandler.WaitForProcessToStart("RadeonSoftware", 30);
 
 
-                    StaticViewModel.AddLogMessage("Restarted Radeon Software Host Services");
+                    _logger.Info("Restarted Radeon Software Host Services");
                 }
                 catch (Exception ex)
                 {
-                    StaticViewModel.AddLogMessage(ex, "Failed to restart Radeon Software Host Services");
+                    _logger.Info(ex, "Failed to restart Radeon Software Host Services");
                 }
                 finally
                 {
                     LoadOrRefresh();
-                    StaticViewModel.IsLoading = false;
+                    _logger.IsLoading = false;
                 }
             }
         }
@@ -146,25 +147,25 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             string registryDirectory = GetInstallDirectoryFromRegistry();
             if (IsValidRadeonSoftwareDirectory(registryDirectory))
             {
-                StaticViewModel.AddDebugMessage($"Found Radeon Software installation directory at {registryDirectory}");
+                _logger.Debug($"Found Radeon Software installation directory at {registryDirectory}");
                 _cnDir = _fileSystem.DirectoryInfo.New(registryDirectory);
                 Installed = true;
             }
             else
             {
                 // Then check the default location
-                StaticViewModel.AddDebugMessage("Unable to determine Radeon Software installation directory from registry. Checking default location.");
+                _logger.Debug("Unable to determine Radeon Software installation directory from registry. Checking default location.");
                 string defaultDirectory = _fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "AMD", "CNext", "CNext");
                 if (IsValidRadeonSoftwareDirectory(defaultDirectory))
                 {
-                    StaticViewModel.AddDebugMessage($"Found Radeon Software installation directory at {defaultDirectory}");
+                    _logger.Debug($"Found Radeon Software installation directory at {defaultDirectory}");
                     _cnDir = _fileSystem.DirectoryInfo.New(defaultDirectory);
                     Installed = true;
                 }
                 else
                 {
                     Installed = false;
-                    StaticViewModel.AddDebugMessage("Unable to determine Radeon Software installation directory from default location. Assuming it is not installed.");
+                    _logger.Debug("Unable to determine Radeon Software installation directory from default location. Assuming it is not installed.");
                 }
             }
         }
@@ -177,14 +178,14 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 {
                     if (cnKey == null)
                     {
-                        StaticViewModel.AddDebugMessage($"Unable to open registry key {INSTALL_FOLDER_REGISTRY_KEY}.");
+                        _logger.Debug($"Unable to open registry key {INSTALL_FOLDER_REGISTRY_KEY}.");
                         return string.Empty;
                     }
 
                     object installDirObj = cnKey.GetValue(INSTALL_FOLDER_REGISTRY_VALUE_NAME);
                     if (installDirObj == null)
                     {
-                        StaticViewModel.AddDebugMessage($"Registry value {INSTALL_FOLDER_REGISTRY_VALUE_NAME} does not exist or is null.");
+                        _logger.Debug($"Registry value {INSTALL_FOLDER_REGISTRY_VALUE_NAME} does not exist or is null.");
                         return string.Empty;
                     }
 
@@ -193,7 +194,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
             catch (Exception ex)
             {
-                StaticViewModel.AddDebugMessage(ex);
+                _logger.Debug(ex);
                 return string.Empty;
             }
         }
@@ -213,19 +214,15 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
             }
             catch (Exception ex)
             {
-                StaticViewModel.AddDebugMessage(ex);
+                _logger.Debug(ex);
                 return false;
             }
         }
 
-        private void RadeonSoftwareCli(string arugument)
+        private void RadeonSoftwareCli(string aruguments)
         {
             if (_installed)
-            {
-                string cli = _fileSystem.Path.Combine(_cnDir.FullName, RADEON_SOFTWARE_CLI_FILE_NAME);
-                ProcessHandler processHandler = new ProcessHandler(cli);
-                processHandler.RunProcess(arugument);
-            }
+                _processRunner.RunProcess(_fileSystem.Path.Combine(_cnDir.FullName, RADEON_SOFTWARE_CLI_FILE_NAME), aruguments);
         }
     }
 }

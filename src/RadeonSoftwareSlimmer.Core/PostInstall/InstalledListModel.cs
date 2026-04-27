@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using RadeonSoftwareSlimmer.ViewModels;
 using RadeonSoftwareSlimmer.Core.Interfaces;
 
-namespace RadeonSoftwareSlimmer.Models.PostInstall
+namespace RadeonSoftwareSlimmer.Core.PostInstall
 {
     public class InstalledListModel : INotifyPropertyChanged
     {
         private readonly IRegistry _registry;
+        private readonly IAppLogger _logger;
+        private readonly IProcessRunner _processRunner;
         private IEnumerable<InstalledModel> _installedItems;
 
         private const string UNINSTALL_REGISTRY_PATH = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
@@ -29,9 +30,11 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
         };
 
 
-        public InstalledListModel(IRegistry registry)
+        public InstalledListModel(IRegistry registry, IAppLogger logger, IProcessRunner processRunner)
         {
+            _logger = logger;
             _registry = registry;
+            _processRunner = processRunner;
         }
 
 
@@ -75,7 +78,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                     {
                         if (IsRadeonUninstall(uninstallKey))
                         {
-                            yield return new InstalledModel(uninstallKey, uninstallName);
+                            yield return new InstalledModel(uninstallKey, uninstallName, _logger, _processRunner);
                         }
                     }
                 }
@@ -91,7 +94,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                         {
                             if (IsRadeonUninstall(uninstallKey))
                             {
-                                yield return new InstalledModel(uninstallKey, uninstallName);
+                                yield return new InstalledModel(uninstallKey, uninstallName, _logger, _processRunner);
                             }
                         }
                     }
@@ -108,7 +111,7 @@ namespace RadeonSoftwareSlimmer.Models.PostInstall
                 && publisher.ToString().Equals("Advanced Micro Devices, Inc.", StringComparison.OrdinalIgnoreCase)
                 && !Array.Exists(AMD_CHIPSET_NAMES, name => displayName.ToString().Contains(name)))
             {
-                StaticViewModel.AddDebugMessage($"Found uninstall item {displayName} under {uninstallKey.Name}");
+                _logger.Debug($"Found uninstall item {displayName} under {uninstallKey.Name}");
                 return true;
             }
 
