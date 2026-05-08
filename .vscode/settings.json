@@ -1,4 +1,9 @@
 {
     "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true
+    "files.trimFinalNewlines": true,
+    "csharp-dev-tools.roslyn.roslynatorAnalyzersEnabled": false,
+    "csharp-dev-tools.roslyn.roslynatorCodeFixesEnabled": false,
+    "csharp-dev-tools.roslyn.roslynatorEnabled": false,
+    "csharp-dev-tools.roslyn.roslynatorFormattingAnalyzersEnabled": false,
+    "csharp-dev-tools.roslyn.roslynatorRefactoringsEnabled": false
 }

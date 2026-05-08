@@ -10,7 +10,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
 #if NET6_0_OR_GREATER
         private static readonly DateTime UNIX_EPOCH = DateTime.UnixEpoch;
 #endif
-#if NET48
+#if ( NET48 || NETSTANDARD2_0 )
         private static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #endif
         private const string RSX_LAUNCHER_REG_PATH = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\AdvancedMicroDevicesInc-RSXCM_fhmx3h6dzfmvj\launcherrsxruntimeTask";

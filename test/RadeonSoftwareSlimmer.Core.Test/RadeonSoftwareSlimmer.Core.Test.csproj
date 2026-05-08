@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net10.0;net9.0;net8.0;net48</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.collector">
@@ -29,13 +29,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\RadeonSoftwareSlimmer.Core\RadeonSoftwareSlimmer.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="TestData\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <!--
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'!='true'">
-    <RunSettingsFilePath>$(MSBuildProjectDirectory)\$(MSBuildProjectName).runsettings</RunSettingsFilePath>
+    <RunSettingsFilePath>$(MSBuildProjectDirectory)\..\$(MSBuildProjectName).runsettings</RunSettingsFilePath>
     <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName)_$(TargetFramework).trx</VSTestLogger>
   </PropertyGroup>
+  -->
 </Project>
