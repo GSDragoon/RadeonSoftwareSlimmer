@@ -1,17 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net10.0-windows;net9.0-windows;net8.0-windows;net48</TargetFrameworks>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-    <StartupObject>RadeonSoftwareSlimmer.App</StartupObject>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro" />
-    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" />
     <PackageReference Include="Microsoft.Win32.Registry" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="SonarAnalyzer.CSharp">
@@ -26,17 +17,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
-    <None Remove="icon.ico" />
-    <Resource Include="icon.ico" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RadeonSoftwareSlimmer.Core\RadeonSoftwareSlimmer.Core.csproj" />
-    <ProjectReference Include="..\RadeonSoftwareSlimmer.Windows\RadeonSoftwareSlimmer.Windows.csproj" />
   </ItemGroup>
-  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>

@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "dotnetdev-kr-custom.csharp",
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "aliasadidev.nugetpackagemanagergui",
+        "timonwong.shellcheck",
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+        "ms-vscode.powershell",
+        "fernandoescolar.vscode-solution-explorer",
+        "jakubkozera.csharp-dev-tools"
+    ]
+}
