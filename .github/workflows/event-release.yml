@@ -34,7 +34,7 @@ jobs:
     - name: Download Published Artifact
       uses: actions/download-artifact@v8
       with:
-        name: published-artifact
+        name: published-artifacts
 
     - name: List Artifacts
       run: ls -R
