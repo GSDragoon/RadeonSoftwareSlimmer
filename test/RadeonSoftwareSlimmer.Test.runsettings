@@ -4,6 +4,7 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
+          <Exclude>[*.Test]*,[*.Test.*]*</Exclude>
           <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
           <ExcludeByFile>**/*.xaml,**/*.xaml.cs,AssemblyInfo.cs</ExcludeByFile>
         </Configuration>
