@@ -37,7 +37,7 @@
     </None>
   </ItemGroup>
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'!='true'">
-    <RunSettingsFilePath>$(MSBuildProjectDirectory)\RadeonSoftwareSlimmer.Test.runsettings</RunSettingsFilePath>
+    <RunSettingsFilePath>$(MSBuildProjectDirectory)\..\RadeonSoftwareSlimmer.Test.runsettings</RunSettingsFilePath>
     <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName)_$(TargetFramework).trx</VSTestLogger>
   </PropertyGroup>
 </Project>
