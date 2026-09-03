@@ -36,7 +36,6 @@ jobs:
       if: ${{ !cancelled() }}
       uses: dorny/test-reporter@v3
       with:
-        artifact: test-results
         name: Test Results
         report-title: Test Results
         path: ./artifacts/tests/*.trx
