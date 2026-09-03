@@ -17,6 +17,7 @@ namespace RadeonSoftwareSlimmer.Windows
                 throw new ArgumentException("Service name cannot be null or whitespace.", nameof(serviceName));
 
             _serviceController = new ServiceController(serviceName);
+            ServiceName = serviceName;
 
             try
             {
@@ -31,7 +32,7 @@ namespace RadeonSoftwareSlimmer.Windows
         }
 
 
-        public string ServiceName => _serviceController.ServiceName;
+        public string ServiceName { get; }
         public bool Exists { get; }
         public string DisplayName { get; }
         public CoreServiceStartMode StartType => _serviceController.StartType.ToCoreServiceStartMode();
