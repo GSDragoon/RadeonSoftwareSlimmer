@@ -16,12 +16,10 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
         private readonly IProcessRunner _processRunner;
         private string _installerFile;
         private string _extractedInstallerDirectory;
-#if NET6_0_OR_GREATER
-        // .NET 6+ removed certain characters for reasons I don't like
+        // .NET 6+ removed these from Path.GetInvalidPathChars, so we check them explicitly on every runtime.
         // https://github.com/dotnet/runtime/issues/63383
-        // https://github.com/dotnet/corefx/pull/8669/files#r63910570
+        // https://github.com/dotnet/corefx/pull/8669/changes#r63910570
         private readonly char[] extraInvalidDirChars = { '\"', '<', '>', };
-#endif
 
 
         public InstallerFilesModel(IFileSystem fileSystem, IProcessRunner processRunner, IAppLogger logger)
@@ -143,14 +141,12 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
                     _logger.Info("Directory contains invalid characters");
                     return false;
                 }
-#if NET6_0_OR_GREATER
 
                 if (Array.Exists(extraInvalidDirChars, c => directoryInfo.FullName.Contains(c)))
                 {
                     _logger.Info("Directory contains invalid characters");
                     return false;
                 }
-#endif
 
                 if (directoryInfo.Exists && (directoryInfo.GetDirectories().Length > 0 || directoryInfo.GetFiles().Length > 0))
                 {
@@ -185,14 +181,12 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
                     _logger.Info("Directory contains invalid characters");
                     return false;
                 }
-#if NET6_0_OR_GREATER
 
                 if (Array.Exists(extraInvalidDirChars, c => directoryInfo.FullName.Contains(c)))
                 {
                     _logger.Info("Directory contains invalid characters");
                     return false;
                 }
-#endif
 
                 if (directoryInfo.Exists &&
                     _fileSystem.Directory.Exists(_fileSystem.Path.Combine(_extractedInstallerDirectory, "Bin64")) &&
