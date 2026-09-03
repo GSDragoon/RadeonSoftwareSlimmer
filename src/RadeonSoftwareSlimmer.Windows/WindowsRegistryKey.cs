@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Win32;
+using RadeonSoftwareSlimmer.Core.Enums;
 using RadeonSoftwareSlimmer.Core.Interfaces;
 
 namespace RadeonSoftwareSlimmer.Windows
@@ -16,6 +17,7 @@ namespace RadeonSoftwareSlimmer.Windows
                 throw new ArgumentNullException(nameof(registryKey), "Registry key cannot be null.");
 
             _regKey = registryKey;
+            Name = registryKey.Name;
         }
 
 
@@ -32,9 +34,9 @@ namespace RadeonSoftwareSlimmer.Windows
             return _regKey.GetValue(name, defaultValue);
         }
 
-        public void SetValue(string name, object value, RadeonSoftwareSlimmer.Core.Enums.RegistryValueKind valueKind)
+        public void SetValue(string name, object value, CoreRegistryValueKind valueKind)
         {
-            _regKey.SetValue(name, value, (Microsoft.Win32.RegistryValueKind)valueKind);
+            _regKey.SetValue(name, value, valueKind.ToWindowsRegistryValueKind());
         }
 
 
@@ -61,8 +63,7 @@ namespace RadeonSoftwareSlimmer.Windows
                 if (disposing)
                 {
                     // dispose managed state (managed objects)
-                    if (_regKey != null)
-                        _regKey.Dispose();
+                    _regKey?.Dispose();
                 }
 
                 // free unmanaged resources (unmanaged objects) and override finalizer

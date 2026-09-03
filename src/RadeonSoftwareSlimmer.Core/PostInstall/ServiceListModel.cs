@@ -9,16 +9,16 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
         private readonly IRegistry _registry;
         private readonly IAppLogger _logger;
         private readonly IProcessRunner _processRunner;
-        private readonly IServiceController _serviceController;
+        private readonly IServiceControllerFactory _serviceControllerFactory;
         private IEnumerable<ServiceModel> _services;
 
 
-        public ServiceListModel(IRegistry registry, IAppLogger logger, IProcessRunner processRunner, IServiceController serviceController)
+        public ServiceListModel(IRegistry registry, IAppLogger logger, IProcessRunner processRunner, IServiceControllerFactory serviceControllerFactory)
         {
             _logger = logger;
             _registry = registry;
             _processRunner = processRunner;
-            _serviceController = serviceController;
+            _serviceControllerFactory = serviceControllerFactory;
         }
 
 
@@ -102,7 +102,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
 
             foreach (string service in serviceNames)
             {
-                ServiceModel serviceModel = new ServiceModel(service, _registry, _logger, _processRunner, _serviceController);
+                ServiceModel serviceModel = new ServiceModel(service, _registry, _logger, _processRunner, _serviceControllerFactory);
 
                 if (serviceModel.Exists())
                 {

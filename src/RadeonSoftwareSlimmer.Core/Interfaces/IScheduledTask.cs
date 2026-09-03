@@ -4,19 +4,19 @@ using RadeonSoftwareSlimmer.Core.Enums;
 namespace RadeonSoftwareSlimmer.Core.Interfaces
 {
     // https://dahall.github.io/TaskScheduler/html/T_Microsoft_Win32_TaskScheduler_Task.htm
-    public interface IScheduledTask : IDisposable
+    public interface IScheduledTask
     {
-        string Name { get; set; }
-        string Description { get; set; }
-        bool Enabled { get; set; }
-        bool IsActive { get; set; }
-        TaskState State { get; set; }
-        string Command { get; set; }
-        DateTime LastRunTime { get; set; }
-        string Author { get; set; }
+        string Name { get; }
+        string Description { get; }
+        bool Enabled { get; }
+        bool IsActive { get; }
+        CoreTaskState State { get; }
+        string Command { get; }
+        DateTime LastRunTime { get; }
+        string Author { get;  }
 
-        void RegisterChanges();
+        void Enable();
 
-        void Stop();
+        void Disable();
     }
 }

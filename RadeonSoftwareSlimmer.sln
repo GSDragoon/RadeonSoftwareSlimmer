@@ -28,8 +28,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadeonSoftwareSlimmer.Windo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadeonSoftwareSlimmer.Test", "test\RadeonSoftwareSlimmer.Test\RadeonSoftwareSlimmer.Test.csproj", "{1C8F9EE6-F709-45F4-A5F9-EE2D91CF52B8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadeonSoftwareSlimmer.Core.Test", "test\RadeonSoftwareSlimmer.Core.Test\RadeonSoftwareSlimmer.Core.Test.csproj", "{8F49B8A8-7DBF-4431-93F9-AB81DA174067}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadeonSoftwareSlimmer.Windows.Test", "test\RadeonSoftwareSlimmer.Windows.Test\RadeonSoftwareSlimmer.Windows.Test.csproj", "{4FFEA2E1-FA92-45E7-AFB3-9FAEC127E6D5}"
@@ -52,10 +50,6 @@ Global
 		{D3BB4636-6CA7-40F3-967C-D0C7B4BB9200}.Debug|x64.Build.0 = Debug|x64
 		{D3BB4636-6CA7-40F3-967C-D0C7B4BB9200}.Release|x64.ActiveCfg = Release|x64
 		{D3BB4636-6CA7-40F3-967C-D0C7B4BB9200}.Release|x64.Build.0 = Release|x64
-		{1C8F9EE6-F709-45F4-A5F9-EE2D91CF52B8}.Debug|x64.ActiveCfg = Debug|x64
-		{1C8F9EE6-F709-45F4-A5F9-EE2D91CF52B8}.Debug|x64.Build.0 = Debug|x64
-		{1C8F9EE6-F709-45F4-A5F9-EE2D91CF52B8}.Release|x64.ActiveCfg = Release|x64
-		{1C8F9EE6-F709-45F4-A5F9-EE2D91CF52B8}.Release|x64.Build.0 = Release|x64
 		{8F49B8A8-7DBF-4431-93F9-AB81DA174067}.Debug|x64.ActiveCfg = Debug|x64
 		{8F49B8A8-7DBF-4431-93F9-AB81DA174067}.Debug|x64.Build.0 = Debug|x64
 		{8F49B8A8-7DBF-4431-93F9-AB81DA174067}.Release|x64.ActiveCfg = Release|x64
@@ -69,7 +63,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1C8F9EE6-F709-45F4-A5F9-EE2D91CF52B8} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 		{8F49B8A8-7DBF-4431-93F9-AB81DA174067} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 		{4FFEA2E1-FA92-45E7-AFB3-9FAEC127E6D5} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 

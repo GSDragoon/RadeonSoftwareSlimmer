@@ -2,8 +2,8 @@ using System;
 using System.ComponentModel;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
-using RadeonSoftwareSlimmer.Intefaces;
-using RadeonSoftwareSlimmer.Models.PostInstall;
+using RadeonSoftwareSlimmer.Core.Interfaces;
+using RadeonSoftwareSlimmer.Core.PostInstall;
 
 namespace RadeonSoftwareSlimmer.ViewModels
 {
@@ -11,16 +11,23 @@ namespace RadeonSoftwareSlimmer.ViewModels
     {
         private bool _loadedPanelEnabled;
 
-        public PostInstallViewModel(IFileSystem fileSystem, IRegistry registry)
+        public PostInstallViewModel(
+            IFileSystem fileSystem,
+            IRegistry registry,
+            IAppLogger logger,
+            IProcessHandler processHandler,
+            IProcessRunner processRunner,
+            IScheduledTaskService scheduledTaskService,
+            IServiceControllerFactory serviceControllerFactory)
         {
             LoadedPanelEnabled = false;
 
-            HostService = new HostServiceModel(fileSystem, registry);
+            HostService = new HostServiceModel(fileSystem, registry, logger, processHandler, processRunner);
             WindowsAppStartup = new WindowsAppStartupModel(registry);
-            RadeonScheduledTaskList = new ScheduledTaskListModel();
-            ServiceList = new ServiceListModel(registry);
-            InstalledList = new InstalledListModel(registry);
-            TempFileList = new TempFileListModel(fileSystem);
+            RadeonScheduledTaskList = new ScheduledTaskListModel(logger, scheduledTaskService);
+            ServiceList = new ServiceListModel(registry, logger, processRunner, serviceControllerFactory);
+            InstalledList = new InstalledListModel(registry, logger, processRunner);
+            TempFileList = new TempFileListModel(fileSystem, logger);
         }
 
 

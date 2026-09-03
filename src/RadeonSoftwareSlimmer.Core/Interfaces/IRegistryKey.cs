@@ -17,6 +17,6 @@ namespace RadeonSoftwareSlimmer.Core.Interfaces
 
         object GetValue(string name, object defaultValue);
 
-        void SetValue(string name, object value, RegistryValueKind valueKind);
+        void SetValue(string name, object value, CoreRegistryValueKind valueKind);
     }
 }

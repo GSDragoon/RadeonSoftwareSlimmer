@@ -86,7 +86,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
         {
             if (_windowsInstaller)
             {
-                _uninstallExe = Environment.GetFolderPath(Environment.SpecialFolder.System) + "\\msiexec.exe";
+                _uninstallExe = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "msiexec.exe");
                 if (Guid.TryParse(ProductCode, out Guid productGuid))
                 {
                     _uninstallArguments = $"/uninstall {productGuid:B}";

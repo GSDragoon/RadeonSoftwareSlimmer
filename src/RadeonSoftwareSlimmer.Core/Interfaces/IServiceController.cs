@@ -1,24 +1,21 @@
-using RadeonSoftwareSlimmer.Core.Enums;
 using System;
-
+using RadeonSoftwareSlimmer.Core.Enums;
 
 namespace RadeonSoftwareSlimmer.Core.Interfaces
 {
-    // https://dahall.github.io/TaskScheduler/html/T_Microsoft_Win32_TaskScheduler_TaskService.htm
-    public interface IServiceController
+    // https://learn.microsoft.com/en-us/dotnet/api/system.serviceprocess.servicecontroller
+    public interface IServiceController : IDisposable
     {
         string ServiceName { get; }
-        bool Exists { get; }  // InvalidOperationException = does not exist
+        bool Exists { get; }
         string DisplayName { get; }
-        ServiceStartMode StartType { get; }
-        ServiceType ServiceType { get; }
-        ServiceControllerStatus Status { get; }
-
-        void Load(string serviceName);
+        CoreServiceStartMode StartType { get; }
+        CoreServiceType ServiceType { get; }
+        CoreServiceControllerStatus Status { get; }
 
         void Start();
         void Stop();
         void Refresh();
-        void WaitForStatus(ServiceControllerStatus desiredStatus, TimeSpan timeout);
+        void WaitForStatus(CoreServiceControllerStatus desiredStatus, TimeSpan timeout);
     }
 }

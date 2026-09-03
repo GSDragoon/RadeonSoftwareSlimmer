@@ -17,6 +17,9 @@ fi
 project='./src/RadeonSoftwareSlimmer.Core/RadeonSoftwareSlimmer.Core.csproj'
 testProject='./test/RadeonSoftwareSlimmer.Core.Test/RadeonSoftwareSlimmer.Core.Test.csproj'
 
+echo '***** Installing Report Generator...'
+dotnet tool install dotnet-reportgenerator-globaltool --tool-path "${artifactPath}"
+
 echo '***** Building Core Project...'
 dotnet build $project --no-incremental --force --configuration Release -p:Version=$version
 
@@ -27,5 +30,13 @@ echo '***** Done Building'
 echo '***** Testing...'
 # https://github.com/dotnet/sdk/issues/44991 - does not support artifact output
 dotnet test $testProject --no-build --configuration Release --results-directory $resultsPath --framework net10.0
+
+echo '***** Running Report Generator...'
+"${artifactPath}/reportgenerator" \
+  "-reports:${resultsPath}/*/coverage.cobertura*.xml" \
+  "-targetdir:${artifactPath}/CoverageReports" \
+  '-reporttypes:Badges;Cobertura;Html;HtmlSummary;MarkdownSummaryGithub;TextSummary' \
+  '--settings:createSubdirectoryForAllReportTypes=true'
+cat "${artifactPath}/CoverageReports/TextSummary/Summary.txt"
 
 echo '***** Done!'

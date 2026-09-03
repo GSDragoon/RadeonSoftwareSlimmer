@@ -13,10 +13,10 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
         private readonly IServiceController _serviceController;
         private readonly bool _exists;
         private bool _enabled;
-        private ServiceStartMode _startMode;
-        private ServiceStartMode _originalStartMode;
-        private ServiceControllerStatus _status;
-        private readonly ServiceType _serviceType;
+        private CoreServiceStartMode _startMode;
+        private CoreServiceStartMode _originalStartMode;
+        private CoreServiceControllerStatus _status;
+        private readonly CoreServiceType _serviceType;
 
         private readonly string _scExe;
 
@@ -24,24 +24,22 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
         private const string SERVICE_START_VALUE_NAME = "Start";
         private const string SERVICE_ORIGINAL_START_VALUE_NAME = "RadeonSoftwareSlimmerOriginalStart";
 
-        public ServiceModel(string serviceName, IRegistry registry, IAppLogger logger, IProcessRunner processRunner, IServiceController serviceController)
+        public ServiceModel(string serviceName, IRegistry registry, IAppLogger logger, IProcessRunner processRunner, IServiceControllerFactory serviceControllerFactory)
         {
             _logger = logger;
             _registry = registry;
             _processRunner = processRunner;
-            _serviceController = serviceController;
-
-            _serviceController.Load(serviceName);
+            _serviceController = serviceControllerFactory.Create(serviceName);
             _exists = _serviceController.Exists;
 
             if (_exists)
             {
-                Name = serviceController.ServiceName;
-                DisplayName = serviceController.DisplayName;
-                Enabled = serviceController.StartType != ServiceStartMode.Disabled;
-                StartMode = serviceController.StartType;
-                _serviceType = serviceController.ServiceType;
-                Status = serviceController.Status;
+                Name = _serviceController.ServiceName;
+                DisplayName = _serviceController.DisplayName;
+                Enabled = _serviceController.StartType != CoreServiceStartMode.Disabled;
+                StartMode = _serviceController.StartType;
+                _serviceType = _serviceController.ServiceType;
+                Status = _serviceController.Status;
 
                 LoadOriginalStartMode();
 
@@ -65,7 +63,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
         }
         public string Name { get; }
         public string DisplayName { get; }
-        public ServiceStartMode StartMode
+        public CoreServiceStartMode StartMode
         {
             get { return _startMode; }
             private set
@@ -74,7 +72,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 OnPropertyChanged(nameof(StartMode));
             }
         }
-        public ServiceControllerStatus Status
+        public CoreServiceControllerStatus Status
         {
             get { return _status; }
             private set
@@ -84,7 +82,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
             }
         }
         public string Type => _serviceType.ToString();
-        public ServiceStartMode OriginalStartMode
+        public CoreServiceStartMode OriginalStartMode
         {
             get { return _originalStartMode; }
             private set
@@ -102,13 +100,13 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
 
         public void TryStart()
         {
-            if (_startMode == ServiceStartMode.Disabled)
+            if (_startMode == CoreServiceStartMode.Disabled)
             {
                 _logger.Info($"Cannot start {Name} because it is disabled");
                 return;
             }
 
-            if (_serviceType.HasFlag(ServiceType.KernelDriver))
+            if (_serviceType.HasFlag(CoreServiceType.KernelDriver))
             {
                 _logger.Info($"Cannot start {Name} because it is a kernel driver");
                 return;
@@ -122,10 +120,10 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 TryStop();
 
                 _serviceController.Refresh();
-                if (_serviceController.StartType != ServiceStartMode.Disabled && _serviceController.ServiceType.HasFlag(ServiceType.Win32OwnProcess))
+                if (_serviceController.StartType != CoreServiceStartMode.Disabled && _serviceController.ServiceType.HasFlag(CoreServiceType.Win32OwnProcess))
                 {
                     _serviceController.Start();
-                    _serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
+                    _serviceController.WaitForStatus(CoreServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
 
                     Status = _serviceController.Status;
                     _logger.Info("Restarted " + Name);
@@ -143,7 +141,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
 
         public void TryStop()
         {
-            if (_serviceType.HasFlag(ServiceType.KernelDriver))
+            if (_serviceType.HasFlag(CoreServiceType.KernelDriver))
             {
                 _logger.Info($"Cannot stop {Name} because it is a kernel driver");
                 return;
@@ -155,12 +153,12 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 _logger.IsLoading = true;
 
                 _serviceController.Refresh();
-                if (_serviceController.Status == ServiceControllerStatus.Running && _serviceController.ServiceType.HasFlag(ServiceType.Win32OwnProcess))
+                if (_serviceController.Status == CoreServiceControllerStatus.Running && _serviceController.ServiceType.HasFlag(CoreServiceType.Win32OwnProcess))
                 {
                     try
                     {
                         _serviceController.Stop();
-                        _serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+                        _serviceController.WaitForStatus(CoreServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
                     }
                     catch (InvalidOperationException ex)
                     {
@@ -195,69 +193,69 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
         public void Enable()
         {
             _serviceController.Refresh();
-            if (StartMode == ServiceStartMode.Disabled && OriginalStartMode != ServiceStartMode.Disabled)
+            if (StartMode == CoreServiceStartMode.Disabled && OriginalStartMode != CoreServiceStartMode.Disabled)
             {
                 //It's this or WMI...
                 _processRunner.RunProcess(_scExe, $"config \"{Name}\" start= {GetStartModeCommandString(OriginalStartMode)}");
 
-                if (_serviceType == ServiceType.Win32OwnProcess)
+                if (_serviceType == CoreServiceType.Win32OwnProcess)
                     TryStart();
 
                 _serviceController.Refresh();
                 StartMode = _serviceController.StartType;
-                Enabled = _serviceController.StartType != ServiceStartMode.Disabled;
+                Enabled = _serviceController.StartType != CoreServiceStartMode.Disabled;
             }
         }
 
         public void Disable()
         {
             _serviceController.Refresh();
-            if (StartMode != ServiceStartMode.Disabled)
+            if (StartMode != CoreServiceStartMode.Disabled)
             {
-                if (_serviceType.HasFlag(ServiceType.Win32OwnProcess))
+                if (_serviceType.HasFlag(CoreServiceType.Win32OwnProcess))
                     TryStop();
 
                 //It's this or WMI...
-                _processRunner.RunProcess(_scExe, $"config \"{Name}\" start= {GetStartModeCommandString(ServiceStartMode.Disabled)}");
+                _processRunner.RunProcess(_scExe, $"config \"{Name}\" start= {GetStartModeCommandString(CoreServiceStartMode.Disabled)}");
 
                 _serviceController.Refresh();
                 StartMode = _serviceController.StartType;
-                Enabled = _serviceController.StartType != ServiceStartMode.Disabled;
+                Enabled = _serviceController.StartType != CoreServiceStartMode.Disabled;
             }
         }
 
         public void SetStartMode(string startMode)
         {
-            ServiceStartMode serviceStartMode = (ServiceStartMode)Enum.Parse(typeof(ServiceStartMode), startMode);
+            CoreServiceStartMode serviceStartMode = (CoreServiceStartMode)Enum.Parse(typeof(CoreServiceStartMode), startMode);
             SetStartMode(serviceStartMode);
         }
 
 
-        private void SetStartMode(ServiceStartMode startMode)
+        private void SetStartMode(CoreServiceStartMode startMode)
         {
             //It's this or WMI...
             _processRunner.RunProcess(_scExe, $"config \"{Name}\" start= {GetStartModeCommandString(startMode)}");
 
             _serviceController.Refresh();
             StartMode = _serviceController.StartType;
-            Enabled = _serviceController.StartType != ServiceStartMode.Disabled;
+            Enabled = _serviceController.StartType != CoreServiceStartMode.Disabled;
 
             _logger.Info($"Changed start mode for {Name} to {StartMode}");
         }
 
-        private static string GetStartModeCommandString(ServiceStartMode serviceStartMode)
+        private static string GetStartModeCommandString(CoreServiceStartMode serviceStartMode)
         {
             switch (serviceStartMode)
             {
-                case ServiceStartMode.Boot:
+                case CoreServiceStartMode.Boot:
                     return "boot";
-                case ServiceStartMode.System:
+                case CoreServiceStartMode.System:
                     return "system";
-                case ServiceStartMode.Automatic:
+                case CoreServiceStartMode.Automatic:
                     return "auto";
-                case ServiceStartMode.Manual:
+                case CoreServiceStartMode.Manual:
                     return "demand";
-                case ServiceStartMode.Disabled:
+                case CoreServiceStartMode.Disabled:
                     return "disabled";
                 default:
                     return string.Empty;
@@ -277,7 +275,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 }
 
                 if (original != null)
-                    OriginalStartMode = (ServiceStartMode)original;
+                    OriginalStartMode = (CoreServiceStartMode)original;
                 else
                     _logger.Debug("Unable to determin original start mode");
 
@@ -289,7 +287,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
             using (IRegistryKey serviceKey = _registry.LocalMachine.OpenSubKey(SERVICES_REG_KEY + Name, true))
             {
                 object currentStartMode = serviceKey.GetValue(SERVICE_START_VALUE_NAME);
-                serviceKey.SetValue(SERVICE_ORIGINAL_START_VALUE_NAME, currentStartMode, RegistryValueKind.DWord);
+                serviceKey.SetValue(SERVICE_ORIGINAL_START_VALUE_NAME, currentStartMode, CoreRegistryValueKind.DWord);
             }
         }
     }

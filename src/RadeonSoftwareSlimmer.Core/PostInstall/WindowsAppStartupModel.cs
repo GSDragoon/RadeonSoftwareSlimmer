@@ -94,7 +94,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 if (launcherKey == null)
                     return;
 
-                launcherKey.SetValue(RSX_LAUNCHER_REG_STATUS_NAME, STATE_ENABLED_VALUE, RegistryValueKind.DWord);
+                launcherKey.SetValue(RSX_LAUNCHER_REG_STATUS_NAME, STATE_ENABLED_VALUE, CoreRegistryValueKind.DWord);
                 Enabled = true;
             }
         }
@@ -106,9 +106,9 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 if (launcherKey == null)
                     return;
 
-                launcherKey.SetValue(RSX_LAUNCHER_REG_STATUS_NAME, STATE_DISABLED_VALUE, RegistryValueKind.DWord);
-                launcherKey.SetValue(RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME, SecondsFromEpochTime(DateTime.UtcNow), RegistryValueKind.QWord);
-                launcherKey.SetValue(RSX_LAUNCHER_REG_STARTUPONCE_NAME, STATE_STARTUPONCE_YES, RegistryValueKind.DWord);
+                launcherKey.SetValue(RSX_LAUNCHER_REG_STATUS_NAME, STATE_DISABLED_VALUE, CoreRegistryValueKind.DWord);
+                launcherKey.SetValue(RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME, SecondsFromEpochTime(DateTime.UtcNow), CoreRegistryValueKind.QWord);
+                launcherKey.SetValue(RSX_LAUNCHER_REG_STARTUPONCE_NAME, STATE_STARTUPONCE_YES, CoreRegistryValueKind.DWord);
                 Enabled = false;
             }
         }

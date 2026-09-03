@@ -14,20 +14,21 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
     {
         private readonly IAppLogger _logger;
         private readonly IFileSystem _fileSystem;
+        private readonly string[] _packageFiles;
         private IEnumerable<PackageModel> _packages;
         private IDirectoryInfo _installDir;
         private IDirectoryInfo _backupDir;
-        private readonly string[] _packageFiles = new string[]
-        {
-            @"Bin64\cccmanifest_64.json",
-            @"Config\InstallManifest.json"
-        };
 
 
         public PackageListModel(IFileSystem fileSystem, IAppLogger logger)
         {
             _logger = logger;
             _fileSystem = fileSystem;
+            _packageFiles = new[]
+            {
+                _fileSystem.Path.Combine("Bin64", "cccmanifest_64.json"),
+                _fileSystem.Path.Combine("Config", "InstallManifest.json"),
+            };
         }
 
 

@@ -11,7 +11,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
         private readonly IScheduledTaskService _taskService;
         private bool _enabled;
         private bool _active;
-        private TaskState _state;
+        private CoreTaskState _state;
 
 
         public ScheduledTaskModel(IScheduledTask task, IAppLogger logger, IScheduledTaskService taskService)
@@ -57,7 +57,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 OnPropertyChanged(nameof(Active));
             }
         }
-        public TaskState State
+        public CoreTaskState State
         {
             get { return _state; }
             private set
@@ -71,40 +71,29 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
 
         public void Enable()
         {
-            using (IScheduledTask task = _taskService.GetTask(Name))
+            IScheduledTask task = _taskService.GetTask(Name);
+            if (!task.Enabled)
             {
-                if (!task.Enabled)
-                {
-                    _logger.Debug($"Enabling scheduled task {Name}");
-                    task.Enabled = true;
+                _logger.Debug($"Enabling scheduled task {Name}");
+                task.Enable();
 
-                    task.RegisterChanges();
-
-                    Active = task.IsActive;
-                    State = task.State;
-                    Enabled = task.Enabled;
-                }
+                Active = task.IsActive;
+                State = task.State;
+                Enabled = task.Enabled;
             }
         }
 
         public void Disable()
         {
-            using (IScheduledTask task = _taskService.GetTask(Name))
+            IScheduledTask task = _taskService.GetTask(Name);
+            if (task.Enabled)
             {
-                if (task.Enabled)
-                {
-                    _logger.Debug($"Stopping scheduled task {Name}");
-                    task.Stop();
+                _logger.Debug($"Disabling scheduled task {Name}");
+                task.Disable();
 
-                    _logger.Debug($"Disabling scheduled task {Name}");
-                    task.Enabled = false;
-
-                    task.RegisterChanges();
-
-                    Active = task.IsActive;
-                    State = task.State;
-                    Enabled = task.Enabled;
-                }
+                Active = task.IsActive;
+                State = task.State;
+                Enabled = task.Enabled;
             }
         }
     }
