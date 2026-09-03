@@ -221,5 +221,43 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             Assert.That(_installerFiles.ValidateExtractedLocation(), Is.False);
         }
+
+
+        [Test]
+        public void ExtractInstallerFiles_InvokesSevenZipWithInstallerAndOutputPaths()
+        {
+            _installerFiles.InstallerFile = TestPath.Rooted(@"Some\Installer.exe");
+            _installerFiles.ExtractedInstallerDirectory = TestPath.Rooted(@"Some\Extracted");
+
+            _installerFiles.ExtractInstallerFiles();
+
+            Assert.Multiple((System.Action)(() =>
+            {
+                Assert.That(_processRunner.LastFileName, Does.EndWith("7z.exe"));
+                Assert.That(_processRunner.LastArguments, Does.StartWith("x "));
+                Assert.That(_processRunner.LastArguments, Does.Contain($"\"{_installerFiles.InstallerFile}\""));
+                Assert.That(_processRunner.LastArguments, Does.Contain($"-o\"{_installerFiles.ExtractedInstallerDirectory}\""));
+            }));
+        }
+
+        [Test]
+        public void ExtractInstallerFiles_SevenZipReturnsFatalError_ThrowsIOException()
+        {
+            _installerFiles.InstallerFile = TestPath.Rooted(@"Some\Installer.exe");
+            _installerFiles.ExtractedInstallerDirectory = TestPath.Rooted(@"Some\Extracted");
+            _processRunner.ExitCode = 7; // 7-Zip: fatal error
+
+            Assert.That((System.Action)(() => _installerFiles.ExtractInstallerFiles()), Throws.TypeOf<System.IO.IOException>());
+        }
+
+        [Test]
+        public void ExtractInstallerFiles_SevenZipReturnsZero_DoesNotThrow()
+        {
+            _installerFiles.InstallerFile = TestPath.Rooted(@"Some\Installer.exe");
+            _installerFiles.ExtractedInstallerDirectory = TestPath.Rooted(@"Some\Extracted");
+            _processRunner.ExitCode = 0;
+
+            Assert.That((System.Action)(() => _installerFiles.ExtractInstallerFiles()), Throws.Nothing);
+        }
     }
 }

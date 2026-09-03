@@ -59,6 +59,10 @@ namespace RadeonSoftwareSlimmer.Core.Test.TestDoubles
                 return child.AddTestSubKey(tail, registryKey);
             }
 
+            // Idempotent at the leaf: returning the existing key lets callers safely re-add common prefixes like SYSTEM\CurrentControlSet\Services.
+            if (SubKeys.TryGetValue(name, out FakeRegistryKey existing))
+                return existing;
+
             SubKeys.Add(name, registryKey);
             return registryKey;
         }
