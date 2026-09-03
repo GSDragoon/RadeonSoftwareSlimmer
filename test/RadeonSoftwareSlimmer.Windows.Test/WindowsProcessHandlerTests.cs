@@ -82,5 +82,52 @@ namespace RadeonSoftwareSlimmer.Windows.Test
             _handler.WaitForProcessToEnd("ping", 5);
             Assert.That(_handler.IsProcessRunning("ping"), Is.False);
         }
+
+
+        [Test]
+        public void WaitForProcessToStart_AlreadyRunning_ReturnsWithoutWaiting()
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            _handler.WaitForProcessToStart("svchost", 30);
+
+            sw.Stop();
+            Assert.That(sw.ElapsedMilliseconds, Is.LessThan(1000));
+        }
+
+        [Test]
+        public void WaitForProcessToStart_NeverStarts_ReturnsAfterTimeout()
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            _handler.WaitForProcessToStart("DOES_NOT_EXIST", 1);
+
+            sw.Stop();
+            Assert.Multiple((System.Action)(() =>
+            {
+                Assert.That(sw.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000));
+                Assert.That(sw.ElapsedMilliseconds, Is.LessThan(5000));
+                Assert.That(_handler.IsProcessRunning("DOES_NOT_EXIST"), Is.False);
+            }));
+        }
+
+        [Test]
+        public void WaitForProcessToStart_StartsBeforeTimeout_Detects()
+        {
+            using (Process process = new Process())
+            {
+                process.StartInfo.FileName = @"C:\Windows\System32\ping.exe";
+                process.StartInfo.Arguments = "localhost -n 5";
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.Start();
+            }
+
+            _handler.WaitForProcessToStart("ping", 5);
+
+            Assert.That(_handler.IsProcessRunning("ping"), Is.True);
+
+            _handler.WaitForProcessToEnd("ping", 10);
+        }
     }
 }
