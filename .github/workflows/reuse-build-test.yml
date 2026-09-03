@@ -31,14 +31,6 @@ jobs:
     - name: Test
       run: ./build/test.ps1
 
-    # https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v7
-      with:
-        name: test-results
-        path: ./artifacts/tests/*.trx
-        if-no-files-found: warn
-
     # https://github.com/marketplace/actions/test-reporter
     - name: Publish Test Results
       if: ${{ !cancelled() }}
@@ -46,7 +38,8 @@ jobs:
       with:
         artifact: test-results
         name: Test Results
-        path: '*.trx'
+        report-title: Test Results
+        path: ./artifacts/tests/*.trx
         reporter: dotnet-trx
         only-summary: false
         fail-on-error: true
