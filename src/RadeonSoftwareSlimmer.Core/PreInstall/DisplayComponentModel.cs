@@ -94,7 +94,9 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
                                 (line.IndexOf("ExtendedGraphics", StringComparison.OrdinalIgnoreCase) >= 0 && line.IndexOf("\"", StringComparison.OrdinalIgnoreCase) > 1) ||
                                 line.StartsWith("AMDFDANSName", StringComparison.OrdinalIgnoreCase) ||
                                 line.StartsWith("AMDOCLName", StringComparison.OrdinalIgnoreCase) ||
-                                line.StartsWith("AMDWINName", StringComparison.OrdinalIgnoreCase))
+                                line.StartsWith("AMDWINName", StringComparison.OrdinalIgnoreCase) ||
+                                line.StartsWith("AMDOGLName", StringComparison.OrdinalIgnoreCase) ||
+                                line.StartsWith("AMDVLKName", StringComparison.OrdinalIgnoreCase))
                             {
                                 _logger.Debug($"Attempting to obtain inf file description from {line}");
                                 Description = line.Substring(line.IndexOf("\"", StringComparison.OrdinalIgnoreCase)).Trim('\"');
