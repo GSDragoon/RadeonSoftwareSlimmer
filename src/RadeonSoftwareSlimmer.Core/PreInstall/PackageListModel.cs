@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using RadeonSoftwareSlimmer.Core.Interfaces;
 
 namespace RadeonSoftwareSlimmer.Core.PreInstall
@@ -64,36 +64,37 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
             if (packageToRemove == null)
                 throw new ArgumentNullException(nameof(packageToRemove));
 
-            JObject fullJson;
-
             _logger.Debug($"Removing package {packageToRemove.ProductName} from {packageToRemove.GetFile().FullName}");
 
-            using (StreamReader streamReader = new StreamReader(packageToRemove.GetFile().OpenRead()))
-            using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
+            JsonNode fullJson;
+            using (Stream stream = packageToRemove.GetFile().OpenRead())
             {
-                fullJson = (JObject)JToken.ReadFrom(jsonTextReader);
-                JToken jToken = fullJson.SelectToken("Packages.Package");
-                foreach (JToken token in jToken.Children())
-                {
-                    PackageModel currentPackage = new PackageModel(packageToRemove.GetFile());
-                    currentPackage.Description = token.SelectToken("Info.Description").ToString();
-                    currentPackage.ProductName = token.SelectToken("Info.productName").ToString();
-                    currentPackage.Url = token.SelectToken("Info.url").ToString();
-                    currentPackage.Type = token.SelectToken("Info.ptype").ToString();
+                fullJson = JsonNode.Parse(stream);
+            }
 
-                    if (currentPackage.Equals(packageToRemove))
-                    {
-                        token.Remove();
-                        break;
-                    }
+            JsonArray packageArray = (JsonArray)fullJson["Packages"]["Package"];
+            for (int i = 0; i < packageArray.Count; i++)
+            {
+                JsonNode token = packageArray[i];
+                PackageModel currentPackage = new PackageModel(packageToRemove.GetFile())
+                {
+                    Description = (string)token["Info"]["Description"],
+                    ProductName = (string)token["Info"]["productName"],
+                    Url = (string)token["Info"]["url"],
+                    Type = (string)token["Info"]["ptype"],
+                };
+
+                if (currentPackage.Equals(packageToRemove))
+                {
+                    packageArray.RemoveAt(i);
+                    break;
                 }
             }
 
-            using (StreamWriter streamWriter = new StreamWriter(packageToRemove.GetFile().Open(FileMode.Create, FileAccess.Write, FileShare.None)))
-            using (JsonTextWriter jsonTextWriter = new JsonTextWriter(streamWriter))
+            using (Stream stream = packageToRemove.GetFile().Open(FileMode.Create, FileAccess.Write, FileShare.None))
+            using (Utf8JsonWriter writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
             {
-                jsonTextWriter.Formatting = Formatting.Indented;
-                fullJson.WriteTo(jsonTextWriter);
+                fullJson.WriteTo(writer);
             }
         }
 
@@ -129,22 +130,25 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
                 IFileInfo file = _fileSystem.FileInfo.New(_fileSystem.Path.Combine(_installDir.FullName, packageFile));
                 if (file.Exists)
                 {
-                    using (StreamReader streamReader = new StreamReader(file.OpenRead()))
-                    using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
+                    JsonNode fullJson;
+                    using (Stream stream = file.OpenRead())
                     {
-                        JObject jObject = (JObject)JToken.ReadFrom(jsonTextReader);
-                        JToken jToken = jObject.SelectToken("Packages.Package");
-                        foreach (JToken token in jToken.Children())
-                        {
-                            PackageModel package = new PackageModel(file);
-                            package.Description = token.SelectToken("Info.Description").ToString();
-                            package.ProductName = token.SelectToken("Info.productName").ToString();
-                            package.Url = token.SelectToken("Info.url").ToString();
-                            package.Type = token.SelectToken("Info.ptype").ToString();
+                        fullJson = JsonNode.Parse(stream);
+                    }
 
-                            _logger.Debug($"Found package {package.ProductName} in {package.GetFile().FullName}");
-                            yield return package;
-                        }
+                    JsonArray packageArray = (JsonArray)fullJson["Packages"]["Package"];
+                    foreach (JsonNode token in packageArray)
+                    {
+                        PackageModel package = new PackageModel(file)
+                        {
+                            Description = (string)token["Info"]["Description"],
+                            ProductName = (string)token["Info"]["productName"],
+                            Url = (string)token["Info"]["url"],
+                            Type = (string)token["Info"]["ptype"],
+                        };
+
+                        _logger.Debug($"Found package {package.ProductName} in {package.GetFile().FullName}");
+                        yield return package;
                     }
                 }
             }
