@@ -68,7 +68,7 @@ namespace RadeonSoftwareSlimmer.Windows.Test
             {
                 WindowsScheduledTask windowsTask = new WindowsScheduledTask(task);
 
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(windowsTask.Name, Is.EqualTo(TaskName));
                     Assert.That(windowsTask.Description, Is.EqualTo(TaskDescription));
@@ -76,7 +76,7 @@ namespace RadeonSoftwareSlimmer.Windows.Test
                     Assert.That(windowsTask.Enabled, Is.True);
                     Assert.That(windowsTask.Command, Does.Contain(TaskCommand));
                     Assert.That(windowsTask.Command, Does.Contain(TaskArguments));
-                }));
+                }
             }
         }
 
@@ -95,11 +95,11 @@ namespace RadeonSoftwareSlimmer.Windows.Test
 
             using (Task refreshed = GetScratchTask())
             {
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(refreshed.Enabled, Is.True);
                     Assert.That(windowsTask.Enabled, Is.True);
-                }));
+                }
             }
         }
 
@@ -136,12 +136,12 @@ namespace RadeonSoftwareSlimmer.Windows.Test
 
             using (Task refreshed = GetScratchTask())
             {
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(refreshed.Enabled, Is.False);
                     Assert.That(windowsTask.Enabled, Is.False);
                     Assert.That(windowsTask.State, Is.EqualTo(CoreTaskState.Disabled));
-                }));
+                }
             }
         }
 

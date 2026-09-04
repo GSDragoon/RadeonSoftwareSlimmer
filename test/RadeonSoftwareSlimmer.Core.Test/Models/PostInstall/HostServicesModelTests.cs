@@ -170,13 +170,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             hostServiceModel.StopRadeonSoftware();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_processRunner.LastFileName, Does.EndWith(CncmdFileName));
                 Assert.That(_processRunner.LastArguments, Is.EqualTo("exit"));
                 Assert.That(_processHandler.RunningProcesses, Does.Not.Contain("AMDRSServ"));
                 Assert.That(_processHandler.RunningProcesses, Does.Not.Contain("RadeonSoftware"));
-            }));
+            }
         }
 
 
@@ -203,12 +203,12 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             hostServiceModel.RestartRadeonSoftware();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_processRunner.LastFileName, Does.EndWith(CncmdFileName));
                 Assert.That(_processRunner.LastArguments, Is.EqualTo("restart"));
                 Assert.That(_processHandler.RunningProcesses, Does.Contain("RadeonSoftware"));
-            }));
+            }
         }
     }
 }

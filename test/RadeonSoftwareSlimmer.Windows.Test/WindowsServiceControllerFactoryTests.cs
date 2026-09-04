@@ -17,12 +17,12 @@ namespace RadeonSoftwareSlimmer.Windows.Test
 
             using (IServiceController controller = factory.Create(KnownServiceName))
             {
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(controller, Is.Not.Null);
                     Assert.That(controller.Exists, Is.True);
                     Assert.That(controller.ServiceName, Is.EqualTo(KnownServiceName));
-                }));
+                }
             }
         }
 
@@ -33,12 +33,12 @@ namespace RadeonSoftwareSlimmer.Windows.Test
 
             using (IServiceController controller = factory.Create(NonExistentServiceName))
             {
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(controller, Is.Not.Null);
                     Assert.That(controller.Exists, Is.False);
                     Assert.That(controller.ServiceName, Is.EqualTo(NonExistentServiceName));
-                }));
+                }
             }
         }
     }

@@ -113,12 +113,12 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
             model.LoadOrRefresh();
 
             List<ScheduledTaskModel> results = model.RadeonScheduledTasks.ToList();
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(results, Has.Count.EqualTo(2));
                 Assert.That(results.Any(t => t.Name == "AmdCoolStuff"), Is.True);
                 Assert.That(results.Any(t => t.Name == "StartDVR"), Is.True);
-            }));
+            }
         }
 
 

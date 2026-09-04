@@ -52,11 +52,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             appStartup.LoadOrRefresh();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(appStartup.Exists, Is.True);
                 Assert.That(appStartup.Enabled, Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -70,11 +70,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             appStartup.LoadOrRefresh();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(appStartup.Exists, Is.True);
                 Assert.That(appStartup.Enabled, Is.False);
-            }));
+            }
         }
 
         [Test]
@@ -88,11 +88,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             appStartup.LoadOrRefresh();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(appStartup.Exists, Is.True);
                 Assert.That(appStartup.Enabled, Is.True);
-            }));
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4144:Methods should not have identical implementations", Justification = "Sonar analyzers are wrong")]
@@ -107,11 +107,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             appStartup.LoadOrRefresh();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(appStartup.Exists, Is.True);
                 Assert.That(appStartup.Enabled, Is.False);
-            }));
+            }
         }
 
 
@@ -127,14 +127,14 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             appStartup.Enable();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(appStartup.Enabled, Is.True);
 
                 Assert.That(dummyRegistry.MockCurrentUser.GetTestSubKey(RSX_LAUNCHER_REG_PATH).Values.ContainsKey(RSX_LAUNCHER_REG_STATUS_NAME), Is.True);
                 Assert.That(dummyRegistry.MockCurrentUser.GetTestSubKey(RSX_LAUNCHER_REG_PATH).Values[RSX_LAUNCHER_REG_STATUS_NAME].Value, Is.EqualTo(STATE_ENABLED_VALUE));
                 Assert.That(dummyRegistry.MockCurrentUser.GetTestSubKey(RSX_LAUNCHER_REG_PATH).Values[RSX_LAUNCHER_REG_STATUS_NAME].Kind, Is.EqualTo(CoreRegistryValueKind.DWord));
-            }));
+            }
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             appStartup.Disable();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(appStartup.Enabled, Is.False);
 
@@ -162,7 +162,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
                 Assert.That(dummyRegistry.MockCurrentUser.GetTestSubKey(RSX_LAUNCHER_REG_PATH).Values.ContainsKey(RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME), Is.True);
                 Assert.That(dummyRegistry.MockCurrentUser.GetTestSubKey(RSX_LAUNCHER_REG_PATH).Values[RSX_LAUNCHER_REG_LASTDISABLEDTIME_NAME].Kind, Is.EqualTo(CoreRegistryValueKind.QWord));
-            }));
+            }
         }
     }
 }

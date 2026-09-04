@@ -111,11 +111,11 @@ namespace RadeonSoftwareSlimmer.Windows.Test
                 Predicate<Task> windowsPredicate = corePredicate.ToWindowsTaskPredicate();
                 bool result = windowsPredicate(existingTask);
 
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(sawInvocation, Is.True);
                     Assert.That(result, Is.True);
-                }));
+                }
             }
         }
     }

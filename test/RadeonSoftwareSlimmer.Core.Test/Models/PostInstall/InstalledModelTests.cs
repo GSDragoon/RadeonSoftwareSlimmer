@@ -30,7 +30,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             InstalledModel installedModel = new InstalledModel(installKey, "Test", _logger, _processRunner);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(installedModel, Is.Not.Null);
                 Assert.That(installedModel.Uninstall, Is.False);
@@ -40,7 +40,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
                 Assert.That(installedModel.Publisher, Is.EqualTo("Publisher Value"));
                 Assert.That(installedModel.DisplayVersion, Is.EqualTo("DisplayVersion Value"));
                 Assert.That(installedModel.UninstallCommand, Is.EqualTo("UninstallString Value"));
-            }));
+            }
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             InstalledModel installedModel = new InstalledModel(installKey, keyName, _logger, _processRunner);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(installedModel, Is.Not.Null);
                 Assert.That(installedModel.Uninstall, Is.False);
@@ -63,7 +63,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
                 Assert.That(installedModel.ProductCode, Is.EqualTo(keyName));
                 string msiexec = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify), "msiexec.exe");
                 Assert.That(installedModel.UninstallCommand, Is.EqualTo($"{msiexec} /uninstall {keyName}"));
-            }));
+            }
         }
     }
 }

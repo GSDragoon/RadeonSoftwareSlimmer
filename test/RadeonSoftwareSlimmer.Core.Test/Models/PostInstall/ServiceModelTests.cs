@@ -79,7 +79,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             ServiceModel model = BuildModel();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(model.Exists(), Is.True);
                 Assert.That(model.Name, Is.EqualTo(ServiceName));
@@ -88,7 +88,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
                 Assert.That(model.Enabled, Is.True);
                 Assert.That(model.Status, Is.EqualTo(CoreServiceControllerStatus.Running));
                 Assert.That(model.Type, Is.EqualTo(CoreServiceType.Win32OwnProcess.ToString()));
-            }));
+            }
         }
 
         [Test]
@@ -122,13 +122,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             ServiceModel model = BuildModel();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(model.OriginalStartMode, Is.EqualTo(CoreServiceStartMode.Automatic));
                 Assert.That(serviceKey.Values.ContainsKey(OriginalStartValueName), Is.True);
                 Assert.That(serviceKey.Values[OriginalStartValueName].Value, Is.EqualTo((int)CoreServiceStartMode.Automatic));
                 Assert.That(serviceKey.Values[OriginalStartValueName].Kind, Is.EqualTo(CoreRegistryValueKind.DWord));
-            }));
+            }
         }
 
 
@@ -165,11 +165,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             model.TryStart();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(controller.StopCalls, Is.EqualTo(1));
                 Assert.That(controller.StartCalls, Is.EqualTo(1));
-            }));
+            }
         }
 
 
@@ -219,11 +219,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             model.Delete();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_processRunner.LastFileName, Does.EndWith("sc.exe"));
                 Assert.That(_processRunner.LastArguments, Is.EqualTo($"delete \"{ServiceName}\""));
-            }));
+            }
         }
 
 

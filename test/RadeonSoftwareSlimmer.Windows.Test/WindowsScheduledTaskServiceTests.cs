@@ -48,11 +48,11 @@ namespace RadeonSoftwareSlimmer.Windows.Test
 
             IScheduledTask task = service.GetTask(TaskName);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(task, Is.Not.Null);
                 Assert.That(task.Name, Is.EqualTo(TaskName));
-            }));
+            }
         }
 
         [Test]

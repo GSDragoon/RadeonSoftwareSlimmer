@@ -46,7 +46,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             Assert.That(packageList.InstallerPackages, Is.Not.Null);
             List<PackageModel> actualPackages = packageList.InstallerPackages.ToList();
             IList<PackageModel> exectedPackages = ExpectedLoadedPackageModel(InstallRoot);
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(actualPackages, Is.Not.Null);
                 Assert.That(actualPackages, Has.Count.EqualTo(4));
@@ -54,7 +54,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
                 Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
                 Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
                 Assert.That(actualPackages[3].Equals(exectedPackages[3]), Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -71,13 +71,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             MockFileData ccmanifestBak = _fileSystem.GetFile(Path.Combine(InstallRoot, "RSS_Backup", "Packages", "Bin64", "cccmanifest_64.json"));
             MockFileData installmanifestBak = _fileSystem.GetFile(Path.Combine(InstallRoot, "RSS_Backup", "Packages", "Config", "InstallManifest.json"));
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(ccmanifestBak, Is.Not.Null);
                 Assert.That(installmanifestBak, Is.Not.Null);
                 Assert.That(ccmanifestBak.TextContents.Equals(ccmanifesData.TextContents));
                 Assert.That(installmanifestBak.TextContents.Equals(installmanifestData.TextContents));
-            }));
+            }
         }
 
         [Test]
@@ -98,13 +98,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             MockFileData ccmanifestBak = _fileSystem.GetFile(Path.Combine(InstallRoot, "RSS_Backup", "Packages", "Bin64", "cccmanifest_64.json"));
             MockFileData installmanifestBak = _fileSystem.GetFile(Path.Combine(InstallRoot, "RSS_Backup", "Packages", "Config", "InstallManifest.json"));
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(ccmanifestBak, Is.Not.Null);
                 Assert.That(installmanifestBak, Is.Not.Null);
                 Assert.That(MockFileDataIsEqual(ccmanifestBak, ccmanifestOrig));
                 Assert.That(MockFileDataIsEqual(installmanifestBak, installmanifestOrig));
-            }));
+            }
         }
 
 
@@ -137,7 +137,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             packageList.LoadOrRefresh(installerDir);
             List<PackageModel> actualPackages = packageList.InstallerPackages.ToList();
             IList<PackageModel> exectedPackages = ExpectedLoadedPackageModel(InstallRoot);
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(actualPackages, Is.Not.Null);
                 Assert.That(actualPackages, Has.Count.EqualTo(4));
@@ -145,7 +145,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
                 Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
                 Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
                 Assert.That(actualPackages[3].Equals(exectedPackages[3]), Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -169,14 +169,14 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             packageList.LoadOrRefresh(installerDir);
             List<PackageModel> actualPackages = packageList.InstallerPackages.ToList();
             IList<PackageModel> exectedPackages = ExpectedRemovePackageModel(InstallRoot);
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(actualPackages, Is.Not.Null);
                 Assert.That(actualPackages, Has.Count.EqualTo(3));
                 Assert.That(actualPackages[0].Equals(exectedPackages[0]), Is.True);
                 Assert.That(actualPackages[1].Equals(exectedPackages[1]), Is.True);
                 Assert.That(actualPackages[2].Equals(exectedPackages[2]), Is.True);
-            }));
+            }
         }
 
 
@@ -199,7 +199,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             MockFileData installmanifest = _fileSystem.GetFile(Path.Combine(InstallRoot, "Config", "InstallManifest.json"));
             MockFileData ccmanifestBak = _fileSystem.GetFile(Path.Combine(InstallRoot, "RSS_Backup", "Packages", "Bin64", "cccmanifest_64.json"));
             MockFileData installmanifestBak = _fileSystem.GetFile(Path.Combine(InstallRoot, "RSS_Backup", "Packages", "Config", "InstallManifest.json"));
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(ccmanifestBak, Is.Not.Null);
                 Assert.That(installmanifestBak, Is.Not.Null);
@@ -207,7 +207,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
                 Assert.That(installmanifest, Is.Not.Null);
                 Assert.That(ccmanifest.TextContents, Is.EqualTo(ccmanifestBak.TextContents));
                 Assert.That(installmanifest.TextContents, Is.EqualTo(installmanifestBak.TextContents));
-            }));
+            }
         }
 
 

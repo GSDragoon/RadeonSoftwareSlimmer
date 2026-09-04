@@ -36,13 +36,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(displayComponentModel.Description, Is.EqualTo("test"));
                 Assert.That(displayComponentModel.Directory, Is.EqualTo(ComponentRelativeDisplay));
                 Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
                 Assert.That(displayComponentModel.Keep, Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -53,13 +53,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(displayComponentModel.Description, Is.EqualTo("test"));
                 Assert.That(displayComponentModel.Directory, Is.EqualTo(ComponentRelativeDisplay));
                 Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
                 Assert.That(displayComponentModel.Keep, Is.True);
-            }));
+            }
         }
 
         [TestCase("AMDFDANSName")]
@@ -72,13 +72,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(displayComponentModel.Description, Is.EqualTo("Test Name"));
                 Assert.That(displayComponentModel.Directory, Is.EqualTo(ComponentRelativeDisplay));
                 Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
                 Assert.That(displayComponentModel.Keep, Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -88,13 +88,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(displayComponentModel.Description, Is.Null);
                 Assert.That(displayComponentModel.Directory, Is.EqualTo(ComponentRelativeDisplay));
                 Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
                 Assert.That(displayComponentModel.Keep, Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -105,13 +105,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(displayComponentModel.Description, Is.Null);
                 Assert.That(displayComponentModel.Directory, Is.EqualTo(ComponentRelativeDisplay));
                 Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
                 Assert.That(displayComponentModel.Keep, Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -122,13 +122,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(displayComponentModel.Description, Is.Null);
                 Assert.That(displayComponentModel.Directory, Is.EqualTo(ComponentRelativeDisplay));
                 Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
                 Assert.That(displayComponentModel.Keep, Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -139,13 +139,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(displayComponentModel.Description, Is.Null);
                 Assert.That(displayComponentModel.Directory, Is.EqualTo(ComponentRelativeDisplay));
                 Assert.That(displayComponentModel.InfFile, Is.EqualTo("driver.inf"));
                 Assert.That(displayComponentModel.Keep, Is.True);
-            }));
+            }
         }
 
 
@@ -173,11 +173,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentModel.Remove();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_fileSystem.Directory.Exists(TestPath.Rooted(ComponentRelative)), Is.True);
                 Assert.That(_fileSystem.Directory.Exists(TestPath.Rooted(@"driver\RSS_Backup\DisplayComponents\component1")), Is.False);
-            }));
+            }
         }
 
         [Test]
@@ -191,11 +191,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentModel.Remove();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_fileSystem.Directory.Exists(TestPath.Rooted(ComponentRelative)), Is.False);
                 Assert.That(_fileSystem.Directory.Exists(TestPath.Rooted(@"driver\RSS_Backup\DisplayComponents\component1")), Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -208,11 +208,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentModel.Remove();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_fileSystem.Directory.Exists(TestPath.Rooted(ComponentRelative)), Is.False);
                 Assert.That(_fileSystem.Directory.Exists(TestPath.Rooted(@"driver\RSS_Backup\DisplayComponents\component1")), Is.True);
-            }));
+            }
         }
     }
 }

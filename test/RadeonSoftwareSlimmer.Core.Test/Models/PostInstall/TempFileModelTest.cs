@@ -35,11 +35,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(tempFileModel.Files, Is.Zero);
                 Assert.That(tempFileModel.Size, Is.EqualTo("0 bytes"));
-            }));
+            }
         }
 
         [Test]
@@ -51,11 +51,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(tempFileModel.Folder, Is.EqualTo(folderPath));
                 Assert.That(tempFileModel.Clear, Is.False);
-            }));
+            }
         }
 
         [Test]
@@ -103,11 +103,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(tempFileModel.Files, Is.EqualTo(2));
                 Assert.That(tempFileModel.Size, Is.EqualTo("579 bytes"));
-            }));
+            }
         }
 
         [Test]
@@ -120,11 +120,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(tempFileModel.Files, Is.EqualTo(2));
                 Assert.That(tempFileModel.Size, Is.EqualTo("566.65 KB"));
-            }));
+            }
         }
 
         [Test]
@@ -137,11 +137,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(tempFileModel.Files, Is.EqualTo(2));
                 Assert.That(tempFileModel.Size, Is.EqualTo("12.72 MB"));
-            }));
+            }
         }
 
         [Test]
@@ -154,11 +154,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             TempFileModel tempFileModel = new TempFileModel(folderPath, fileSystem, _logger);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(tempFileModel.Files, Is.EqualTo(2));
                 Assert.That(tempFileModel.Size, Is.EqualTo("2.07 GB"));
-            }));
+            }
         }
 
         [Test]
@@ -174,12 +174,12 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             tempFileModel.ClearFolder();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(fileSystem.Directory.Exists(folderPath), Is.True);
                 Assert.That(fileSystem.Directory.EnumerateDirectories(folderPath, "*").Count(), Is.EqualTo(0));
                 Assert.That(fileSystem.Directory.EnumerateFiles(folderPath, "*").Count(), Is.EqualTo(0));
-            }));
+            }
         }
 
         [Test]
@@ -204,12 +204,12 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             tempFileModel.ClearFolder();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(fileSystem.Directory.Exists(folderPath), Is.True);
                 Assert.That(fileSystem.Directory.EnumerateDirectories(folderPath, "*").Count(), Is.EqualTo(0));
                 Assert.That(fileSystem.Directory.EnumerateFiles(folderPath, "*").Count(), Is.EqualTo(0));
-            }));
+            }
         }
     }
 }

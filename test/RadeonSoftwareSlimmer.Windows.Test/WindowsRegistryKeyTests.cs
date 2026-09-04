@@ -158,11 +158,11 @@ namespace RadeonSoftwareSlimmer.Windows.Test
 
             using (RegistryKey root = Registry.CurrentUser.OpenSubKey(ScratchRootPath, writable: false))
             {
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(root.GetValue("Number"), Is.EqualTo(42));
                     Assert.That(root.GetValueKind("Number"), Is.EqualTo(RegistryValueKind.DWord));
-                }));
+                }
             }
         }
 
@@ -176,11 +176,11 @@ namespace RadeonSoftwareSlimmer.Windows.Test
 
             using (RegistryKey root = Registry.CurrentUser.OpenSubKey(ScratchRootPath, writable: false))
             {
-                Assert.Multiple((System.Action)(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(root.GetValue("Big"), Is.EqualTo(4294967296L));
                     Assert.That(root.GetValueKind("Big"), Is.EqualTo(RegistryValueKind.QWord));
-                }));
+                }
             }
         }
 

@@ -44,7 +44,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             ScheduledTaskModel model = new ScheduledTaskModel(task, _logger, _taskService);
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(model.Name, Is.EqualTo(TaskName));
                 Assert.That(model.Description, Is.EqualTo("Test description"));
@@ -53,7 +53,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
                 Assert.That(model.State, Is.EqualTo(CoreTaskState.Ready));
                 Assert.That(model.Command, Is.EqualTo(@"C:\test.exe"));
                 Assert.That(model.LastRun, Is.EqualTo(lastRun));
-            }));
+            }
         }
 
 
@@ -84,12 +84,12 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             model.Enable();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(task.EnableCalls, Is.EqualTo(1));
                 Assert.That(model.Enabled, Is.True);
                 Assert.That(model.State, Is.EqualTo(CoreTaskState.Ready));
-            }));
+            }
         }
 
 
@@ -120,13 +120,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             model.Disable();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(task.DisableCalls, Is.EqualTo(1));
                 Assert.That(model.Enabled, Is.False);
                 Assert.That(model.State, Is.EqualTo(CoreTaskState.Disabled));
                 Assert.That(model.Active, Is.False);
-            }));
+            }
         }
     }
 }

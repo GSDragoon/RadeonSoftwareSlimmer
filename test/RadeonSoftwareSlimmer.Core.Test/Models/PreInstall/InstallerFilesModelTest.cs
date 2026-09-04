@@ -231,13 +231,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             _installerFiles.ExtractInstallerFiles();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_processRunner.LastFileName, Does.EndWith("7z.exe"));
                 Assert.That(_processRunner.LastArguments, Does.StartWith("x "));
                 Assert.That(_processRunner.LastArguments, Does.Contain($"\"{_installerFiles.InstallerFile}\""));
                 Assert.That(_processRunner.LastArguments, Does.Contain($"-o\"{_installerFiles.ExtractedInstallerDirectory}\""));
-            }));
+            }
         }
 
         [Test]

@@ -115,11 +115,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase + @"\component1")), Is.True);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component1")), Is.False);
-            }));
+            }
         }
 
         [Test]
@@ -133,11 +133,11 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase + @"\component1")), Is.False);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component1")), Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -155,13 +155,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase + @"\component1")), Is.False);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase + @"\component2")), Is.False);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component1")), Is.True);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component2")), Is.True);
-            }));
+            }
         }
 
         [Test]
@@ -176,13 +176,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentListModel.RemoveComponentsNotKeeping();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase + @"\component1")), Is.True);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase + @"\component2")), Is.False);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component1")), Is.False);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component2")), Is.True);
-            }));
+            }
         }
 
 
@@ -198,7 +198,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
 
             displayComponentListModel.RestoreToDefault();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component1")), Is.False);
                 Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component2")), Is.False);
@@ -206,7 +206,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
                 Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase + @"\component1\ccc2_install.exe")), Is.True);
                 Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase + @"\component1\driver.inf")), Is.True);
                 Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase + @"\component2\driver.inf")), Is.True);
-            }));
+            }
         }
     }
 }

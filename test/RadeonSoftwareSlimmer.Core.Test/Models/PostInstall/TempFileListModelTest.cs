@@ -61,13 +61,13 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             _tempFileListModel.LoadOrRefresh();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(_tempFileListModel.TempFiles.Count(), Is.EqualTo(6));
                 Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == NonAmdRoot1), Is.Empty);
                 Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == $@"{System}\AMD"), Is.Empty);
                 Assert.That(_tempFileListModel.TempFiles.Where(t => t.Folder == NonAmdRoot2), Is.Empty);
-            }));
+            }
         }
 
 
@@ -175,7 +175,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
 
             _tempFileListModel.ApplyChanges();
 
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
 
                 foreach (string folder in tempFoldersToClear)
@@ -196,7 +196,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PostInstall
                 {
                     Assert.That(tempFileModel.Clear, Is.True);
                 }
-            }));
+            }
         }
     }
 }

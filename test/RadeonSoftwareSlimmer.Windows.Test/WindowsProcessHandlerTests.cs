@@ -103,12 +103,12 @@ namespace RadeonSoftwareSlimmer.Windows.Test
             _handler.WaitForProcessToStart("DOES_NOT_EXIST", 1);
 
             sw.Stop();
-            Assert.Multiple((System.Action)(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(sw.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000));
                 Assert.That(sw.ElapsedMilliseconds, Is.LessThan(5000));
                 Assert.That(_handler.IsProcessRunning("DOES_NOT_EXIST"), Is.False);
-            }));
+            }
         }
 
         [Test]
