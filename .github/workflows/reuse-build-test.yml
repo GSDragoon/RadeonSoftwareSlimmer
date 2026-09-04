@@ -21,44 +21,45 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
     - name: Build
-      run: ./build/build.ps1 
+      run: ./build/build.ps1
 
     - name: Test
       run: ./build/test.ps1
 
-    # https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v7
-      with:
-        name: test-results
-        path: ./artifacts/tests/*.trx
-        if-no-files-found: warn
-
     # https://github.com/marketplace/actions/test-reporter
     - name: Publish Test Results
-      if: success() || failure()
+      if: ${{ !cancelled() }}
       uses: dorny/test-reporter@v3
       with:
-        artifact: test-results
         name: Test Results
-        path: '*.trx'
+        report-title: Test Results
+        path: ./artifacts/tests/*.trx
         reporter: dotnet-trx
         only-summary: false
         fail-on-error: true
         fail-on-empty: true
 
+    - name: Publish Coverage Summary
+      if: ${{ !cancelled() }}
+      run: Get-Content ./artifacts/CoverageReports/MarkdownSummaryGithub/SummaryGithub.md | Add-Content $Env:GITHUB_STEP_SUMMARY
     - name: Publish
       run: ./build/publish.ps1
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v7
+      with:
+        name: coverage-reports
+        path: ./artifacts/CoverageReports/
 
     - name: Upload Published Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: published-artifact
+        name: published-artifacts
         path: ./artifacts/publish/RadeonSoftwareSlimmer_*_net*.zip
         if-no-files-found: error
         compression-level: 0

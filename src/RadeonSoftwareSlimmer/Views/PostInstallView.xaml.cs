@@ -1,5 +1,4 @@
-﻿using System.IO.Abstractions;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
@@ -8,7 +7,14 @@ namespace RadeonSoftwareSlimmer.Views
 {
     public partial class PostInstallView : UserControl
     {
-        private readonly PostInstallViewModel _viewModel = new PostInstallViewModel(new FileSystem(), new WindowsRegistry());
+        private readonly PostInstallViewModel _viewModel = new PostInstallViewModel(
+            Abstractions.FileSystem,
+            Abstractions.Registry,
+            Abstractions.Logger,
+            Abstractions.ProcessHandler,
+            Abstractions.ProcessRunner,
+            Abstractions.ScheduledTaskService,
+            Abstractions.ServiceControllerFactory);
 
 
         public PostInstallView()

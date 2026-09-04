@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/reuse-build-test.yml
     with:
       build-version: ${{ needs.gitVersion.outputs.version }}
- 
+
   release:
     name: Create Release
     needs: [gitVersion, buildTest]
@@ -27,14 +27,14 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
     - name: Download Published Artifact
       uses: actions/download-artifact@v8
       with:
-        name: published-artifact
+        name: published-artifacts
 
     - name: List Artifacts
       run: ls -R

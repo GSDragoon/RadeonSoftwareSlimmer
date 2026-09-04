@@ -1,7 +1,7 @@
-﻿using System.IO.Abstractions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using RadeonSoftwareSlimmer.Services;
 using RadeonSoftwareSlimmer.ViewModels;
 
 namespace RadeonSoftwareSlimmer.Views
@@ -9,7 +9,10 @@ namespace RadeonSoftwareSlimmer.Views
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class PreInstallView : UserControl
     {
-        private readonly PreInstallViewModel _viewModel = new PreInstallViewModel(new FileSystem());
+        private readonly PreInstallViewModel _viewModel = new PreInstallViewModel(
+            Abstractions.FileSystem,
+            Abstractions.Logger,
+            Abstractions.ProcessRunner);
 
 
         public PreInstallView()

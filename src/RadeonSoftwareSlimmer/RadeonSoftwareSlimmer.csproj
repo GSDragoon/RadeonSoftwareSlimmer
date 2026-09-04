@@ -1,46 +1,38 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net10.0-windows;net48</TargetFrameworks>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-
-    <Product>Radeon Software Slimmer</Product>
     <StartupObject>RadeonSoftwareSlimmer.App</StartupObject>
-    <AssemblyTitle>Radeon Software Slimmer</AssemblyTitle>
-    <Authors>Greg Seaton</Authors>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro" Version="2.4.11" />
-    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.23.0.137933">
+    <PackageReference Include="MahApps.Metro" />
+    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" />
+    <PackageReference Include="SonarAnalyzer.CSharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="22.1.1" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.5" />
-    <PackageReference Include="TaskScheduler" Version="2.12.2" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.Analyzers" Version="2022.0.0">
+    <PackageReference Include="System.IO.Abstractions" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions.Analyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)'=='net48'">
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\.editorconfig" Link=".editorconfig" />
     <None Remove="icon.ico" />
     <Resource Include="icon.ico" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\RadeonSoftwareSlimmer.Core\RadeonSoftwareSlimmer.Core.csproj" />
+    <ProjectReference Include="..\RadeonSoftwareSlimmer.Windows\RadeonSoftwareSlimmer.Windows.csproj" />
+  </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
-
 </Project>

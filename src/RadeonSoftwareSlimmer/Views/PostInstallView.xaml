@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ss="clr-namespace:System.ServiceProcess;assembly=System.ServiceProcess.ServiceController"
+    xmlns:cenums="clr-namespace:RadeonSoftwareSlimmer.Core.Enums;assembly=RadeonSoftwareSlimmer.Core"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:uc="clr-namespace:RadeonSoftwareSlimmer.Views"
     xmlns:vm="clr-namespace:RadeonSoftwareSlimmer.ViewModels"
@@ -18,7 +18,7 @@
     <UserControl.Resources>
         <ObjectDataProvider x:Key="ServiceStartModeEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="ss:ServiceStartMode" />
+                <x:Type TypeName="cenums:CoreServiceStartMode" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </UserControl.Resources>
@@ -96,7 +96,7 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
-                    
+
                 </StackPanel>
             </mah:MetroTabItem>
 

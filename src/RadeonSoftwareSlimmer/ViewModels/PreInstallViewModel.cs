@@ -4,7 +4,8 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Win32;
-using RadeonSoftwareSlimmer.Models.PreInstall;
+using RadeonSoftwareSlimmer.Core.Interfaces;
+using RadeonSoftwareSlimmer.Core.PreInstall;
 
 namespace RadeonSoftwareSlimmer.ViewModels
 {
@@ -12,16 +13,16 @@ namespace RadeonSoftwareSlimmer.ViewModels
     {
         private readonly IFileSystem _fileSystem;
 
-        public PreInstallViewModel(IFileSystem fileSystem)
+        public PreInstallViewModel(IFileSystem fileSystem, IAppLogger logger, IProcessRunner processRunner)
         {
             _fileSystem = fileSystem;
             FlipViewIndex = WizardIndex.SelectInstaller;
             InstallerAlreadyExtracted = false;
 
-            InstallerFiles = new InstallerFilesModel(_fileSystem);
-            PackageList = new PackageListModel(_fileSystem);
-            ScheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem);
-            DisplayComponentList = new DisplayComponentListModel(_fileSystem);
+            InstallerFiles = new InstallerFilesModel(_fileSystem, processRunner, logger);
+            PackageList = new PackageListModel(_fileSystem, logger);
+            ScheduledTaskList = new ScheduledTaskXmlListModel(_fileSystem, logger);
+            DisplayComponentList = new DisplayComponentListModel(_fileSystem, logger);
         }
 
 
@@ -204,7 +205,7 @@ namespace RadeonSoftwareSlimmer.ViewModels
 
                 foreach (PackageModel package in PackageList.InstallerPackages.Where(p => !p.Keep))
                 {
-                    PackageListModel.RemovePackage(package);
+                    PackageList.RemovePackage(package);
                 }
 
                 foreach (ScheduledTaskXmlModel task in ScheduledTaskList.ScheduledTasks)

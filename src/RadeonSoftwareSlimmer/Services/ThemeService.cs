@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using ControlzEx.Theming;
-using RadeonSoftwareSlimmer.Intefaces;
+using RadeonSoftwareSlimmer.Core.Interfaces;
 
 namespace RadeonSoftwareSlimmer.Services
 {
