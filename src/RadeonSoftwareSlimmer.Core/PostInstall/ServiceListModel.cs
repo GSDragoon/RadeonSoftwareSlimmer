@@ -69,6 +69,7 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 //AMD PCI Root Bus Lower Filter
                 //Probably shouldn't mess with this one either
                 //"amdkmpfd",
+                //"amdkmdap",
 
                 //System Devices/Kernel Drivers
                 "amdfendr",
@@ -85,6 +86,12 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
                 "AMDSoundWireAudioService",
                 "AtiHDAudioService",
                 "AMDSAFD",
+                "amdacphpdsvc",
+                "AMDAcpUsbAudioService",
+                "AMDI2SAudioService",
+                "AMDKSLFilterService",
+                "amdsdwc",
+                "amdsdws",
 
                 //NT/Windows Services
                 "AMD Crash Defender Service",
@@ -94,10 +101,27 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
 
                 //Other
                 "AMDRadeonsettings",
+                "AMDFDANS",
 
                 //Radeon Pro Enterprise
                 "amducsi",
                 "SSGService",
+
+                // AMDISP
+                "AmdCamera",
+                "ispBridgeDevice",
+                "sensorGC1029",
+                "sensorHM1092",
+                "sensorOV05C",
+                "sensorOV08X",
+                "sensorOV13B",
+                "sensorVD55G0",
+
+                // AMDNPUMCDM
+                "IpuMcdmDriver",
+
+                // AMDNPUWDF
+                "kipudrv"
             };
 
             foreach (string service in serviceNames)
