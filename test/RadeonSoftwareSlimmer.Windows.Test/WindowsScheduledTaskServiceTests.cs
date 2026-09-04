@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Win32.TaskScheduler;
 using NUnit.Framework;
 using RadeonSoftwareSlimmer.Core.Interfaces;

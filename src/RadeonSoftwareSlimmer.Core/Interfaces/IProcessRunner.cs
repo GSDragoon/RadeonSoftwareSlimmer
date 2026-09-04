@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RadeonSoftwareSlimmer.Core.Interfaces
+﻿namespace RadeonSoftwareSlimmer.Core.Interfaces
 {
     public interface IProcessRunner
     {

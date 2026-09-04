@@ -1,6 +1,5 @@
 using System.Linq;
 using NUnit.Framework;
-using RadeonSoftwareSlimmer.Core.Enums;
 using RadeonSoftwareSlimmer.Core.PostInstall;
 using RadeonSoftwareSlimmer.Core.Test.TestDoubles;
 
