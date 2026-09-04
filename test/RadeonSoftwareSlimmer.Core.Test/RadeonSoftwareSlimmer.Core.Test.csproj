@@ -32,6 +32,10 @@
     <None Include="TestData\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <!-- Third-party binary blobs are linked in (not copied in source) so integrity tests verify the checked-in files. -->
+    <None Include="..\..\src\Shared\7-Zip\*.*" LinkBase="ThirdPartyBinaries\7-Zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'!='true'">
     <RunSettingsFilePath>$(MSBuildProjectDirectory)\..\RadeonSoftwareSlimmer.Test.runsettings</RunSettingsFilePath>
