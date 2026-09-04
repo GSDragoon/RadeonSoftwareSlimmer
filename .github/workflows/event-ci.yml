@@ -10,6 +10,10 @@ on:
     branches: [master]
     types: [opened, reopened, synchronize, ready_for_review]
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   gitVersion:
     name: Get Version

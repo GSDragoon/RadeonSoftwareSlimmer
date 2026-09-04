@@ -8,6 +8,9 @@ on:
         description: 'The full SemVer from GitVersion'
         value: ${{ jobs.GitVersion.outputs.FullSemVer }}
 
+permissions:
+  contents: read
+
 jobs:
   GitVersion:
     # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#choosing-github-hosted-runners
