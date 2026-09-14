@@ -52,48 +52,55 @@ namespace RadeonSoftwareSlimmer.Core.PostInstall
 
         private IEnumerable<TempFileModel> GetAllRadeonTempFiles()
         {
+            string systemDrive = _fileSystem.Path.GetPathRoot(Environment.SystemDirectory) ?? string.Empty; // null on linux for local testing
+            string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolderOption.DoNotVerify);
+            string appDataLocal = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify);
+            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify);
+            string appDataLocalLow = _fileSystem.Path.Combine(userProfile, "AppData", "LocalLow");
+
             string[] tempFolders =
             {
                 //C:\AMD
-                $@"{Environment.GetEnvironmentVariable("SystemDrive", EnvironmentVariableTarget.Process)}\AMD",
+                _fileSystem.Path.Combine(systemDrive, "AMD"),
 
+                _fileSystem.Path.Combine(programFiles, "AMD", "AMDInstallManager", "Logs"),
                 //Computer\HKEY_LOCAL_MACHINE\SOFTWARE\ATI Technologies\Install,InstallDir,C:\Program Files\AMD\CIM
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CIM\Log",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CIM\Reports",
+                _fileSystem.Path.Combine(programFiles, "AMD", "CIM", "Log"),
+                _fileSystem.Path.Combine(programFiles, "AMD", "CIM", "Reports"),
 
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\AMDLink\cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\cl.cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CN\Analytics",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\CN\NewsFeed",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\LINK\game_cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD_Common",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMDIdentifyWindow\cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMDSoftwareInstaller\cache",
+                _fileSystem.Path.Combine(appDataLocal, "AMD_Common"),
+                _fileSystem.Path.Combine(appDataLocal, "AMDIdentifyWindow", "cache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMDInstallManager", "cache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMDSoftwareInstaller", "cache"),
+                _fileSystem.Path.Combine(appDataLocal, "RadeonInstaller", "cache"),
 
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\cl.cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\Dx9Cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\DxCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\DxcCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\GLCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\oglcache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\OglpCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\VkCache",
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "AMDLink", "cache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "CN", "Analytics"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "CN", "NewsFeed"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "LINK", "game_cache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "Radeonsoftware", "cache"),
 
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\AMD\Radeonsoftware\cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify)}\RadeonInstaller\cache",
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "cl.cache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "Dx9Cache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "DxCache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "DxcCache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "GLCache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "oglcache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "OglpCache"),
+                _fileSystem.Path.Combine(appDataLocal, "AMD", "VkCache"),
 
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\cl.cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\Dx9Cache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\DxCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\DxcCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\GLCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\oglcache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\OglpCache",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.DoNotVerify)}\AppData\LocalLow\AMD\VkCache",
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "cl.cache"),
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "Dx9Cache"),
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "DxCache"),
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "DxcCache"),
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "GLCache"),
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "oglcache"),
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "OglpCache"),
+                _fileSystem.Path.Combine(appDataLocalLow, "AMD", "VkCache"),
 
                 //C:\Windows\System32\AMD
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify)}\AMD\EeuDumps",
-                $@"{Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify)}\AMD\MmdDumps",
+                _fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify), "AMD", "EeuDumps"),
+                _fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System, Environment.SpecialFolderOption.DoNotVerify), "AMD", "MmdDumps"),
             };
 
             foreach (string tempFolder in tempFolders)
