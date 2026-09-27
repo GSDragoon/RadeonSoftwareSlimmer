@@ -10,12 +10,14 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
     public class DisplayComponentModelTest
     {
         private const string ComponentRelative = @"driver\path1\path2\display\component1";
+        private const string BackupRelative = @"driver\RSS_Backup\DisplayComponents";
         private static readonly string ComponentRelativeDisplay = TestPath.Relative(@"path1\path2\display\component1");
 
         private MockFileSystem _fileSystem;
         private FakeAppLogger _logger;
         private IDirectoryInfo _rootDir;
         private IDirectoryInfo _componentDir;
+        private IDirectoryInfo _backupDir;
 
 
         [SetUp]
@@ -25,6 +27,8 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             _logger = new FakeAppLogger();
             _rootDir = _fileSystem.DirectoryInfo.New(TestPath.Rooted("driver"));
             _componentDir = _fileSystem.DirectoryInfo.New(TestPath.Rooted(ComponentRelative));
+            _backupDir = _fileSystem.DirectoryInfo.New(TestPath.Rooted(BackupRelative));
+            _backupDir.Create();
         }
 
 
@@ -34,7 +38,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             _fileSystem.AddFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"), new MockFileData(
                 string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
 
             using (Assert.EnterMultipleScope())
             {
@@ -51,7 +55,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             _fileSystem.AddFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"), new MockFileData(
                 string.Format("dummyline{0}dummyline2{0}[Strings]{0}ExtendedGraphics\"test{0}", Environment.NewLine)));
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
 
             using (Assert.EnterMultipleScope())
             {
@@ -70,7 +74,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             _fileSystem.AddFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"), new MockFileData(
                 string.Format("dummyline{0}[Strings]{0}dummyline2{0}{1} = \"Test Name\"{0}dummyline3{0}", Environment.NewLine, description)));
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
 
             using (Assert.EnterMultipleScope())
             {
@@ -86,7 +90,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
         {
             _fileSystem.AddEmptyFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"));
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
 
             using (Assert.EnterMultipleScope())
             {
@@ -103,7 +107,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             _fileSystem.AddFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"), new MockFileData(
                 string.Format("dummyline{0}dummyline2{0}desc\"test{0}", Environment.NewLine)));
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
 
             using (Assert.EnterMultipleScope())
             {
@@ -120,7 +124,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             _fileSystem.AddFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"), new MockFileData(
                 string.Format("dummyline{0}dummyline2{0}[Strings]{0}\"test{0}", Environment.NewLine)));
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
 
             using (Assert.EnterMultipleScope())
             {
@@ -137,7 +141,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             _fileSystem.AddFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"), new MockFileData(
                 string.Format("dummyline{0}dummyline2{0}[Strings]", Environment.NewLine)));
 
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
 
             using (Assert.EnterMultipleScope())
             {
@@ -154,7 +158,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
         {
             _fileSystem.AddEmptyFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"));
             _componentDir.Refresh();
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
             _componentDir.Delete(true);
             displayComponentModel.Keep = false;
 
@@ -168,7 +172,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
         {
             _fileSystem.AddEmptyFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"));
             _componentDir.Refresh();
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
             displayComponentModel.Keep = true;
 
             displayComponentModel.Remove();
@@ -185,7 +189,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
         {
             _fileSystem.AddEmptyFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"));
             _componentDir.Refresh();
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
             displayComponentModel.Keep = false;
             _componentDir.GetFiles()[0].IsReadOnly = true;
 
@@ -203,7 +207,7 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
         {
             _fileSystem.AddEmptyFile(TestPath.Rooted(ComponentRelative + @"\driver.inf"));
             _componentDir.Refresh();
-            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _logger);
+            DisplayComponentModel displayComponentModel = new DisplayComponentModel(_rootDir, _componentDir, _backupDir, _logger);
             displayComponentModel.Keep = false;
 
             displayComponentModel.Remove();

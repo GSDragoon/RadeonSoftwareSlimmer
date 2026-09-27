@@ -8,10 +8,12 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
 {
     public class DisplayComponentListModel : INotifyPropertyChanged
     {
+        // Combined driver packages may ship a second display driver alongside the primary one.
+        private static readonly string[] DisplayFolderNames = { "Display", "Display2" };
+
         private readonly IAppLogger _logger;
         private readonly IFileSystem _fileSystem;
         private IDirectoryInfo _installDir;
-        private IDirectoryInfo _componentBaseDir;
         private IDirectoryInfo _backupBaseDir;
         private IEnumerable<DisplayComponentModel> _components;
 
@@ -45,7 +47,6 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
             if (!_installDir.Exists)
                 throw new DirectoryNotFoundException("Installer folder does not exist or cannot access.");
 
-            _componentBaseDir = _fileSystem.DirectoryInfo.New(_fileSystem.Path.Combine(_installDir.FullName, "Packages", "Drivers", "Display", "WT6A_INF"));
             _backupBaseDir = _installDir.CreateSubdirectory("RSS_Backup").CreateSubdirectory("DisplayComponents");
 
             DisplayDriverComponents = new List<DisplayComponentModel>(GetDisplayComponents());
@@ -64,24 +65,44 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
 
         public void RestoreToDefault()
         {
-            foreach (IDirectoryInfo backedUpComponentDir in _backupBaseDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+            foreach (IDirectoryInfo namespacedBackupDir in _backupBaseDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
             {
-                // If loading from another instance of the application, it won't have the old component information
-                // Move also changes the original directory object's path
-                _logger.Debug($"Restoring display component {backedUpComponentDir.Name} to {_componentBaseDir.FullName}");
-                backedUpComponentDir.MoveTo(_fileSystem.Path.Combine(_componentBaseDir.FullName, backedUpComponentDir.Name));
+                IDirectoryInfo componentBaseDir = GetComponentBaseDir(namespacedBackupDir.Name);
+                componentBaseDir.Create();
+
+                foreach (IDirectoryInfo backedUpComponentDir in namespacedBackupDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+                {
+                    // If loading from another instance of the application, it won't have the old component information
+                    // Move also changes the original directory object's path
+                    _logger.Debug($"Restoring display component {backedUpComponentDir.Name} to {componentBaseDir.FullName}");
+                    backedUpComponentDir.MoveTo(_fileSystem.Path.Combine(componentBaseDir.FullName, backedUpComponentDir.Name));
+                }
             }
         }
 
 
+        private IDirectoryInfo GetComponentBaseDir(string displayFolderName)
+        {
+            return _fileSystem.DirectoryInfo.New(_fileSystem.Path.Combine(_installDir.FullName, "Packages", "Drivers", displayFolderName, "WT6A_INF"));
+        }
+
         private IEnumerable<DisplayComponentModel> GetDisplayComponents()
         {
-            if (_componentBaseDir.Exists)
+            foreach (string displayFolderName in DisplayFolderNames)
             {
-                foreach (IDirectoryInfo componentDirectory in _componentBaseDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+                IDirectoryInfo componentBaseDir = GetComponentBaseDir(displayFolderName);
+                if (!componentBaseDir.Exists)
+                    continue;
+
+                IDirectoryInfo namespacedBackupDir = null;
+                foreach (IDirectoryInfo componentDirectory in componentBaseDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
                 {
                     if (componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly).Length == 1)
-                        yield return new DisplayComponentModel(_installDir, componentDirectory, _logger);
+                    {
+                        if (namespacedBackupDir == null)
+                            namespacedBackupDir = _backupBaseDir.CreateSubdirectory(displayFolderName);
+                        yield return new DisplayComponentModel(_installDir, componentDirectory, namespacedBackupDir, _logger);
+                    }
                 }
             }
         }
