@@ -3,17 +3,17 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
     <PackageVersion Include="MahApps.Metro" Version="2.4.11" />
     <PackageVersion Include="MahApps.Metro.IconPacks.FontAwesome" Version="6.2.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
     <PackageVersion Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageVersion Include="nunit" Version="4.6.1" />
+    <PackageVersion Include="nunit" Version="5.0.0" />
     <PackageVersion Include="NUnit.Analyzers" Version="4.15.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.3.0" />
-    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.34.0.3385" />
-    <PackageVersion Include="System.IO.Abstractions" Version="22.2.0" />
-    <PackageVersion Include="System.IO.Abstractions.TestingHelpers" Version="22.2.0" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.35.0.4138" />
+    <PackageVersion Include="System.IO.Abstractions" Version="22.3.0" />
+    <PackageVersion Include="System.IO.Abstractions.TestingHelpers" Version="22.3.0" />
     <PackageVersion Include="System.ServiceProcess.ServiceController" Version="10.0.12" />
     <PackageVersion Include="System.Text.Json" Version="10.0.12" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
