@@ -14,7 +14,7 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
         private bool _keep;
 
 
-        public DisplayComponentModel(IDirectoryInfo installerRootDirectory, IDirectoryInfo componentDirectory, IAppLogger logger)
+        public DisplayComponentModel(IDirectoryInfo installerRootDirectory, IDirectoryInfo componentDirectory, IDirectoryInfo backupDirectory, IAppLogger logger)
         {
             _logger = logger;
             _logger.Debug($"Found display component in {componentDirectory.FullName}");
@@ -22,7 +22,7 @@ namespace RadeonSoftwareSlimmer.Core.PreInstall
             Keep = true;
 
             _componentDirectory = componentDirectory;
-            _backupDirectory = installerRootDirectory.CreateSubdirectory("RSS_Backup").CreateSubdirectory("DisplayComponents");
+            _backupDirectory = backupDirectory;
             Directory = componentDirectory.FullName.Substring(componentDirectory.FullName.IndexOf(installerRootDirectory.FullName) + installerRootDirectory.FullName.Length);
 
             IFileInfo infFile = componentDirectory.GetFiles("*.inf", SearchOption.TopDirectoryOnly)[0];

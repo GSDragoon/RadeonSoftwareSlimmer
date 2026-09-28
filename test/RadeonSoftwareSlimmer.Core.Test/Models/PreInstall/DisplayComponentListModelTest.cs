@@ -14,7 +14,9 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
     {
         private const string DriverRoot = "driver";
         private const string ComponentBase = @"driver\Packages\Drivers\Display\WT6A_INF";
-        private const string BackupBase = @"driver\RSS_Backup\DisplayComponents";
+        private const string ComponentBase2 = @"driver\Packages\Drivers\Display2\WT6A_INF";
+        private const string BackupBase = @"driver\RSS_Backup\DisplayComponents\Display";
+        private const string BackupBase2 = @"driver\RSS_Backup\DisplayComponents\Display2";
 
         private MockFileSystem _mockFileSystem;
         private FakeAppLogger _logger;
@@ -103,6 +105,36 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             Assert.That(displayComponentModels, Has.Count.EqualTo(2));
         }
 
+        [Test]
+        public void LoadOrRefresh_Display2Only_ReturnsComponentsFromDisplay2()
+        {
+            _mockFileSystem.AddFile(TestPath.Rooted(ComponentBase2 + @"\component1\driver.inf"), new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem, _logger);
+
+            displayComponentListModel.LoadOrRefresh(_installerDir);
+
+            List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
+            Assert.That(displayComponentModels, Has.Count.EqualTo(1));
+        }
+
+        [Test]
+        public void LoadOrRefresh_DisplayAndDisplay2_ReturnsComponentsFromBoth()
+        {
+            _mockFileSystem.AddFile(TestPath.Rooted(ComponentBase + @"\component1\driver.inf"), new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            _mockFileSystem.AddFile(TestPath.Rooted(ComponentBase + @"\component2\driver.inf"), new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            _mockFileSystem.AddFile(TestPath.Rooted(ComponentBase2 + @"\componentA\driver.inf"), new MockFileData(
+                    string.Format("dummyline{0}dummyline2{0}[Strings]{0}desc\"test{0}", Environment.NewLine)));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem, _logger);
+
+            displayComponentListModel.LoadOrRefresh(_installerDir);
+
+            List<DisplayComponentModel> displayComponentModels = new List<DisplayComponentModel>(displayComponentListModel.DisplayDriverComponents);
+            Assert.That(displayComponentModels, Has.Count.EqualTo(3));
+        }
+
 
         [Test]
         public void RemoveComponentsNotKeeping_KeepIsTrue_DoesNotRemoveComponent()
@@ -185,6 +217,29 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
             }
         }
 
+        [Test]
+        public void RemoveComponentsNotKeeping_DisplayAndDisplay2_BacksUpToNamespacedFolders()
+        {
+            _mockFileSystem.AddEmptyFile(TestPath.Rooted(ComponentBase + @"\component1\driver.inf"));
+            _mockFileSystem.AddEmptyFile(TestPath.Rooted(ComponentBase2 + @"\component1\driver.inf"));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem, _logger);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
+            foreach (DisplayComponentModel displayComponentModel in displayComponentListModel.DisplayDriverComponents)
+            {
+                displayComponentModel.Keep = false;
+            }
+
+            displayComponentListModel.RemoveComponentsNotKeeping();
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase + @"\component1")), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(ComponentBase2 + @"\component1")), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component1")), Is.True);
+                Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase2 + @"\component1")), Is.True);
+            }
+        }
+
 
         [Test]
         public void RestoreToDefault_RestoresBackedUpComponents()
@@ -206,6 +261,44 @@ namespace RadeonSoftwareSlimmer.Core.Test.Models.PreInstall
                 Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase + @"\component1\ccc2_install.exe")), Is.True);
                 Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase + @"\component1\driver.inf")), Is.True);
                 Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase + @"\component2\driver.inf")), Is.True);
+            }
+        }
+
+        [Test]
+        public void RestoreToDefault_DisplayAndDisplay2_RestoresToOriginalBaseDirs()
+        {
+            _mockFileSystem.AddDirectory(TestPath.Rooted(ComponentBase));
+            _mockFileSystem.AddDirectory(TestPath.Rooted(ComponentBase2));
+            _mockFileSystem.AddEmptyFile(TestPath.Rooted(BackupBase + @"\component1\driver.inf"));
+            _mockFileSystem.AddEmptyFile(TestPath.Rooted(BackupBase2 + @"\componentA\driver.inf"));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem, _logger);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
+
+            displayComponentListModel.RestoreToDefault();
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase + @"\component1")), Is.False);
+                Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase2 + @"\componentA")), Is.False);
+                Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase + @"\component1\driver.inf")), Is.True);
+                Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase2 + @"\componentA\driver.inf")), Is.True);
+            }
+        }
+
+        [Test]
+        public void RestoreToDefault_Display2BaseDirMissing_CreatesAndRestores()
+        {
+            _mockFileSystem.AddDirectory(TestPath.Rooted(DriverRoot));
+            _mockFileSystem.AddEmptyFile(TestPath.Rooted(BackupBase2 + @"\componentA\driver.inf"));
+            DisplayComponentListModel displayComponentListModel = new DisplayComponentListModel(_mockFileSystem, _logger);
+            displayComponentListModel.LoadOrRefresh(_installerDir);
+
+            displayComponentListModel.RestoreToDefault();
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(_mockFileSystem.Directory.Exists(TestPath.Rooted(BackupBase2 + @"\componentA")), Is.False);
+                Assert.That(_mockFileSystem.File.Exists(TestPath.Rooted(ComponentBase2 + @"\componentA\driver.inf")), Is.True);
             }
         }
     }
