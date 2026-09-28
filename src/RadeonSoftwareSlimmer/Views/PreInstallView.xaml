@@ -157,7 +157,11 @@
                     <mah:MetroTabControl Grid.Row="0" mah:HeaderedControlHelper.HeaderFontWeight="Thin" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
                         <mah:MetroTabItem Padding="8,0,8,8" Header="Packages">
-                            <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                         x:Name="btnPackageSelectAll"
@@ -192,6 +196,7 @@
                                     <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Packages" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <DataGrid
+                                    Grid.Row="1"
                                     Margin="0,8"
                                     mah:DataGridHelper.EnableCellEditAssist="True"
                                     CanUserAddRows="False"
@@ -200,11 +205,15 @@
                                     ItemsSource="{Binding PackageList.InstallerPackages}"
                                     SelectionChanged="DataGrid_SelectionChanged"
                                     Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-                            </StackPanel>
+                            </Grid>
                         </mah:MetroTabItem>
 
                         <mah:MetroTabItem Padding="8,0,8,8" Header="Scheduled Tasks">
-                            <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                         x:Name="btnScheduledTaskSelectAll"
@@ -239,6 +248,7 @@
                                     <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <DataGrid
+                                    Grid.Row="1"
                                     mah:DataGridHelper.EnableCellEditAssist="True"
                                     Margin="0,8"
                                     CanUserAddRows="False"
@@ -247,11 +257,15 @@
                                     ItemsSource="{Binding ScheduledTaskList.ScheduledTasks}"
                                     SelectionChanged="DataGrid_SelectionChanged"
                                     Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-                            </StackPanel>
+                            </Grid>
                         </mah:MetroTabItem>
 
                         <mah:MetroTabItem Padding="8,0,8,8" Header="Display Driver Components">
-                            <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                         x:Name="btnDisplayComponentsSelectAll"
@@ -286,6 +300,7 @@
                                     <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <DataGrid
+                                    Grid.Row="1"
                                     Margin="0,8"
                                     mah:DataGridHelper.EnableCellEditAssist="True"
                                     CanUserAddRows="False"
@@ -294,7 +309,7 @@
                                     ItemsSource="{Binding DisplayComponentList.DisplayDriverComponents}"
                                     SelectionChanged="DataGrid_SelectionChanged"
                                     Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-                            </StackPanel>
+                            </Grid>
                         </mah:MetroTabItem>
 
                     </mah:MetroTabControl>
