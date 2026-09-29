@@ -33,9 +33,7 @@
             </mah:MetroTabItem>
 
             <mah:MetroTabItem Padding="32,0" Header="Pre Install">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <uc:PreInstallView Padding="1" />
-                </ScrollViewer>
+                <uc:PreInstallView Padding="1" />
             </mah:MetroTabItem>
 
             <mah:MetroTabItem Padding="32,0" Header="Post Install">
