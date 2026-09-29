@@ -37,9 +37,7 @@
             </mah:MetroTabItem>
 
             <mah:MetroTabItem Padding="32,0" Header="Post Install">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <uc:PostInstallView Padding="1" />
-                </ScrollViewer>
+                <uc:PostInstallView Padding="1" />
             </mah:MetroTabItem>
 
             <mah:MetroTabItem x:Name="tabLogging" Padding="32,0" Header="Logging">
