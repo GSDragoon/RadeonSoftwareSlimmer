@@ -34,21 +34,30 @@
         <mah:MetroTabControl x:Name="tabMain" Grid.Row="2" mah:HeaderedControlHelper.HeaderFontWeight="Thin" IsEnabled="{Binding LoadedPanelEnabled}" Style="{StaticResource MahApps.Styles.TabControl.AnimatedSingleRow}">
 
             <mah:MetroTabItem Padding="8,4" Header="Host Services">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <Label Content="Radeon Software: Host Services" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Host-Services" />
                     </StackPanel>
-                    <TextBlock Text="Processes that handle Radeon Software UI, tray icon, gaming stats, live streaming, Radeon ReLive Instant Replay, In-Game Replay, Recording Desktop, Overylays, Hotkeys and more." TextWrapping="Wrap" />
+                    <TextBlock Grid.Row="1" Text="Processes that handle Radeon Software UI, tray icon, gaming stats, live streaming, Radeon ReLive Instant Replay, In-Game Replay, Recording Desktop, Overylays, Hotkeys and more." TextWrapping="Wrap" />
 
                     <DataGrid
+                        Grid.Row="2"
                         Margin="0,8"
                         GridLinesVisibility="Horizontal"
                         IsReadOnly="True"
                         ItemsSource="{Binding HostService.HostServices}"
                         Style="{StaticResource MahApps.Styles.DataGrid}" />
 
-                    <StackPanel Margin="4" Orientation="Horizontal">
+                    <StackPanel Grid.Row="3" Margin="4" Orientation="Horizontal">
                         <Button
                             x:Name="btnHostServicesRestart"
                             HorizontalAlignment="Left"
@@ -67,7 +76,7 @@
                         </Button>
                         <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Start (if not running) or restart (if running) Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
                     </StackPanel>
-                    <StackPanel Margin="4" Orientation="Horizontal">
+                    <StackPanel Grid.Row="4" Margin="4" Orientation="Horizontal">
                         <Button
                             x:Name="btnHostServicesStop"
                             HorizontalAlignment="Left"
@@ -87,7 +96,7 @@
                         <TextBlock Margin="4,0" VerticalAlignment="Center" Text="Stop Radeon Software and all host services. Radeon Software UI will be closed if it's open." />
                     </StackPanel>
 
-                    <GroupBox Margin="8" Padding="8" HorizontalAlignment="Left" Header="Radeon Software Startup Task">
+                    <GroupBox Grid.Row="5" Margin="8" Padding="8" HorizontalAlignment="Left" Header="Radeon Software Startup Task">
                         <StackPanel>
                             <TextBlock Text="Enable or disable the Windows app that starts up Radeon Software at logon/reboot" />
                             <StackPanel Margin="0,8" Orientation="Horizontal">
@@ -97,19 +106,25 @@
                         </StackPanel>
                     </GroupBox>
 
-                </StackPanel>
+                </Grid>
             </mah:MetroTabItem>
 
 
             <mah:MetroTabItem Padding="8,4" Header="Scheduled Tasks">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <Label Content="Windows Scheduled Tasks" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Scheduled-Tasks" />
                     </StackPanel>
-                    <TextBlock Text="Uncheck 'Enabled' to disable the scheduled task." TextWrapping="Wrap" />
+                    <TextBlock Grid.Row="1" Text="Uncheck 'Enabled' to disable the scheduled task." TextWrapping="Wrap" />
 
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <Button
                             x:Name="btnScheduledTaskEnableAll"
                             HorizontalAlignment="Center"
@@ -142,6 +157,7 @@
                     </StackPanel>
 
                     <DataGrid
+                        Grid.Row="3"
                         x:Name="grdScheduledTasks"
                         Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
@@ -150,19 +166,27 @@
                         GridLinesVisibility="Horizontal"
                         ItemsSource="{Binding RadeonScheduledTaskList.RadeonScheduledTasks}"
                         Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-                </StackPanel>
+                </Grid>
             </mah:MetroTabItem>
 
 
             <mah:MetroTabItem Padding="8,4" Header="System Services">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <Label Content="System Services and Drivers" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/System-Services-and-Drivers" />
                     </StackPanel>
-                    <TextBlock Text="Uncheck 'Enabled' to disable the service. A system restart is required for changes to kernel drivers to take effect." TextWrapping="Wrap" />
+                    <TextBlock Grid.Row="1" Text="Uncheck 'Enabled' to disable the service. A system restart is required for changes to kernel drivers to take effect." TextWrapping="Wrap" />
 
                     <DataGrid
+                        Grid.Row="2"
                         x:Name="grdServices"
                         Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
@@ -173,7 +197,7 @@
                         SelectionMode="Single"
                         Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
 
-                    <StackPanel>
+                    <StackPanel Grid.Row="3">
                         <StackPanel Orientation="Horizontal" Margin="4">
                             <Button
                                 x:Name="btnServiceStart"
@@ -212,7 +236,7 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <GroupBox Margin="8" Padding="8" HorizontalAlignment="Left" Header="Advanced">
+                    <GroupBox Grid.Row="4" Margin="8" Padding="8" HorizontalAlignment="Left" Header="Advanced">
                         <StackPanel>
                             <TextBlock Text="Change the start mode of the selcted service. Setting an incorrect value can cause boot issues. Use with caution." />
                             <StackPanel Margin="0,8" Orientation="Horizontal">
@@ -239,18 +263,24 @@
                                 Visibility="Collapsed" />
                         </StackPanel>
                     </GroupBox>
-                </StackPanel>
+                </Grid>
             </mah:MetroTabItem>
 
             <mah:MetroTabItem Padding="8,4" Header="Installations">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <Label Content="Windows Installer Entries" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Installer-Entries" />
                     </StackPanel>
-                    <TextBlock Text="Check Uninstall to uninstall item" TextWrapping="Wrap" />
+                    <TextBlock Grid.Row="1" Text="Check Uninstall to uninstall item" TextWrapping="Wrap" />
 
                     <DataGrid
+                        Grid.Row="2"
                         Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
                         CanUserAddRows="False"
@@ -258,18 +288,24 @@
                         GridLinesVisibility="Horizontal"
                         ItemsSource="{Binding InstalledList.InstalledItems}"
                         Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-                </StackPanel>
+                </Grid>
             </mah:MetroTabItem>
 
             <mah:MetroTabItem Padding="8,4" Header="Temp Files">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <Label Content="Logging and Temporary Files" FontSize="16" FontWeight="Bold" />
                         <uc:HelpLink Link="https://github.com/GSDragoon/RadeonSoftwareSlimmer/wiki/Logging-and-Temp-Files" />
                     </StackPanel>
-                    <TextBlock Text="Check the folder to clear all files and sub directories in it. Does not delete the root folder itself." TextWrapping="Wrap" />
+                    <TextBlock Grid.Row="1" Text="Check the folder to clear all files and sub directories in it. Does not delete the root folder itself." TextWrapping="Wrap" />
 
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <Button x:Name="btnTempFilesSelectAll" Click="btnTempFilesSelectAll_Click" Margin="0,0,2,0" Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconFontAwesome
@@ -293,6 +329,7 @@
                     </StackPanel>
 
                     <DataGrid
+                        Grid.Row="3"
                         Margin="0,8"
                         mah:DataGridHelper.EnableCellEditAssist="True"
                         CanUserAddRows="False"
@@ -300,7 +337,7 @@
                         GridLinesVisibility="Horizontal"
                         ItemsSource="{Binding TempFileList.TempFiles}"
                         Style="{StaticResource MahApps.Styles.DataGrid.Azure}" />
-                </StackPanel>
+                </Grid>
             </mah:MetroTabItem>
 
         </mah:MetroTabControl>
