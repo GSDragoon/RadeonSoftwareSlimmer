@@ -53,6 +53,6 @@ jobs:
         bodyFile: ./build/release-notes-template.md
         draft: true
         generateReleaseNotes: false
-        name: Radeon Software Slimmer ${{ needs.gitVersion.outputs.version }}
+        name: ${{ needs.gitVersion.outputs.version }}
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
