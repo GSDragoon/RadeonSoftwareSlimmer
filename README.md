@@ -36,8 +36,7 @@ Requirements:
 * .NET (Either ***one*** of the following)
   * [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48) (Included with Windows 10 1903 [May 2019 update] and later)
   * [.NET Framework 4.8.1 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net481) (Included with Windows 11 22H2 and later)
-  * [.NET Desktop Runtime 8.0 x64](https://dotnet.microsoft.com/download/dotnet/8.0) (latest release recommended)
-  * [.NET Desktop Runtime 9.0 x64](https://dotnet.microsoft.com/download/dotnet/9.0) (latest release recommended)
+  * [.NET Desktop Runtime 10.0 x64](https://dotnet.microsoft.com/download/dotnet/10.0) (latest release recommended)
 
 Installation:
 
@@ -53,7 +52,6 @@ Thanks to the following third parties used with this software:
 * [7-Zip](https://www.7-zip.org/): Used for decompressing the Radeon Software installer files
 * [Radeon profile icon](http://www.iconarchive.com/show/papirus-apps-icons-by-papirus-team/radeon-profile-icon.html): Main application icon
 * [MahApps](https://mahapps.com/): UI controls, styles, themes and more
-* [Json.NET](https://www.newtonsoft.com/json): Used for reading json files with the Radeon Software installer
 * [Task Scheduler Manged Wrapper](https://github.com/dahall/taskscheduler): Used to read and modify system scheduled tasks
 * [System.IO.Abstractions](https://github.com/System-IO-Abstractions/System.IO.Abstractions): Provides abstractions for System.IO for testability
 * [Shields.io](https://shields.io/): Provides badges on readme
