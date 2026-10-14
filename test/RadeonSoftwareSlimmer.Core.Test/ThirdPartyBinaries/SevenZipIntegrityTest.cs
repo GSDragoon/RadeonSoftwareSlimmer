@@ -12,18 +12,18 @@ namespace RadeonSoftwareSlimmer.Core.Test.ThirdPartyBinaries
 {
     // Guards the checked-in 7-Zip blobs (src/Shared/7-Zip) against accidental corruption or unauthorized replacement.
     // When 7-Zip is intentionally upgraded, update the expected hashes below with the values printed on failure.
-    // Source: 7-Zip 26.03 (x64), https://www.7-zip.org/
+    // Source: 7-Zip 26.04 (x64), https://www.7-zip.org/
     public class SevenZipIntegrityTest
     {
         private const string SevenZipDirectory = "ThirdPartyBinaries/7-Zip";
 
         // SHA-256 of src/Shared/7-Zip/7z.exe
         private const string ExpectedSevenZipExeSha256 =
-            "6ee3c0ed0b27663c1b948ae85a7c0bb073aed1498983182f3f0df1f6a8c30b2f";
+            "95fff19b73eff77c87c0d7bd32822e43fb90dd2932459f962eb532d8dfb6ba53";
 
         // SHA-256 of src/Shared/7-Zip/7z.dll
         private const string ExpectedSevenZipDllSha256 =
-            "65e4c1f855f9ef6e8f0f5df8e3f27d9eb5f07311408639da0a1ca0b8f4871b0d";
+            "899cd73d7fc60e1c1c35c7de0f5bed3dc69bfe2cecbd48014d868a347970a0b1";
 
         // SHA-256 of src/Shared/7-Zip/License.txt
         private const string ExpectedSevenZipLicenseSha256 =
