@@ -29,11 +29,11 @@ jobs:
 
     # https://github.com/marketplace/actions/gittools
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v4
+      uses: gittools/actions/gitversion/setup@v5
       with:
         versionSpec: '6.8.x'
         preferLatestVersion: true
 
     - name: Determine Version
       id: version_step
-      uses: gittools/actions/gitversion/execute@v4
+      uses: gittools/actions/gitversion/execute@v5
