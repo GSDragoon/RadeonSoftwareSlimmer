@@ -11,9 +11,9 @@
     <PackageVersion Include="nunit" Version="5.0.0" />
     <PackageVersion Include="NUnit.Analyzers" Version="4.15.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.3.1" />
-    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.36.0.15337" />
-    <PackageVersion Include="System.IO.Abstractions" Version="23.0.0" />
-    <PackageVersion Include="System.IO.Abstractions.TestingHelpers" Version="23.0.0" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.37.0.15768" />
+    <PackageVersion Include="System.IO.Abstractions" Version="23.1.0" />
+    <PackageVersion Include="System.IO.Abstractions.TestingHelpers" Version="23.1.0" />
     <PackageVersion Include="System.ServiceProcess.ServiceController" Version="11.0.0" />
     <PackageVersion Include="System.Text.Json" Version="11.0.0" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
